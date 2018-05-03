@@ -1,0 +1,11 @@
+populationSize:100
+maxEvaluations:40000
+MaxGeneration:400
+numberOfParents:2
+numberOfObjectives:8
+numberOfVariables:6
+MutationName:PolynomialMutation
+MutationProbability:0.1743
+CrossOverName:SBXCrossover
+CrossOverProbability:0.8
+NumberOfRun:100

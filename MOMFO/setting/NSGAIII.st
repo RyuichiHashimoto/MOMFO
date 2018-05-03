@@ -1,0 +1,17 @@
+---------------NSGAIII/Setting:null---------------------------
+maxEvaluations:1000
+InnerWeightDivision:1
+IsNorm:true
+IsMax:false
+populationSize:92
+NumberOfTrial:20
+------------------Operator:null--------------------------
+CrossoverProbability:1.0
+CrossoverName:SBXCrossover2
+MutationName:PolynomialMutation
+MutationProbability:-1
+CrossoverDistribution:30
+MutationDistribution:20
+------------------notNeedSetting:null--------------------------
+MaxGeneration:10000
+------:randomSelection---------------------not 

@@ -1,0 +1,5 @@
+MutationName:BitFlipMutation
+CrossOverName:UniformCrossover
+NumberOfRun:100
+maxEvaluations:400000
+Neighborhood:10

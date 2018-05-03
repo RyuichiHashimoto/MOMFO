@@ -1,0 +1,472 @@
+//  MOEAD.java
+//
+//  Author:
+//       Antonio J. Nebro <antonio@lcc.uma.es>
+//       Juan J. Durillo <durillo@lcc.uma.es>
+//
+//  Copyright (c) 2011 Antonio J. Nebro, Juan J. Durillo
+//
+//  This program is free software: you can redistribute it and/or modify
+//  it under the terms of the GNU Lesser General Public License as published by
+//  the Free Software Foundation, either version 3 of the License, or
+//  (at your option) any later version.
+//
+//  This program is distributed in the hope that it will be useful,
+//  but WITHOUT ANY WARRANTY; without even the implied warranty of
+//  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//  GNU Lesser General Public License for more details.
+//
+//  You should have received a copy of the GNU Lesser General Public License
+//  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+package metaheuristics.manyIslandmoead;
+
+import java.util.HashMap;
+import java.util.Vector;
+
+import core.Algorithm;
+import core.Operator;
+import core.Population;
+import core.Problem;
+import core.Solution;
+import util.JMException;
+import util.Neiborhood;
+import util.Permutation;
+import util.Random;
+import util.SettingWriter;
+import util.WeightedVector;
+import util.Comparator.MultiIslandMOEADComparator.ConstrainMultiIslandMOEADComparator;
+import util.Comparator.MultiIslandMOEADComparator.MultiIslandMOEADComparator;
+import util.ScalarzingFunction.ScalarzingFunction;
+import util.ScalarzingFunction.ScalarzingFunctionFactory;
+public class manyIslandMOEAD extends Algorithm {
+
+
+	/**
+	 * Stores the population size
+	 */
+	private MultiIslandMOEADComparator comparator;
+
+
+	private double alpha = 1.1;
+
+	private Population[] population_;
+
+	/**
+	 * Stores the population size
+	 */
+	private int populationSize_;
+
+	private int totalpopulationSize_;
+
+	/**
+	 * Stores the population
+	 */
+	/**
+	 * Z vector (ideal point)
+	 */
+	double[][] ReferencePoint_;
+	/**
+	 * Lambda vectors
+	 */
+	// Vector<Vector<Double>> lambda_ ;
+	static double[][] WeightedVector_;
+
+	private int numberofObjectives_;
+	private int numberOfDivision_;
+
+
+	static int[][] neighborhood_;
+
+	int numberOfParents_;
+
+	Solution[][] indArray_;
+	String functionTypes_;
+	int evaluations_;
+
+
+	/**
+	 * Operators
+	 */
+	Operator crossover_;
+	Operator mutation_;
+
+	int numberOfIsland_;
+	int sizeOfNeiborhoodRepleaced_;
+	int sizeOfMatingNeiborhood_;
+	int numberOfMakeChildlen_;
+	/**
+	 * Constructor
+	 *
+	 * @param problem
+	 *            Problem to solve
+	 */
+	public manyIslandMOEAD(Problem problem) {
+		super(problem);
+	} // DMOEA
+
+
+	ScalarzingFunction[] ScalarzingFunction_;
+
+	public Population execute() throws JMException, ClassNotFoundException {
+
+
+
+
+		numberOfParents_= ((Integer) this.getInputParameter("numberOfParents")).intValue();
+		String directoryname = ((String) this.getInputParameter("directoryname"));
+		String ScalarzingFunctionName = (this.getInputParameter("ScalarzingFunctionName")).toString();
+		int maxEvaluations = ((Integer) this.getInputParameter("maxEvaluations")).intValue();
+		numberOfDivision_    = ((Integer)this.getInputParameter("numberOfDivision"));
+		numberofObjectives_    = ((Integer)this.getInputParameter("numberOfObjectives"));
+		sizeOfNeiborhoodRepleaced_ = ((Integer)this.getInputParameter("sizeOfNeiborhoodRepleaced_"));
+		sizeOfMatingNeiborhood_    = ((Integer)this.getInputParameter("sizeOfMatingNeiborhood_"));
+		boolean ismax    = ((boolean)this.getInputParameter("ismax"));
+		int time = ((Integer) this.getInputParameter("times")).intValue();
+		comparator.setIs(ismax);
+		evaluations_ = 0;
+		crossover_ = operators_.get("crossover");
+		mutation_ = operators_.get("mutation");
+		alpha = ((double)this.getInputParameter("alphar"));
+		numberOfIsland_ = ((Integer) this.getInputParameter("numberOfIsland_")).intValue();
+		int ma = Math.max(sizeOfMatingNeiborhood_, sizeOfMatingNeiborhood_);
+		int generation=1;
+		numberOfMakeChildlen_ = 6;
+
+
+		ScalarzingFunction_ = new  ScalarzingFunction[numberOfIsland_];
+		population_ = new Population[numberOfIsland_];
+		for(int i=0;i<numberOfIsland_;i++){
+			String name = "FunctionType" + String.valueOf(i);
+			ScalarzingFunction_[i] = ScalarzingFunctionFactory.getScalarzingFunctionOperator(name);
+		}
+
+
+
+		comparator = new ConstrainMultiIslandMOEADComparator(null,ScalarzingFunction_);
+
+		HashMap parameters = new HashMap(); // Operator parameters
+		indArray_ = new Solution[numberOfIsland_][problem_.getNumberOfObjectives()];
+		neighborhood_ = new int[populationSize_][];
+		ReferencePoint_ = new double[numberOfIsland_][problem_.getNumberOfObjectives()];
+		WeightedVector_ = new double[populationSize_][problem_.getNumberOfObjectives()];
+
+		SettingWriter.clear();
+		SettingWriter.merge(inputParameters_);
+		SettingWriter.add("alpha",alpha);
+		SettingWriter.merge(mutation_.getMap());
+		SettingWriter.add("Problemname",problem_.getName());
+		SettingWriter.merge(crossover_.getMap());
+
+
+
+		// Create the initial solutionSet
+
+		// STEP 1. Initialization
+		boolean cont = true;
+
+		setNeighborhood();
+
+		populationSize_ = neighborhood_.length;
+		evaluations_ = 0;
+
+
+		// STEP 1.3. Initialize population
+		initPopulation();
+
+		// STEP 1.4. Initialize z_
+		initReferencePoint();
+
+
+		for(int i = 0;i<numberOfIsland_;i++){
+			population_[i].printVariablesToFile(directoryname + "/InitialVAR/InitialVAR" + time + ".dat");
+		}
+
+
+		int[] permutation = new int[populationSize_];
+		Permutation.randomPermutation(permutation,populationSize_);
+
+
+
+		// STEP 2. Update
+		do {
+			generation++;
+
+
+
+			for (int i = 0; i < populationSize_; i++) {
+				int n = permutation[i]; // or int n = i;
+
+				// STEP 2.1. Mating selection
+
+				Vector<Integer> parentsNumber = new Vector<Integer>();
+
+
+
+				Solution[] parents = new Solution[numberOfParents_];
+
+
+				matingSelection(parentsNumber, n, numberOfParents_);
+				Solution[] child  = new Solution[6];
+
+				for(int k=0;k<numberOfParents_;k++){
+					parents[k] = population_.get(parentsNumber.get(k));
+				}
+
+				// Apply  crossover
+				Solution[] offSpring;
+				offSpring = (Solution[]) crossover_.execute(parents);
+				child = (Random.nextDoubleIE() < 0.5) ? new Solution(offSpring[0]) :  new Solution(offSpring[1]);
+
+
+
+
+
+				offSpring = null;
+
+				mutation_.execute(child);
+				child = (Solution)problem_.repair(child,parameters);
+
+				problem_.evaluate(child);
+
+				evaluations_++;
+
+				updateReference(child);
+
+
+				// STEP 2.5. Update of solutions
+				updateProblem(child, n);
+
+				if (evaluations_ == maxEvaluations){
+					cont = false;
+					break;
+				}
+
+			}
+		} while (cont);
+		System.out.print(evaluations_ +"	");
+		// NormalizationWithNadia();
+		//Normalization();
+//		population_.printVariablesToFile(directoryname + "/FinalVAR/FinalVAR" + time + ".dat");
+//		population_.printObjectivesToFile(directoryname +  "/FinalFUN/FinalFUN" + time + ".dat");
+//		return population_;
+	}
+
+	public void subscriptZ(){
+		for(int i=0;i<problem_.getNumberOfObjectives();i++){
+			System.out.print(ReferencePoint_[i] +" ");
+		}
+		System.out.println(" ");
+
+	}
+
+	public double[]  getNadia(Population pop){
+		int size = pop.get(0).getNumberOfObjectives();
+		double[]  nadirPoint = new double[size];
+		Solution empty = pop.get(0);
+		for(int k=0;k<size;k++){
+			nadirPoint[k] = empty.getObjective(k);
+		}
+		for(int  i =1;i< pop.size();i++){
+			empty = pop.get(i);
+			for(int key =0 ; key < size;key++){
+				if(nadirPoint[key] < empty.getObjective(key)){
+						nadirPoint[key] = empty.getObjective(key);
+					}
+			}
+		}
+		return nadirPoint;
+	};
+
+	public double[]  getIdeal(Population pop){
+		int size = pop.get(0).getNumberOfObjectives();
+		double[]  nadirPoint = new double[size];
+		Solution empty = pop.get(0);
+		for(int k=0;k<size;k++){
+			nadirPoint[k] = empty.getObjective(k);
+		}
+		for(int  i =1;i< pop.size();i++){
+			empty = pop.get(i);
+			for(int key =0 ; key < size;key++){
+				if(nadirPoint[key] > empty.getObjective(key)){
+						nadirPoint[key] = empty.getObjective(key);
+					}
+			}
+		}
+		return nadirPoint;
+	};
+/*
+	public void Normalization(){
+		double [] ideal = getIdeal(population_);
+
+		for(int i=0;i<population_.size();i++){
+			Solution sol = population_.get(i);
+			for(int k =0;k<sol.getNumberOfObjectives();k++){
+				double a = sol.getObjective(k);
+				a  = a - ideal[k];
+				sol.setObjective(k, a);
+			}
+		}
+		NormalizationWithNadia();
+
+	}
+
+	public void NormalizationWithNadia(){
+		double[] nadia = getNadia(population_);
+
+		for(int i = 0;i < population_.size();i++){
+			Solution sol = population_.get(i);
+			for(int key = 0;key< sol.getNumberOfObjectives(); key++){
+				double a = sol.getObjective(key);
+				a = a /( nadia[key] );
+				sol.setObjective(key, a);
+			}
+
+		}
+
+	}
+*/
+	public void	 setNeighborhood() throws JMException{
+		Neiborhood a = new Neiborhood();
+		double[][] weight;
+		weight = WeightedVector.getWeightedVector(numberofObjectives_,numberOfDivision_);
+	/*	if (numberofObjectives_ <=10){
+		}else {
+			double[][] weightouter = WeightedVector.getWeightedVector(numberofObjectives_,3);
+			double[] [] weightinner = WeightedVector.getWeightedVector(numberofObjectives_,2);
+			weightinner = WeightedVector.	getinnerWeightVector(weightinner);
+			weight = 	WeightedVector.conbine( weightouter, weightinner);
+		}*/
+		a.setWeightedVector(weight);
+		a.setNeiborhood(sizeOfNeiborhoodRepleaced_);
+		neighborhood_ = a.getNeiborhood();
+		WeightedVector_       = a.getWeight();
+	}
+
+	public void subscript() {
+		for (int i = 0; i < populationSize_; i++) {
+			for (int j = 0; j < WeightedVector_[i].length; j++) {
+					System.out.print(WeightedVector_[i][j] + "	");
+			}
+			System.out.println("	");
+		}
+	}
+
+
+
+	public void initPopulation() throws JMException, ClassNotFoundException {
+		Solution[] newSolution = new Solution[numberOfMakeChildlen_];
+
+		for (int i = 0; i < populationSize_; i++){
+			for(int c=0;c<numberOfMakeChildlen_;c++){
+			 newSolution[c] = new Solution(problem_);
+      		 newSolution[c] = (Solution) problem_.repair(newSolution[c],null);
+      		 problem_.evaluate(newSolution[c]);
+			 evaluations_++;
+			}
+
+
+
+
+
+			for(int j=0;j<numberOfIsland_;j++){
+				population_[j].add(newSolution);
+			} // for
+		}
+	} // initPopulation
+ // initPopulation
+
+
+	public void initReferencePoint() throws ClassNotFoundException, JMException{
+		Solution a = new Solution(problem_);
+
+		for(int k=0;k<numberOfIsland_;k++){
+
+
+			for (int n = 0; n < problem_.getNumberOfObjectives(); n++) {
+				ReferencePoint_[k][n] = population_[k].get(0).getObjective(n);
+				indArray_[k][n] = population_[k].get(0);
+			}
+			for (int i = 1; i < populationSize_; i++) {
+				updateReference(population_[k].get(i),k);
+			} // for
+		}
+	}
+
+	public void matingSelection(Vector<Integer> list, int cid, int size){
+		int ss;
+		int r;
+		int p;
+		boolean flag;
+		ss = sizeOfMatingNeiborhood_;
+		while (list.size() < size) {
+
+				r = Random.nextIntIE(ss);
+				p = neighborhood_[cid][r];
+
+				// p = population[cid].table[r];
+			flag = true;
+			for (int i = 0; i < list.size(); i++) {
+				if (list.get(i) == p) // p is in the list
+				{
+					flag = false;
+					break;
+				}
+			}
+			if (flag) {
+				list.addElement(p);
+			}
+		}
+	}
+
+	public void matingSelection_without_replacement(Vector<Integer> list, int cid, int size) {
+		int ss;
+		int r;
+		int p;
+		boolean flag;
+		ss = sizeOfMatingNeiborhood_;
+		while (list.size() < size) {
+
+				r = Random.nextIntIE(ss);
+				p = neighborhood_[cid][r];
+				// p = population[cid].table[r];
+				list.addElement(p);
+		}
+	}
+
+
+
+	void updateReference(Solution individual,int key) {
+		for (int n = 0; n < problem_.getNumberOfObjectives(); n++) {
+			if (comparator.compare(individual.getObjective(n) ,indArray_[key][n].getObjective(n))) {
+				ReferencePoint_[key][n] =  alpha*individual.getObjective(n);
+				indArray_[key][n] = individual;
+			}
+		}
+	}
+
+	void updateProblem(Solution indiv, int id) throws JMException {
+		int size;
+
+		size = sizeOfNeiborhoodRepleaced_;
+		int[] perm = new int[size];
+
+		// generate teh random permutation.
+		Permutation.randomPermutation(perm, size);
+
+
+		for (int i = 0; i < size; i++) {
+			int k;
+			k = neighborhood_[id][i];
+/*
+			comparator.setWeightedVector(WeightedVector_[k]);
+			comparator.setRefernecePoint(ReferencePoint_);
+
+			if (comparator.execute(indiv, population_.get(k))) {
+				population_.replace(k, new Solution(indiv));
+			}
+	*/	}
+
+	} // updateProblem
+} // MOEAD
+

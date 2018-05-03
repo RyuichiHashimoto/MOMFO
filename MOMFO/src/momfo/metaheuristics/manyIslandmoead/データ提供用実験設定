@@ -1,0 +1,110 @@
+		/*
+		int val = 0;;
+		int k=0,l=0,m=0;
+		if(Problemname.equalsIgnoreCase("DTLZ1")){
+			val =numberOfObj+ 4;
+		} else if(Problemname.equalsIgnoreCase("DTLZ2")){
+			val = numberOfObj + 9;
+		} else if(Problemname.equalsIgnoreCase("DTLZ3")){
+			val = numberOfObj + 9;
+		}  else if(Problemname.equalsIgnoreCase("DTLZ4")){
+				val = numberOfObj + 9;
+		}	 else if(Problemname.equalsIgnoreCase("DTLZ7")){
+				val = numberOfObj + 19;
+		}
+		*/
+/*
+		int numberOfVariables_ = 0;
+		if(experiment_setting_.containsKey("numberOfVariables")){
+			empty = (String)experiment_setting_.get("numberOfVariables");
+				numberOfVariables_ = Integer.parseInt(empty);
+		} else {
+			numberOfVariables_ = 1;
+		}
+		if (Problemname.equalsIgnoreCase( "DTLZ1")){
+			numberOfVariables_	 = 	numberOfObj + 4;
+			d.put("numberOfVariables",numberOfVariables_);
+			d.put("numberOfObjectives",numberOfObj);
+		} else if (Problemname.equalsIgnoreCase( "DTLZ2")){
+			numberOfVariables_	 = 	numberOfObj + 9;
+			d.put("numberOfVariables",numberOfVariables_);
+			d.put("numberOfObjectives",numberOfObj);
+		} else if (Problemname.equalsIgnoreCase( "DTLZ3")){
+			numberOfVariables_	 = 	numberOfObj + 9;
+			d.put("numberOfVariables",numberOfVariables_);
+			d.put("numberOfObjectives",numberOfObj);
+		} else if (Problemname.equalsIgnoreCase( "DTLZ4")){
+			numberOfVariables_	 = 	numberOfObj + 9;
+			d.put("numberOfVariables",numberOfVariables_);
+			d.put("numberOfObjectives",numberOfObj);
+		} else if (Problemname.equalsIgnoreCase( "WFG1")){
+			numberOfVariables_	 = 	24;
+			d.put("k",numberOfObj -1);
+			d.put("I",numberOfVariables_ - numberOfObj +1);
+			d.put("numberOfVariables",numberOfVariables_);
+			d.put("M",numberOfObj);
+		} else if (Problemname.equalsIgnoreCase( "WFG2")){
+			if (numberOfObj <7){
+			numberOfVariables_	 = 	24;
+			d.put("k",numberOfObj -1);
+			d.put("I",numberOfVariables_ - numberOfObj +1);
+			d.put("numberOfVariables",numberOfVariables_);
+			d.put("M",numberOfObj);
+			} else {
+				numberOfVariables_	 = 	23;
+				d.put("k",numberOfObj -1);
+				d.put("I",numberOfVariables_ - numberOfObj +1);
+				d.put("numberOfVariables",numberOfVariables_);
+				d.put("M",numberOfObj);
+			}
+		} else if (Problemname.equalsIgnoreCase( "WFG3")){
+			if (numberOfObj <7){
+				numberOfVariables_	 = 	24;
+				d.put("k",numberOfObj -1);
+				d.put("I",numberOfVariables_ - numberOfObj +1);
+				d.put("numberOfVariables",numberOfVariables_);
+				d.put("M",numberOfObj);
+				} else {
+					numberOfVariables_	 = 	23;
+					d.put("k",numberOfObj -1);
+					d.put("I",numberOfVariables_ - numberOfObj +1);
+					d.put("numberOfVariables",numberOfVariables_);
+					d.put("M",numberOfObj);
+				}} else if (Problemname.equalsIgnoreCase( "WFG4")){
+			numberOfVariables_	 = 	24;
+			d.put("k",numberOfObj -1);
+			d.put("I",numberOfVariables_ - numberOfObj +1);
+			d.put("numberOfVariables",numberOfVariables_);
+			d.put("M",numberOfObj);
+		} else if (Problemname.equalsIgnoreCase( "WFG5")){
+			numberOfVariables_	 = 	24;
+			d.put("k",numberOfObj -1);
+			d.put("I",numberOfVariables_ - numberOfObj +1);
+			d.put("numberOfVariables",numberOfVariables_);
+			d.put("M",numberOfObj);
+		} else if (Problemname.equalsIgnoreCase( "WFG6")){
+			numberOfVariables_	 = 	24;
+			d.put("k",numberOfObj -1);
+			d.put("I",numberOfVariables_ - numberOfObj +1);
+			d.put("numberOfVariables",numberOfVariables_);
+			d.put("M",numberOfObj);
+		} else if (Problemname.equalsIgnoreCase( "WFG7")){
+			numberOfVariables_	 = 	24;
+			d.put("k",numberOfObj -1);
+			d.put("I",numberOfVariables_ - numberOfObj +1);
+			d.put("numberOfVariables",numberOfVariables_);
+			d.put("M",numberOfObj);
+		} else if (Problemname.equalsIgnoreCase( "WFG8")){
+			numberOfVariables_	 = 	24;
+			d.put("k",numberOfObj -1);
+			d.put("I",numberOfVariables_ - numberOfObj +1);
+			d.put("numberOfVariables",numberOfVariables_);
+			d.put("M",numberOfObj);
+		}  else if (Problemname.equalsIgnoreCase( "WFG9")){
+			numberOfVariables_	 = 	24;
+			d.put("k",numberOfObj -1);
+			d.put("I",numberOfVariables_ - numberOfObj +1);
+				d.put("numberOfVariables",numberOfVariables_);
+				d.put("M",numberOfObj);
+		}
+*/

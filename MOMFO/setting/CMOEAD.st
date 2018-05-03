@@ -1,0 +1,16 @@
+---------------CMOEAD/Setting:null---------------------------
+CrossoverProbability:0.8
+CrossoverName:SBXCrossover
+MutationName:PolynomialMutation
+MutationProbability:-1
+Neighborhood:10
+maxEvaluations:30000
+isMax:false
+InnerWeightDivision:2
+alphar:1.0
+matingNeighborhood:10
+ReplaceNeighborhood:10
+------------------notNeedSetting:null--------------------------
+CrossoverDistribution:20
+MutationDistribution:20
+MaxGeneration:10000

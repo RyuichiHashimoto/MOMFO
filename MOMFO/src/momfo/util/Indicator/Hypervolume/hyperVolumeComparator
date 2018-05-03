@@ -1,0 +1,33 @@
+package util.Indicator.Hypervolume;
+
+import java.util.HashMap;
+
+import util.JMException;
+import util.POINT;
+import util.Comparator.Comparator;
+
+public class HyperVolumeComparator extends Comparator{
+
+	public HyperVolumeComparator(HashMap<String, Object> parameters) {
+		super(parameters);
+		// TODO 自動生成されたコンストラクター・スタブ
+	}
+
+	@Override
+	public boolean execute(Object one, Object two) throws JMException {
+		POINT oneSol = (POINT)one;
+		POINT twoSol = (POINT)two;
+
+		for (int i = oneSol.getDimension()-1; i >= 0; i--) {
+	      if (compare(oneSol.get(i), twoSol.get(i))) {
+	        return false;
+	      } else if (compare(twoSol.get(i), oneSol.get(i))) {
+	        return true;
+	      }
+	    }
+		return false;
+	}
+
+
+
+}

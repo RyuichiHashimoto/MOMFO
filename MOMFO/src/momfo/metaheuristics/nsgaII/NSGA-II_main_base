@@ -1,0 +1,217 @@
+
+package metaheuristics.nsgaII;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+
+import core.Algorithm;
+import core.Operator;
+import core.Population;
+import core.Problem;
+import operators.crossover.CrossoverFactory;
+import operators.mutation.MutationFactory;
+import problems.MOP.MOPFactory;
+import util.Configuration;
+import util.JMException;
+import util.Random;
+/**
+ * This class executes the algorithm described in: H. Li and Q. Zhang,
+ * "Multiobjective Optimization Problems with Complicated Pareto Sets, MOEA/D
+ * and NSGA-II". IEEE Trans on Evolutionary Computation, vol. 12, no 2, pp
+ * 284-302, April/2009.
+ */
+public class NSGAII_main {
+	public static Logger logger_; // Logger object
+	public static FileHandler fileHandler_; // FileHandler object
+
+	void subscriptLogToFile(){
+
+	};
+
+	static HashMap log = new HashMap<>();
+
+	/**
+	 * @param args
+	 *            Command line arguments. The first (optional) argument
+	 *            specifies the problem to solve.
+	 * @throws JMException
+	 * @throws IOException
+	 * @throws SecurityException
+	 *             Usage: three options - jmetal.metaheuristics.moead.MOEAD_main
+	 *             - jmetal.metaheuristics.moead.MOEAD_main problemName -
+	 *             jmetal.metaheuristics.moead.MOEAD_main problemName
+	 *             ParetoFrontFile
+	 * @throws ClassNotFoundException
+	 *
+	 */
+
+
+
+
+	static String functionname(String name){
+		String Functionname = "boid";
+		try(BufferedReader br = new BufferedReader(new FileReader(name))){
+		String line;
+		int counter=0;
+
+		while(( line = br.readLine())!= null){
+			Functionname  = line;
+		}	} catch (IOException e){
+			e.printStackTrace();
+	}
+
+		return Functionname;
+
+	}
+	static HashMap experiment_setting_ = new HashMap<>();
+
+	static void experiment_setting(String name){
+
+		try(BufferedReader br = new BufferedReader(new FileReader(name))){
+		String[] S;
+		String line;
+		int counter=0;
+		while(( line = br.readLine())!= null){
+			S  = line.split(":");
+			System.out.print(S[0] + " " + S[1] + "\n");
+			experiment_setting_.put(S[0],S[1]);
+		}
+
+		} catch (IOException e){
+			e.printStackTrace();
+		}
+	}
+
+
+	//　arg1 = Scalarfunctionname, arg2 = Problem Name, arg3 =
+	public static void main(String[] args) throws JMException, SecurityException, IOException, ClassNotFoundException {
+		// this value has the name of weight vector data
+		experiment_setting("setting/NSGAII.st");
+		String empty;
+		String Problemname = args[0];
+		String nobk = args[1];
+
+		int OBJ = Integer.parseInt(nobk);
+
+
+
+		int NumberOfRun = 101;
+
+
+
+
+
+        Problem problem; // The problem to solve
+		Algorithm algorithm; // The algorithm to use
+		Operator crossover; // Crossover operator
+		Operator mutation; // Mutation operator
+
+		HashMap parameters; // Operator parameters
+
+		HashMap d = new HashMap();
+		d.put("numberOfObjectives",OBJ);
+
+		problem = MOPFactory.getMOP(Problemname,d);
+
+		algorithm = new NSGAII(problem);
+
+		// Logger object and file to store log messages
+
+		logger_ = Configuration.logger_;
+
+		algorithm = new NSGAII(problem);
+		// algorithm = new MOEAD_DRA(problem);
+
+		String dddname = problem.getNumberOfObjectives()  + "OBJ";
+
+
+
+		File newDir = new File("result");
+		newDir.mkdir();
+		newDir = new File("result/NSGAII");
+		newDir.mkdir();
+		newDir = new File("result/NSGAII/" + Problemname);
+		newDir.mkdir();
+		newDir = new File("result/NSGAII/" + Problemname +"/"+dddname );
+		newDir.mkdir();
+
+		newDir = new File("result/NSGAII/" + Problemname+"/"+dddname+"/FinalFUN");
+		newDir.mkdir();
+		newDir = new File("result/NSGAII/" + Problemname+"/"+dddname+"/InitialFUN");
+		newDir.mkdir();
+		newDir = new File("result/NSGAII/" + Problemname+"/"+dddname+"/FinalVAR");
+		newDir.mkdir();
+		newDir = new File("result/NSGAII/" + Problemname+"/"+dddname+"/InitialVAR");
+		newDir.mkdir();
+		algorithm.setInputParameter("DirectoryName",  "result/NSGAII/" + Problemname+"/"+dddname);
+		empty = (String) experiment_setting_.get("populationSize");
+		algorithm.setInputParameter("populationSize", Integer.parseInt(empty));
+
+		empty = (String) experiment_setting_.get("maxEvaluations");
+		algorithm.setInputParameter("maxEvaluations", Integer.parseInt(empty));
+
+
+		algorithm.setInputParameter("numberOfParents", 2);
+
+
+
+		parameters = new HashMap();
+
+
+		// Mutation operator
+		empty = (String) experiment_setting_.get("MutationProbability");
+		parameters.put("probability",Double.parseDouble(empty));
+		empty = (String) experiment_setting_.get("MutationDistribution");
+		parameters.put("distributionIndex",Double.parseDouble(empty));
+		mutation = MutationFactory.getMutationOperator((String)experiment_setting_.get("MutationName"), parameters);
+
+		// Crossover operator
+		empty = (String) experiment_setting_.get("CrossoverProbability");
+		parameters.put("probability",Double.parseDouble(empty));
+		empty = (String) experiment_setting_.get("CrossoverDistribution");
+		parameters.put("distributionIndex",Double.parseDouble(empty));
+		crossover = CrossoverFactory.getCrossoverOperator((String)experiment_setting_.get("CrossoverName"), parameters);
+
+
+		algorithm.addOperator("crossover", crossover);
+		algorithm.addOperator("mutation", mutation);
+
+		algorithm.setInputParameter("ismax", Boolean.valueOf((String)(experiment_setting_.get("isMax"))));
+
+		// Execute the Algorithm
+		long initTime = System.currentTimeMillis();
+
+		Population max = new Population();
+		Population population = new Population();
+
+
+
+		int counter=0;
+		Random.set_seed(56);
+		do {
+			counter++;
+
+			algorithm.setInputParameter("times", counter);
+			System.out.println("NSGAII" +":"+ counter + "回目開始");
+			population = algorithm.execute();
+			System.out.println("NSGAII" +":"+ counter + "回目終了");
+
+		} while(counter<NumberOfRun);
+
+		long estimatedTime = System.currentTimeMillis() - initTime;
+
+		// Result messages
+		logger_.info("Total execution time: " + estimatedTime + "ms");
+		logger_.info("Objectives values have been writen to file FUN");
+		//DominancedSolutionSet.printObjectivesToFile("DOMINANCEEDFUN");
+
+		logger_.info("Variables values have been writen to file VAR");
+		//DominancedSolutionSet.printVariablesToFile("DOMINANCEEDVAR");
+
+	}
+} // MOEAD_main

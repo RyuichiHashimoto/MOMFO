@@ -1,0 +1,14 @@
+---------------MOEAD/Setting:null---------------------------
+populationSize:1.0
+rmp:1.0
+CrossoverProbability:1.0
+CrossoverDistribution:10.0
+CrossoverName:SBXCrossoverWithoutSwap2
+MutationDistribution:10.0
+MutationName:PolynomialMutation
+MutationProbability:-1
+maxEvaluations:40000
+isMax:false
+NumberOfTrial:100
+------------------notNeedSetting:null--------------------------
+MaxGeneration:10000

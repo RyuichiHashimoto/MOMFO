@@ -1,0 +1,9 @@
+populationSize:100
+maxEvaluations:400000
+numberOfParents:2
+numberOfObjectives:2
+MutationName:BitFlipMutation
+MutationProbability:0.004
+CrossOverName:UniformCrossover
+CrossOverProbability:0.8
+NumberOfRun:100

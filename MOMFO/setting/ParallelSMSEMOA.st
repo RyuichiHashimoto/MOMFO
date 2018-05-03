@@ -1,0 +1,14 @@
+---------------SMSEMOA/Setting:null---------------------------
+CrossoverProbability:1.0
+populationSize:100
+CrossoverName:SBXCrossover
+CrossoverDistribution:20
+MutationName:PolynomialMutation
+MutationDistribution:20
+MutationProbability:-1
+maxEvaluations:100000
+isMax:false
+Norm:true
+nCPU:2
+------------------notNeedSetting:null--------------------------
+MaxGeneration:10000
