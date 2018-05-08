@@ -4,9 +4,9 @@ import javax.naming.NameNotFoundException;
 
 import experiments.Setting;
 import experiments.SettingWriter;
+import momfo.util.BuiltInRandom;
 import momfo.util.DirectoryMaker;
 import momfo.util.JMException;
-import momfo.util.Random;
 
 /*
  * ここでアルゴリズムの実行を行う．
@@ -14,18 +14,11 @@ import momfo.util.Random;
  *
  *
  */
-
-
-
-
-
-
-
 public abstract class AlgorithmMain implements Runnable{
 
 	protected Algorithm algorithm;
 
-
+	BuiltInRandom Random = new BuiltInRandom();
 	//0は独立探索，1はマルチタスク
 	int AlgorithmType_;
 
@@ -45,6 +38,10 @@ public abstract class AlgorithmMain implements Runnable{
 		}
 	}
 
+	public void setRandom(){
+		
+	}
+	
 	public final void MakeDirectory(String name){
 		DirectoryMaker.Make(name + "/" + "FinalFUN");
 		DirectoryMaker.Make(name + "/" + "IGDHistory");
