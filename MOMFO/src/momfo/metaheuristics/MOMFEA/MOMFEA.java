@@ -115,10 +115,7 @@ public class MOMFEA extends Algorithm {
 		crossover_ = operators_.get("crossover"); // default: DE crossover
 		mutation_ = operators_.get("mutation"); // default: polynomial mutation
 		int time = ((Integer) this.getInputParameter("times")).intValue();
-
 	}
-
-
 	public Population execute() throws JMException, ClassNotFoundException {
 		setting();
 		int time = ((Integer) this.getInputParameter("times")).intValue();

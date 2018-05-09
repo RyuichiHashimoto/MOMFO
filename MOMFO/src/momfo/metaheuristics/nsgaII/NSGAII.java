@@ -160,6 +160,8 @@ public class NSGAII extends Algorithm {
 		population_.printVariablesToFile(directoryname + "/FinalVAR/FinalVAR" + time + ".dat");
 		population_.printObjectivesToFile(directoryname + "/FinalFUN/FinalFUN" + time + ".dat");
 		fileSubscription. printToFile(directoryname + "/IGDHistory/"+"IGD"+time+".dat",igdHistory);
+		setOutputParameter("IGD",igdHistory.get(igdHistory.size()-1)[1]);
+
 		//population_.printVariablesToFile("result/config/FinalVAR" + time + ".dat");
 		return population_;
 	}

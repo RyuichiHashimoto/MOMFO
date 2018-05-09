@@ -142,9 +142,9 @@ public class start {
         hashmap.add("TaskNumber",0);
         algorithm = AlgorithmMainFactory.getAlgorithmMain(geneticAlgorithmName, hashmap);
         algorithm.runMultitask(nowTrial);
-
-
 	}
+	
+	
 
 	public void Separate() throws JMException, ClassNotFoundException, NameNotFoundException{
         Setting[] hashmap  = new Setting[numberOfTasks];
@@ -163,8 +163,7 @@ public class start {
         }
 
         // ファイル読み込みの追加
-        for (int t= 0; t < numberOfTasks;t++){
-        	
+        for (int t= 0; t < numberOfTasks;t++){        	
         	hashmap[t].add("TaskNumber",t);
         	algorithm[t] = AlgorithmMainFactory.getAlgorithmMain(geneticAlgorithmName, hashmap[t]);
         	algorithm[t].run(nowTrial);

@@ -23,6 +23,10 @@ public class IGDRef {
 	public static void clear(){
 		Refs.clear();
 		RefDataFileName.clear();
+		NormalizeRefs.clear();
+		maxValue.clear();
+		minValue.clear();
+
 		TaskCounter = 0;
 	}
 

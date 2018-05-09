@@ -14,7 +14,7 @@ public abstract  class Algorithm implements Serializable {
 	protected ProblemSet problemSet_;
 
 	Random random;
-
+	
 	public ProblemSet getProblemSet(){
 		return problemSet_;
 	}
@@ -44,8 +44,7 @@ public abstract  class Algorithm implements Serializable {
 		tasknumber = -1;
 		problem_ = null;
 		problemSet_ = d;
-	}
-
+	}	
 	protected boolean isMAX_;
 
 

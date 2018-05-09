@@ -173,6 +173,9 @@ public class MultitaskMOEAD extends Algorithm {
 			igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_[t].getAllObjectives(),calc, IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t)));
 			replacingRate.add(new ArrayList<double []>(d));
 
+			setOutputParameter("InitialFUN"+t,population_[t].get(0).getObjectives());
+			setOutputParameter("InitialVAR"+t,population_[t].get(1).getValue());
+			
 			d.add(igd.clone());
 			igdHistory.add(new ArrayList<double []>(d));
 			cont[t] = false;
@@ -269,8 +272,6 @@ public class MultitaskMOEAD extends Algorithm {
 					Replacing[1] =  (double)updataTime[t]/updateOptunityTime[t];
 				}
 				replacingRate.get(t).add(Replacing.clone());
-
-
 			}
 			counter++;
 
@@ -281,10 +282,15 @@ public class MultitaskMOEAD extends Algorithm {
 	//	if(outNormal_)population_.Normalization();
 		for(int t=0;t < problemSet_.countProblem();t++){
 			fileSubscription. printToFile(directoryname.replace("Task1", "Task"+String.valueOf(t+1)) + "/IGDHistory/"+"IGD"+time+".dat",igdHistory.get(t));
+			
 			fileSubscription. printToFile(directoryname.replace("Task1", "Task"+String.valueOf(t+1)) + "/ReplacingRateHistory/"+"ReplacingRate"+time+".dat",replacingRate.get(t));
 //			fileSubscription. printToFile(directoryname.replace("Task1", "Task"+String.valueOf(t+1)) + "/Animation/"+"Dat"+time+".dat",igdHistory.get(t));
 			population_[t].printVariablesToFile(directoryname.replace("Task1", "Task"+String.valueOf(t+1))  + "/FinalVAR/FinalVAR" + time + ".dat");
 			population_[t].printObjectivesToFile(directoryname.replace("Task1", "Task"+String.valueOf(t+1))  +  "/FinalFUN/FinalFUN" + time + ".dat");
+			
+			setOutputParameter("IGD"+(t+1),igdHistory.get(t).get(igdHistory.get(t).size()-1)[1]);
+			setOutputParameter("FinalFUN"+(t+1),population_[t].get(0).getObjectives());
+			setOutputParameter("FinalVAR"+(t+1),population_[t].get(1).getValue());
 		}
 		return null;
 	}

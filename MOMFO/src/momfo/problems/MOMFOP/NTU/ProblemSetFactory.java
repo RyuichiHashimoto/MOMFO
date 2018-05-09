@@ -17,6 +17,7 @@ import momfo.problems.MOMFOP.Many_NTU.ManyPIMS;
 import momfo.problems.ProposingPaper.tenRC_tenA;
 import momfo.problems.ProposingPaper.tenR_tenG;
 import momfo.util.JMException;
+import momfo.util.Indicator.IGDRef;
 
 
 public class ProblemSetFactory{
@@ -30,7 +31,7 @@ public class ProblemSetFactory{
 	 * @throws IOException
 	 */
 	public static ProblemSet getProblemSet(String name) throws JMException, IOException {
-
+		IGDRef.clear();
 		if (name.equalsIgnoreCase("CIHS"))
 			return CIHS.getProblem();
 		else if (name.equalsIgnoreCase("CIMS")){

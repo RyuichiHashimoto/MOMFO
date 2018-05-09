@@ -35,7 +35,10 @@ public abstract class AlgorithmMain implements Runnable{
 
 	protected String DirectoryName;;
 
-
+	public Algorithm getAlgorithm(){
+		return algorithm;
+	}
+	
 	public AlgorithmMain(Setting test){
 		setting_ = test;
 		try {

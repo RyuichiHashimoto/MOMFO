@@ -79,10 +79,11 @@ public class Setting{
 	}
 
 	//上書きしない
-	public void add(String key , Object value){
+	public Setting add(String key , Object value){
 		if(!settings_.containsKey(key)){
 			settings_.put(key, value);
 		}
+		return this;
 	}
 
 	public String getAsStr(String key) throws NameNotFoundException {
