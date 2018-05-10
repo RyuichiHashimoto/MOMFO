@@ -34,7 +34,7 @@ import org.apache.commons.math3.util.MathUtils;
 
 /**
  * Implements the <a href="http://en.wikipedia.org/wiki/Local_regression">
- * Local Regression Algorithm</a> (also Loess, Lowess) for interpolation of
+ * Local Regression GA</a> (also Loess, Lowess) for interpolation of
  * real univariate functions.
  * <p>
  * For reference, see

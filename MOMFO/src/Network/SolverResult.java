@@ -1,13 +1,12 @@
 package Network;
 
 
-import java.io.BufferedWriter; 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
 
 import javax.naming.NamingException;
-
 
 import Network.GridComputing.RunSetting;
 import Network.GridComputing.StreamProvider;
@@ -24,7 +23,7 @@ abstract public class SolverResult<T extends Solver> implements Buildable {
 	@Override
 	public void build(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException {
 		this.solver = s.get(RunSetting.SOLVER);
-		writer = new BufferedWriter(((StreamProvider) solver.Setting.get(RunSetting.STREAM_PROVIDER)).getWriter(getOutputName(s)));
+		writer = new BufferedWriter(((StreamProvider) solver.setting.get(RunSetting.STREAM_PROVIDER)).getWriter(getOutputName(s)));
 	}
 
 	abstract protected String getOutputName(CommandSetting s) throws NamingException;

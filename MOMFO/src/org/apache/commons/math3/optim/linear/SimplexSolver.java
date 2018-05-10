@@ -48,7 +48,7 @@ import org.apache.commons.math3.util.Precision;
  * <p>
  * Default convergence criteria:
  * <ul>
- *   <li>Algorithm convergence: 1e-6</li>
+ *   <li>GA convergence: 1e-6</li>
  *   <li>Floating-point comparisons: 10 ulp</li>
  *   <li>Cut-Off value: 1e-10</li>
   * </ul>

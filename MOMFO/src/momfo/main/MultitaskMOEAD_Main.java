@@ -29,7 +29,7 @@ public class MultitaskMOEAD_Main extends AlgorithmMain{
 		String Problemname = setting_.getAsStr("Problem");
 	//	int OBJ = setting_.getAsInt("Objectives");
 		int NumberOfRun = setting_.getAsInt("NumberOfTrial");
-	//	algorithm = new Algorithm[2];
+	//	algorithm = new GA[2];
         Problem problem; // The problem to solve
 		Operator crossover = null; // Crossover operator
 		Operator mutation = null; // Mutation operator

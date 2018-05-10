@@ -21,8 +21,12 @@
 
 package momfo.operators.mutation;
 
-import java.util.HashMap;
+import static lib.experiments.ParameterNames.*;
 
+import javax.naming.NameNotFoundException;
+
+import lib.experiments.CommandSetting;
+import lib.experiments.NeedParameters;
 import momfo.core.Solution;
 import momfo.util.JMException;
 
@@ -32,57 +36,44 @@ import momfo.util.JMException;
  * whole solution as a single encodings.variable.
  */
 public class BitFlipMutation extends Mutation {
-  /**
-   * Valid solution types to apply this operator
-   */
 
-  private Double mutationProbability_ = null ;
+	@Override
+	@NeedParameters({MutationProbability,RANDOM_GENERATOR})
+	public void build(CommandSetting s) throws NameNotFoundException {
+		this.build(s);
 
-	/**
-	 * Constructor
-	 * Creates a new instance of the Bit Flip mutation operator
-	 */
-	public BitFlipMutation(HashMap<String, Object> parameters) {
-		super(parameters) ;
-		name = "BitFlipMutation";
-  	if (parameters.get("Mutationprobability") != null)
-  		mutationProbability_ = (Double) parameters.get("Mutationprobability") ;
-	} // BitFlipMutation
+		double mp = (Double) s.get(MutationProbability);
+		if(mp < 0) throw new IllegalArgumentException(MutationProbability + " must be non-negative but was "+ mp);
 
-	/**
-	 * Perform the mutation operation
-	 * @param probability Mutation probability
-	 * @param solution The solution to mutate
-	 * @throws JMException
-	 */
-	public void doMutation(double probability, Solution solution) throws JMException{
+		mutationProbability = mp;
+	}
+
+	@Override
+	public void mutation(Solution offspring, Solution parent) throws JMException {
+		offspring = doMutation(mutationProbability,parent);
+	}
+
+
+
+
+	public Solution doMutation(double probability, Solution solution) throws JMException {
+		Solution ret = new Solution(solution);
+
 		int size = solution.getNumberOfVariables();
 
-		probability = probability >= 0 ? probability : (double)Math.abs(probability)/size;
+		probability = probability >= 0 ? probability : (double) Math.abs(probability) / size;
 
-		for(int i = 0;i< size;i++){
-			if(random.nextDoubleIE() < probability){
-				if((int)Math.round(solution.getValue(i)) == 1){
-					solution.setValue(i, 0.0);
-				} else if ((int)Math.round(solution.getValue(i))  == 0){
-					solution.setValue(i, 1.0);
+		for (int i = 0; i < size; i++) {
+			if (random.nextDoubleIE() < probability) {
+				if ((int) Math.round(solution.getValue(i)) == 1) {
+					ret.setValue(i, 0.0);
+				} else if ((int) Math.round(solution.getValue(i)) == 0) {
+					ret.setValue(i, 1.0);
 				} else {
-					System.out.println("しょい込めない");
+					throw new JMException("something is wrong in doMutation() in BitFlipMutation");
 				}
 			}
 		}
+		return ret;
 	} // doMutation
-
-	/**
-	 * Executes the operation
-	 * @param object An object containing a solution to mutate
-	 * @return An object containing the mutated solution
-	 * @throws JMException
-	 */
-	public Object execute(Object object) throws JMException {
-		Solution solution = (Solution) object;
-
-		doMutation(mutationProbability_, solution);
-		return solution;
-	} // execute
 } // BitFlipMutation

@@ -22,9 +22,10 @@
 package momfo.core;
 
 import java.io.Serializable;
-import java.util.HashMap;
-import java.util.Map;
 
+import javax.naming.NameNotFoundException;
+
+import lib.experiments.CommandSetting;
 import lib.math.BuiltInRandom;
 import momfo.util.JMException;
 
@@ -33,39 +34,16 @@ import momfo.util.JMException;
  */
 public abstract class Operator implements Serializable {
 
+	protected BuiltInRandom random;
 
-  protected final Map<String , Object> parameters_;
+	public void setRandomGenerator(BuiltInRandom random_){
+		random = random_;
+	}
 
-  protected BuiltInRandom random;
+	public String getName() {
+		return this.getClass().getCanonicalName();
+	}
 
-  public void setRandomGenerator(BuiltInRandom ran) {
-	  random = ran;
-  }
+	abstract public void build(CommandSetting s) throws NameNotFoundException, JMException;
 
-  public Operator(HashMap<String , Object> parameters) {
-	parameters_ = parameters;
-  }
-
-  public Map<String,Object> getMap(){
-	  return parameters_;
-  }
-
-  public String name;
-
-  public String getName(){
-	  return name;
-  }
-
-
-  abstract public Object execute(Object object) throws JMException ;
-
-
-  public void setParameter(String name, Object value) {
-    parameters_.put(name, value);
-  } // setParameter
-
-  public Object getParameter(String name) {
-    return parameters_.get(name);
-  } //getParameter
-
-} // Operator
+}

@@ -26,7 +26,7 @@ import org.apache.commons.math3.util.MathArrays;
  * This class is a concrete implementation of the {@link UpdatingMultipleLinearRegression} interface.
  *
  * <p>The algorithm is described in: <pre>
- * Algorithm AS 274: Least Squares Routines to Supplement Those of Gentleman
+ * GA AS 274: Least Squares Routines to Supplement Those of Gentleman
  * Author(s): Alan J. Miller
  * Source: Journal of the Royal Statistical Society.
  * Series C (Applied Statistics), Vol. 41, No. 2

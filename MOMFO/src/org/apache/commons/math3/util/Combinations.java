@@ -163,7 +163,7 @@ public class Combinations implements Iterable<int[]> {
     /**
      * Lexicographic combinations iterator.
      * <p>
-     * Implementation follows Algorithm T in <i>The Art of Computer Programming</i>
+     * Implementation follows GA T in <i>The Art of Computer Programming</i>
      * Internet Draft (PRE-FASCICLE 3A), "A Draft of Section 7.2.1.3 Generating All
      * Combinations</a>, D. Knuth, 2004.</p>
      * <p>

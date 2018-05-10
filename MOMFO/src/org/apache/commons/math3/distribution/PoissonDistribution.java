@@ -279,7 +279,7 @@ public class PoissonDistribution extends AbstractIntegerDistribution {
     /**
      * {@inheritDoc}
      * <p>
-     * <strong>Algorithm Description</strong>:
+     * <strong>GA Description</strong>:
      * <ul>
      *  <li>For small means, uses simulation of a Poisson process
      *   using Uniform deviates, as described

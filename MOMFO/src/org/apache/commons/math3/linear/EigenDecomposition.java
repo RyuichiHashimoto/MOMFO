@@ -65,7 +65,7 @@ import org.apache.commons.math3.util.FastMath;
  * </p>
  * <p>
  * This implementation is based on the paper by A. Drubrulle, R.S. Martin and
- * J.H. Wilkinson "The Implicit QL Algorithm" in Wilksinson and Reinsch (1971)
+ * J.H. Wilkinson "The Implicit QL GA" in Wilksinson and Reinsch (1971)
  * Handbook for automatic computation, vol. 2, Linear algebra, Springer-Verlag,
  * New-York
  * </p>

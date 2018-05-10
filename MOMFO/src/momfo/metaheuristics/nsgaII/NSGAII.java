@@ -21,15 +21,19 @@
 
 package momfo.metaheuristics.nsgaII;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.naming.NamingException;
+
+import lib.experiments.CommandSetting;
 import lib.io.output.fileSubscription;
 import lib.math.Permutation;
 import momfo.Indicator.IGD;
 import momfo.Indicator.IGDRef;
-import momfo.core.Algorithm;
+import momfo.core.GeneticAlgorithm;
 import momfo.core.Operator;
 import momfo.core.Population;
 import momfo.core.Problem;
@@ -44,7 +48,7 @@ import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorNextGen;
 import momfo.util.Ranking.NDSRanking;
 
 
-public class NSGAII extends Algorithm {
+public class NSGAII extends GeneticAlgorithm {
 
 	/**
 	 * Stores the population size
@@ -184,7 +188,7 @@ public class NSGAII extends Algorithm {
 			parents[0] = population_.get(one);
 			parents[1] = population_.get(two);
 
-			offSpring = (Solution) crossover_.execute(parents);
+			offspring = (Solution) crossover_.execute(offspring[0],offspring[1],parents);
 			mutation_.execute(offSpring);
 			problem_.repair(offSpring,null);
 			problem_.evaluate(offSpring);
@@ -298,6 +302,23 @@ public class NSGAII extends Algorithm {
 		}
 	//	System.out.println();
 //		System.out.println("関数内");
+
+	}
+
+	@Override
+	protected void buildImpl(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+	@Override
+	protected void buildImpl() throws NamingException, IOException, ReflectiveOperationException {
+
+	}
+
+	@Override
+	protected void solve() throws IOException {
+
 
 	}
 

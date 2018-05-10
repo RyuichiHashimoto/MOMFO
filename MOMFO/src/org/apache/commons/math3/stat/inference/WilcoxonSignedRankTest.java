@@ -195,7 +195,7 @@ public class WilcoxonSignedRankTest {
     }
 
     /**
-     * Algorithm inspired by
+     * GA inspired by
      * http://www.fon.hum.uva.nl/Service/Statistics/Signed_Rank_Algorihms.html#C
      * by Rob van Son, Institute of Phonetic Sciences & IFOTT,
      * University of Amsterdam

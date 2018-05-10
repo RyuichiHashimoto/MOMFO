@@ -448,7 +448,7 @@ public class GammaDistribution extends AbstractRealDistribution {
     @Override
     public double sample()  {
         if (shape < 1) {
-            // [1]: p. 228, Algorithm GS
+            // [1]: p. 228, GA GS
 
             while (true) {
                 // Step 1:

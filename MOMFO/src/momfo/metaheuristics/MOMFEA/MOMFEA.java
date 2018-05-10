@@ -29,7 +29,7 @@ import lib.io.output.fileSubscription;
 import lib.math.Permutation;
 import momfo.Indicator.IGD;
 import momfo.Indicator.IGDRef;
-import momfo.core.Algorithm;
+import momfo.core.GA;
 import momfo.core.Operator;
 import momfo.core.Population;
 import momfo.core.Problem;
@@ -48,7 +48,7 @@ import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorNextGen;
 import momfo.util.Ranking.NDSRanking;
 
 
-public class MOMFEA extends Algorithm {
+public class MOMFEA extends GA {
 
 	/**
 	 * Stores the population size

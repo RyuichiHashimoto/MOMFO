@@ -232,7 +232,7 @@ public class ExponentialDistribution extends AbstractRealDistribution {
     /**
      * {@inheritDoc}
      *
-     * <p><strong>Algorithm Description</strong>: this implementation uses the
+     * <p><strong>GA Description</strong>: this implementation uses the
      * <a href="http://www.jesus.ox.ac.uk/~clifford/a5/chap1/node5.html">
      * Inversion Method</a> to generate exponentially distributed random values
      * from uniform deviates.</p>

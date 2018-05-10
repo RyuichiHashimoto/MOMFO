@@ -33,7 +33,7 @@ import lib.math.Calculator;
 import lib.math.Permutation;
 import momfo.Indicator.IGD;
 import momfo.Indicator.IGDRef;
-import momfo.core.Algorithm;
+import momfo.core.GA;
 import momfo.core.Operator;
 import momfo.core.Population;
 import momfo.core.Problem;
@@ -46,7 +46,7 @@ import momfo.util.Comparator.MOEADComparator.MOEADComparator;
 import momfo.util.Comparator.MOEADComparator.NomalMOEADComapator;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;
 import momfo.util.ScalarzingFunction.ScalarzingFunctionFactory;
-public class MultitaskMOEAD extends Algorithm {
+public class MultitaskMOEAD extends GA {
 
 
 	public MultitaskMOEAD(ProblemSet d) {

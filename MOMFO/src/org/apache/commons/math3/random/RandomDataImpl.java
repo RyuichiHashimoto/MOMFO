@@ -42,7 +42,7 @@ import org.apache.commons.math3.exception.OutOfRangeException;
  * extend {@link AbstractRandomGenerator}.
  * <p>
  * Supports reseeding the underlying pseudo-random number generator (PRNG). The
- * <code>SecurityProvider</code> and <code>Algorithm</code> used by the
+ * <code>SecurityProvider</code> and <code>GA</code> used by the
  * <code>SecureRandom</code> instance can also be reset.
  * </p>
  * <p>
@@ -138,7 +138,7 @@ public class RandomDataImpl implements RandomData, Serializable {
     /**
      * {@inheritDoc}
      * <p>
-     * <strong>Algorithm Description:</strong> hex strings are generated using a
+     * <strong>GA Description:</strong> hex strings are generated using a
      * 2-step process.
      * <ol>
      * <li>{@code len / 2 + 1} binary bytes are generated using the underlying
@@ -168,7 +168,7 @@ public class RandomDataImpl implements RandomData, Serializable {
     /**
      * {@inheritDoc}
      * <p>
-     * <strong>Algorithm Description:</strong> hex strings are generated in
+     * <strong>GA Description:</strong> hex strings are generated in
      * 40-byte segments using a 3-step process.
      * <ol>
      * <li>
@@ -198,7 +198,7 @@ public class RandomDataImpl implements RandomData, Serializable {
     /**
      * {@inheritDoc}
      * <p>
-     * <strong>Algorithm Description</strong>:
+     * <strong>GA Description</strong>:
      * <ul><li> For small means, uses simulation of a Poisson process
      * using Uniform deviates, as described
      * <a href="http://irmi.epfl.ch/cmos/Pmmi/interactive/rng7.htm"> here.</a>
@@ -221,7 +221,7 @@ public class RandomDataImpl implements RandomData, Serializable {
      * {@inheritDoc}
      *
      * <p>
-     * <strong>Algorithm Description</strong>: Uses the Algorithm SA (Ahrens)
+     * <strong>GA Description</strong>: Uses the GA SA (Ahrens)
      * from p. 876 in:
      * [1]: Ahrens, J. H. and Dieter, U. (1972). Computer methods for
      * sampling from the exponential and normal distributions.
@@ -236,7 +236,7 @@ public class RandomDataImpl implements RandomData, Serializable {
      * {@inheritDoc}
      *
      * <p>
-     * <strong>Algorithm Description</strong>: scales the output of
+     * <strong>GA Description</strong>: scales the output of
      * Random.nextDouble(), but rejects 0 values (i.e., will generate another
      * random double if Random.nextDouble() returns 0). This is necessary to
      * provide a symmetric output interval (both endpoints excluded).
@@ -251,7 +251,7 @@ public class RandomDataImpl implements RandomData, Serializable {
      * {@inheritDoc}
      *
      * <p>
-     * <strong>Algorithm Description</strong>: if the lower bound is excluded,
+     * <strong>GA Description</strong>: if the lower bound is excluded,
      * scales the output of Random.nextDouble(), but rejects 0 values (i.e.,
      * will generate another random double if Random.nextDouble() returns 0).
      * This is necessary to provide a symmetric output interval (both
@@ -535,7 +535,7 @@ public class RandomDataImpl implements RandomData, Serializable {
      * {@inheritDoc}
      *
      * <p>
-     * <strong>Algorithm Description</strong>: Uses a 2-cycle permutation
+     * <strong>GA Description</strong>: Uses a 2-cycle permutation
      * shuffle to generate a random permutation of <code>c.size()</code> and
      * then returns the elements whose indexes correspond to the elements of the
      * generated permutation. This technique is described, and proven to

@@ -182,7 +182,7 @@ public class FastHadamardTransformer implements RealTransformer, Serializable {
      * understood with the above example (for {@code N = 8}).
      * <li>The output vector {@code y} is now in the last column of
      * {@code hadm}.</li>
-     * <li><em>Algorithm from <a href="http://www.archive.chipcenter.com/dsp/DSP000517F1.html">chipcenter</a>.</em></li>
+     * <li><em>GA from <a href="http://www.archive.chipcenter.com/dsp/DSP000517F1.html">chipcenter</a>.</em></li>
      * </ol>
      * <h3>Visually</h3>
      * <table border="1" align="center" cellpadding="3">

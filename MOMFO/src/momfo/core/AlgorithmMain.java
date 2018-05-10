@@ -1,5 +1,9 @@
 package momfo.core;
 
+import static mo.solver.ga.GAEvent.*;
+
+import java.io.IOException;
+
 import javax.naming.NameNotFoundException;
 
 import experiments.Setting;
@@ -23,7 +27,7 @@ import momfo.util.JMException;
 
 public abstract class AlgorithmMain implements Runnable{
 
-	protected Algorithm algorithm;
+	protected GeneticAlgorithm algorithm;
 
 
 	BuiltInRandom random;
@@ -37,9 +41,24 @@ public abstract class AlgorithmMain implements Runnable{
 
 	protected String DirectoryName;;
 
-	public Algorithm getAlgorithm(){
+	public GeneticAlgorithm getAlgorithm(){
 		return algorithm;
 	}
+	
+	
+	public void runOnce() throws IOException {
+		// TODO: record seed value
+		int seed = seeder_.nextSeed();
+		ga_.initialize(seed);
+		notifyEvent(AFTER_INTITIALIZATION);
+		while (!ga_.terminate()) {
+			ga_.recombination();
+			ga_.nextGeneration();
+			notifyEvent(AFTER_GENERATION);
+		}
+		notifyEvent(AFTER_TRIAL);
+	}
+	
 
 	public AlgorithmMain(Setting test){
 		setting_ = test;

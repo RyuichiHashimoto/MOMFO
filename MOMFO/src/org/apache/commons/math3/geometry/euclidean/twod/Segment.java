@@ -72,7 +72,7 @@ public class Segment {
      * the two end points will be returned.
      * </p>
      *
-     * Algorithm adapted from:
+     * GA adapted from:
      * <a href="http://www.codeguru.com/forum/printthread.php?s=cc8cf0596231f9a7dba4da6e77c29db3&t=194400&pp=15&page=1">
      * Thread @ Codeguru</a>
      *

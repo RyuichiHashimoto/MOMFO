@@ -6,7 +6,7 @@ import java.util.List;
 import lib.io.output.fileSubscription;
 import momfo.Indicator.IGD;
 import momfo.Indicator.IGDRef;
-import momfo.core.Algorithm;
+import momfo.core.GA;
 import momfo.core.Operator;
 import momfo.core.Population;
 import momfo.core.ProblemSet;
@@ -18,7 +18,7 @@ import momfo.operators.selection.ParentsSelection.ParentsSelection;
 import momfo.util.JMException;
 import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorBinary;
 
-public class IslandModel extends Algorithm {
+public class IslandModel extends GA {
 	public IslandModel(ProblemSet problem) {
 		super(problem);
 		// TODO 自動生成されたコンストラクター・スタブ

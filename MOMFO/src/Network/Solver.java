@@ -1,6 +1,6 @@
 package Network;
 
-import static Network.CommonSolverEvent.*; 
+import static Network.CommonSolverEvent.*;
 import static Network.GridComputing.RunSetting.*;
 
 import java.io.IOException;
@@ -85,14 +85,14 @@ public abstract class Solver implements Runnable, Buildable {
 		}
 	}
 
-	public CommandSetting Setting;
+	public CommandSetting setting;
 	private Throwable thrown_;
 	public ArrayList<SolverResult<?>> results = new ArrayList<>();
 
 	@Override
 	public void build(CommandSetting s) throws NamingException, IOException, ReflectiveOperationException,
 			notFoundException, IllegalArgumentException, CannotConvertException {
-		Setting = s;
+		setting = s;
 		buildImpl();
 		// instantiate Results
 		String[] resultName = s.getAsSArray(RESULT, RESULT_DELIMITER, new String[0]);
@@ -174,12 +174,12 @@ public abstract class Solver implements Runnable, Buildable {
 
 	@Command
 	public CommandSetting getCommandSetting() {
-		return Setting;
+		return setting;
 	}
 
 	@Command
 	public Object getCommandSetting(String key) throws NamingException, notFoundException {
-		return Setting.get(key);
+		return setting.get(key);
 	}
 
 	@Command

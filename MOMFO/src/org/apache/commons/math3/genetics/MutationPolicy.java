@@ -19,7 +19,7 @@ package org.apache.commons.math3.genetics;
 import org.apache.commons.math3.exception.MathIllegalArgumentException;
 
 /**
- * Algorithm used to mutate a chromosome.
+ * GA used to mutate a chromosome.
  *
  * @since 2.0
  */

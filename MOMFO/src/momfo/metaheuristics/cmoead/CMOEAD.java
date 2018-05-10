@@ -27,7 +27,7 @@ import java.util.Vector;
 import experiments.SettingWriter;
 import lib.math.Calculator;
 import lib.math.Permutation;
-import momfo.core.Algorithm;
+import momfo.core.GeneticAlgorithm;
 import momfo.core.Operator;
 import momfo.core.Population;
 import momfo.core.Problem;
@@ -39,7 +39,7 @@ import momfo.util.Comparator.MOEADComparator.ConstrainSumMOEADComparator;
 import momfo.util.Comparator.MOEADComparator.MOEADComparator;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;
 import momfo.util.ScalarzingFunction.ScalarzingFunctionFactory;
-public class CMOEAD extends Algorithm {
+public class CMOEAD extends GeneticAlgorithm {
 
 
 	/**

@@ -294,7 +294,7 @@ public class ZipfDistribution extends AbstractIntegerDistribution {
      * "Rejection-inversion to generate variates from monotone discrete distributions."
      * ACM Transactions on Modeling and Computer Simulation (TOMACS) 6.3 (1996): 169-184.
      * <p>
-     * The paper describes an algorithm for exponents larger than 1 (Algorithm ZRI).
+     * The paper describes an algorithm for exponents larger than 1 (GA ZRI).
      * The original method uses {@code H(x) := (v + x)^(1 - q) / (1 - q)}
      * as the integral of the hat function. This function is undefined for
      * q = 1, which is the reason for the limitation of the exponent.

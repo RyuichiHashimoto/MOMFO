@@ -19,7 +19,7 @@ package org.apache.commons.math3.genetics;
 import org.apache.commons.math3.exception.MathIllegalArgumentException;
 
 /**
- * Algorithm used to select a chromosome pair from a population.
+ * GA used to select a chromosome pair from a population.
  *
  * @since 2.0
  */

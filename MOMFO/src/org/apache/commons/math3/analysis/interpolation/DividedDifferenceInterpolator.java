@@ -26,7 +26,7 @@ import org.apache.commons.math3.exception.NonMonotonicSequenceException;
 /**
  * Implements the <a href=
  * "http://mathworld.wolfram.com/NewtonsDividedDifferenceInterpolationFormula.html">
- * Divided Difference Algorithm</a> for interpolation of real univariate
+ * Divided Difference GA</a> for interpolation of real univariate
  * functions. For reference, see <b>Introduction to Numerical Analysis</b>,
  * ISBN 038795452X, chapter 2.
  * <p>

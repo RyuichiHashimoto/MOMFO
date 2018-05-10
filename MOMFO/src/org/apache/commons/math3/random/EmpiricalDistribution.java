@@ -601,7 +601,7 @@ public class EmpiricalDistribution extends AbstractRealDistribution {
      * <p>Returns the kernel density normalized so that its integral over each bin
      * equals the bin mass.</p>
      *
-     * <p>Algorithm description: <ol>
+     * <p>GA description: <ol>
      * <li>Find the bin B that x belongs to.</li>
      * <li>Compute K(B) = the mass of B with respect to the within-bin kernel (i.e., the
      * integral of the kernel density over B).</li>
@@ -621,7 +621,7 @@ public class EmpiricalDistribution extends AbstractRealDistribution {
     /**
      * {@inheritDoc}
      *
-     * <p>Algorithm description:<ol>
+     * <p>GA description:<ol>
      * <li>Find the bin B that x belongs to.</li>
      * <li>Compute P(B) = the mass of B and P(B-) = the combined mass of the bins below B.</li>
      * <li>Compute K(B) = the probability mass of B with respect to the within-bin kernel
@@ -661,7 +661,7 @@ public class EmpiricalDistribution extends AbstractRealDistribution {
     /**
      * {@inheritDoc}
      *
-     * <p>Algorithm description:<ol>
+     * <p>GA description:<ol>
      * <li>Find the smallest i such that the sum of the masses of the bins
      *  through i is at least p.</li>
      * <li>

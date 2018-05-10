@@ -25,7 +25,7 @@ import org.apache.commons.math3.util.FastMath;
 
 /**
  * Implements the <a href="http://mathworld.wolfram.com/RombergIntegration.html">
- * Romberg Algorithm</a> for integration of real univariate functions. For
+ * Romberg GA</a> for integration of real univariate functions. For
  * reference, see <b>Introduction to Numerical Analysis</b>, ISBN 038795452X,
  * chapter 3.
  * <p>

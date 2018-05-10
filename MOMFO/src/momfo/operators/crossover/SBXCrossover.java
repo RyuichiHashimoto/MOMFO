@@ -21,55 +21,44 @@
 
 package momfo.operators.crossover;
 
-import java.util.HashMap;
+import static lib.experiments.ParameterNames.*;
 
+import javax.naming.NameNotFoundException;
+
+import lib.experiments.CommandSetting;
+import lib.experiments.NeedParameters;
 import momfo.core.Solution;
-import momfo.util.Configuration;
 import momfo.util.JMException;
+
 
 /**
  * This class allows to apply a SBX crossover operator using two parent
  * solutions.
  */
 public class SBXCrossover extends Crossover {
-	/**
-	 * EPS defines the minimum difference allowed between real values
-	 */
-	private static final double EPS = 1.0e-14;
 
-	private static final double ETA_C_DEFAULT_ = 20.0;
-	private Double crossoverProbability_ = 0.0;
-	private double distributionIndex_ = ETA_C_DEFAULT_;
+	private double distributionIndex;
 
-	/**
-	 * Valid solution types to apply this operator
-	 */
+	@Override
+	@NeedParameters({RANDOM_GENERATOR,SBXDisIndex,CROSSOVERProbability})
+	public void build(CommandSetting s) throws NameNotFoundException {  
+		super.build(s);
+		double disindex = (Double) s.get(SBXDisIndex);;
+		double cp = (Double) s.get(CROSSOVERProbability);
+		if (disindex < 0) throw new IllegalArgumentException("distIdxSBX must be non-negative but was "+ disindex);
+		if (cp < 0) throw new IllegalArgumentException("crosssover probability must be non-negative but was "+ cp);
+		crossoverProbability = cp;
+		distributionIndex = disindex;
+	}
 
-	/**
-	 * Constructor Create a new SBX crossover operator whit a default index
-	 * given by <code>DEFAULT_INDEX_CROSSOVER</code>
-	 */
-	public SBXCrossover(HashMap<String, Object> parameters) {
-		super(parameters);
-		name = "SBXCrossover";
-		if (parameters.get("Crossoverprobability") != null)
-			crossoverProbability_ = (Double) parameters.get("Crossoverprobability");
-		if (parameters.get("CrossoverdistributionIndex") != null)
-			distributionIndex_ = (Double) parameters.get("CrossoverdistributionIndex");
-	} // SBXCrossover
+	@Override
+	public void crossover(Solution offspring1, Solution offspring2, Solution[] parent) throws JMException {  
+		Solution[] off = doCrossover(crossoverProbability ,parent[0],parent[1]);
+		offspring1 = off[0];
+		offspring2 = off[1];
+	}
 
-	/**
-	 * Perform the crossover operation.
-	 *
-	 * @param probability
-	 *            Crossover probability
-	 * @param parent1
-	 *            The first parent
-	 * @param parent2
-	 *            The second parent
-	 * @return An array containing the two offsprings
-	 */
-	public Solution[] doCrossover(double probability, Solution parent1, Solution parent2) throws JMException {
+	public Solution[] doCrossover(double probability, Solution parent1, Solution parent2) throws JMException { 
 		Solution [] offSpring = new Solution[2];
 
 	    offSpring[0] = new Solution(parent1);
@@ -102,21 +91,21 @@ public class SBXCrossover extends Crossover {
 				rand = random.nextDoubleIE();
 
 				beta =1.0 + 2.0 * (x1 - X_MIN) / (x2 - x1);
-				alpha = 2.0 - Math.pow(beta, -(distributionIndex_ +1));
+				alpha = 2.0 - Math.pow(beta, -(distributionIndex +1));
 
 				if (rand <= (1.0/alpha)){
-					betaq = Math.pow((rand*alpha), 1.0/(distributionIndex_ +1));
+					betaq = Math.pow((rand*alpha), 1.0/(distributionIndex +1));
 				} else {
-					betaq = Math.pow( 1.0 / (2 -  (rand*alpha)), 1.0/(distributionIndex_ +1));
+					betaq = Math.pow( 1.0 / (2 -  (rand*alpha)), 1.0/(distributionIndex +1));
 				}
 				c1 = 0.5 *((x1 + x2) - betaq * (x2 - x1));
 
 				beta = 1.0 + (2.0*(X_MAX-x2)/(x2-x1));
-                alpha = 2.0 - Math.pow(beta,-(distributionIndex_+1.0));
+                alpha = 2.0 - Math.pow(beta,-(distributionIndex+1.0));
                  if (rand <= (1.0/alpha)){
- 					betaq = Math.pow((rand*alpha), 1.0/(distributionIndex_ +1));
+ 					betaq = Math.pow((rand*alpha), 1.0/(distributionIndex+1));
  				} else {
- 					betaq = Math.pow( 1.0 / (2 -  (rand*alpha)), 1.0/(distributionIndex_ +1));
+ 					betaq = Math.pow( 1.0 / (2 -  (rand*alpha)), 1.0/(distributionIndex +1));
  				}
 				c2 = 0.5 *((x1 + x2) + betaq * (x2 - x1));
 
@@ -147,34 +136,8 @@ public class SBXCrossover extends Crossover {
   	        	offSpring[0].setValue(i, parent1.getValue(i)) ;
   	        	offSpring[1].setValue(i, parent2.getValue(i)) ;
 	  		}
-	  		// if
 	  	}
 		return offSpring;
 	} // doCrossover
 
-	/**
-	 * Executes the operation
-	 *
-	 * @param object
-	 *            An object containing an array of two parents
-	 * @return An object containing the offSprings
-	 */
-	public Object execute(Object object) throws JMException {
-		Solution[] parents = (Solution[]) object;
-
-		if (parents.length != 2) {
-			Configuration.logger_.severe("SBXCrossover.execute: operator needs two " + "parents");
-			Class cls = java.lang.String.class;
-			String name = cls.getName();
-			throw new JMException("Exception in " + name + ".execute()");
-		} // if
-
-
-
-		Solution[] offSpring;
-		offSpring = doCrossover(crossoverProbability_, parents[0], parents[1]);
-
-
-		return offSpring[0];
-	} // execute
-} // SBXCrossover
+}

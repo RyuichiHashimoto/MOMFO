@@ -34,7 +34,7 @@ import org.apache.commons.math3.util.FastMath;
  *     (1986)</a>, <em>Computation of the Incomplete Gamma Function Ratios
  *     and their Inverse</em>, TOMS 12(4), 377-393,</li>
  * <li><a href="http://dx.doi.org/10.1145/131766.131776">Didonato and Morris
- *     (1992)</a>, <em>Algorithm 708: Significant Digit Computation of the
+ *     (1992)</a>, <em>GA 708: Significant Digit Computation of the
  *     Incomplete Beta Function Ratios</em>, TOMS 18(3), 360-373,</li>
  * </ul>
  * and implemented in the

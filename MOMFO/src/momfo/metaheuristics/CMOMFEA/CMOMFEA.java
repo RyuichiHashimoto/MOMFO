@@ -30,7 +30,7 @@ import lib.io.output.fileSubscription;
 import lib.math.Permutation;
 import momfo.Indicator.IGD;
 import momfo.Indicator.IGDRef;
-import momfo.core.Algorithm;
+import momfo.core.GA;
 import momfo.core.Operator;
 import momfo.core.Population;
 import momfo.core.Problem;
@@ -50,7 +50,7 @@ import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorNextGen;
 import momfo.util.Ranking.C_NDSRanking;
 
 
-public class CMOMFEA extends Algorithm {
+public class CMOMFEA extends GA {
 
 	/**
 	 * Stores the population size
