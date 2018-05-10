@@ -14,6 +14,7 @@ public class Solution {
 
 	int multitaskID_;
 
+	
 	public int getMultitaskID(){
 		return multitaskID_;
 	}
@@ -182,7 +183,6 @@ public class Solution {
 		for(int i = 0;i<numberOfVariables_;i++){
 			value_[i] = Random.nextIntII((int)Math.round(upperlimit_[i] - lowerlimit_[i])) +  lowerlimit_[i];
 		}
-
 	}
 
 	public void remakeWithDouble(){

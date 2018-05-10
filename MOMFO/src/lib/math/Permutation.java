@@ -54,7 +54,7 @@ public class Permutation {
 		int temp;
 
 		for(int i=size - 1;i>0;i--){
-			r = Random.nextIntIE(0,size);
+			r = random.nextIntIE(0,size);
 			temp = array[i];
 			array[i]= array[r];
 			array[r]= temp;
@@ -70,7 +70,7 @@ public class Permutation {
 
 
 
- 	public int[] intPermutation(int length) {
+ 	public int[] intPermutation(int length,BuiltInRandom Random) {
 		int[] aux = new int[length];
 		int[] result = new int[length];
 

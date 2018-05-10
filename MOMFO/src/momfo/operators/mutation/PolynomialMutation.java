@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import momfo.core.Solution;
 import momfo.util.JMException;
-import momfo.util.Random;
 
 
 public class PolynomialMutation extends Mutation {
@@ -66,14 +65,14 @@ public class PolynomialMutation extends Mutation {
 		double rnd, delta1, delta2, mut_pow, deltaq;
 		double y, yl, yu, val, xy;
 			for (int var=0; var < solution.getNumberOfVariables(); var++) {
-				if (Random.nextDoubleII() <= probability)
+				if (random.nextDoubleII() <= probability)
 				{
 					y      = solution.getValue(var);
 					yl     = solution.getLowerlimit(var);
 					yu     = solution.getUpperlimit(var);
 					delta1 = (y-yl)/(yu-yl);
 					delta2 = (yu-y)/(yu-yl);
-					rnd = Random.nextDoubleII();
+					rnd = random.nextDoubleII();
 					mut_pow = 1.0/(distributionIndex_+1.0);
 					if (rnd <= 0.5)	{
 							xy     = 1.0-delta1;

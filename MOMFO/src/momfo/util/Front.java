@@ -255,6 +255,7 @@ public class Front {
 
 		Comparator comp = new DominationComparator(null); //DominaitonComaparatorでなくてもよい
 		comp.setIs(isMAX);
+		
 
 		for(int i=0;i<this.size();i++){
 			for(int j=0;j<this.getDimension();j++){

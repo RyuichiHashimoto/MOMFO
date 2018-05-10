@@ -12,7 +12,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-import momfo.util.Random;
+import lib.math.BuiltInRandom;
 
 public class IO {
 
@@ -37,12 +37,12 @@ public class IO {
 		}
 		return matrix;
 	}*/
-	public static double[][] getRandomRotationMatrix(int m, int n, double low, double up) {
+	public static double[][] getRandomRotationMatrix(int m, int n, double low, double up,BuiltInRandom random) {
 		double matrix[][] = new double[m][n];
 		DecimalFormat df = new DecimalFormat("0.00");
 		for (int i = 0; i < m; i++) {
 			for (int j = 0; j < n; j++) {
-				double value = Random.nextDoubleIE()*(up-low) + low;
+				double value = random.nextDoubleIE()*(up-low) + low;
 				matrix[i][j] = Double.parseDouble(df.format(value));
 			}
 		}

@@ -2,13 +2,15 @@ package momfo.util.Comparator;
 
 import java.util.HashMap;
 
+import momfo.util.JMException;
+
 public class MOEAD_Comparator extends Comparator {
 
 	double theta;
 
 
 
-	public MOEAD_Comparator(HashMap<String, Object> parameters){
+	public MOEAD_Comparator(HashMap<String, Object> parameters) throws JMException{
 		super(parameters);
 		comparatorName_ = "momfoEAD_Comparator";
 	}

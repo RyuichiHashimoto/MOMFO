@@ -3,6 +3,7 @@ package momfo.util.Comparator;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import lib.math.BuiltInRandom;
 import momfo.util.JMException;
 
 
@@ -12,6 +13,8 @@ public abstract class Comparator implements Serializable {
 	public  boolean isMAX_;
 
 	protected HashMap<String , Object> parameters_;
+
+	final protected BuiltInRandom random;
 
 
 	public void setIsMAX(){
@@ -68,11 +71,21 @@ public abstract class Comparator implements Serializable {
 	abstract public int execute(Object one, Object two)  throws JMException;
 
 
-	 public Comparator(HashMap<String , Object> parameters) {
-		    parameters_ = parameters;
+	 public Comparator(HashMap<String , Object> parameters) throws JMException{
+
+		 if(!parameters.containsKey("RandomGenerator"))
+			 throw new JMException("not found RandomGenerator");
+		 
+		 if(! (parameters.get("RandomGenerator") instanceof BuiltInRandom))
+			 throw new JMException("not found RandomGenerator");
+		 
+		 random = (BuiltInRandom) parameters.get("RandomGenerator");
+		 
+		 parameters_ = parameters;
 	}
-	 public Comparator(boolean is) {
-		 isMAX_ = is;
+	 public Comparator(boolean is,BuiltInRandom random_) {
+		 isMAX_ = is;		 
+		 random = random_;
 	 }
 
 	  public void setInputParameter(String name, Object object) {

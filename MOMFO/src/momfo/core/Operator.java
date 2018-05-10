@@ -25,6 +25,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import lib.math.BuiltInRandom;
 import momfo.util.JMException;
 
 /**
@@ -34,6 +35,12 @@ public abstract class Operator implements Serializable {
 
 
   protected final Map<String , Object> parameters_;
+
+  protected BuiltInRandom random;
+
+  public void setRandomGenerator(BuiltInRandom ran) {
+	  random = ran;
+  }
 
   public Operator(HashMap<String , Object> parameters) {
     parameters_ = parameters;

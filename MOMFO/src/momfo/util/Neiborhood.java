@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
+import lib.math.BuiltInRandom;
 import lib.math.Permutation;
 
 public class Neiborhood {
@@ -61,7 +62,7 @@ public class Neiborhood {
 
 	}
 
-	public  void setNeiborhood(int siz) {
+	public  void setNeiborhood(int siz,BuiltInRandom random_) {
 
 		int size = weight_.length;
 		neiborhood_ = new int[size][];
@@ -90,12 +91,12 @@ public class Neiborhood {
 					}
 				}
 			}
-					randamSortEach(list,dist);
+					randamSortEach(list,dist,random_);
 				for(int i = 0;i<siz;i++){
 					neiborhood_[k][i] = list[i];
 				}
-		
-				
+
+
 		}
 	}
 
@@ -126,6 +127,7 @@ public class Neiborhood {
 		return counter;
 	}
 	public static void main(String[] args){
+		BuiltInRandom random = new BuiltInRandom(10);
 		int list[] = new int[25];
 		double value[] = new double[25];
 		int ddd[] = new int[25];
@@ -162,7 +164,7 @@ public class Neiborhood {
 		}
 		System.out.print("\n");
 
-		randamSortEach(list,value);
+		randamSortEach(list,value,random);
 		for(int i=0;i<25;i++){
 			System.out.print(list[i] + " ");
 		}
@@ -180,7 +182,7 @@ public class Neiborhood {
 	}
 
 
-	static void  randamSortEach(int[] list,double[] value){
+	static void  randamSortEach(int[] list,double[] value,BuiltInRandom random_){
 		int[] empty;
 
 
@@ -190,7 +192,7 @@ public class Neiborhood {
 			for(int k = i;k<=Hiral;k++){
 				empty[k-i] = list[k];
 			}
-			empty = Sort.random_sort(empty);
+			empty = Sort.random_sort(empty,random_);
 
 			for(int k = i;k<=Hiral;k++){
 				list[k]    = empty[k- i];
@@ -221,7 +223,7 @@ public class Neiborhood {
 	public  void subscript_to_file() {
 		try {
 			/* Open the file */
-			FileOutputStream fos = new FileOutputStream("neiborhood_config + " + Random.nextInt(100)+ ".txt");
+			FileOutputStream fos = new FileOutputStream("neiborhood_config + " + (100)+ ".txt");
 			OutputStreamWriter osw = new OutputStreamWriter(fos);
 			BufferedWriter bw = new BufferedWriter(osw);
 

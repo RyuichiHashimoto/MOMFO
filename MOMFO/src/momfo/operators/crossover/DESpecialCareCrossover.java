@@ -26,7 +26,6 @@ import java.util.HashMap;
 import momfo.core.Solution;
 import momfo.util.Configuration;
 import momfo.util.JMException;
-import momfo.util.Random;
 
 /**
  * This class allows to apply a SBX crossover operator using two parent
@@ -65,12 +64,12 @@ public class DESpecialCareCrossover extends Crossover {
 
 	    offSpring[0] = new Solution(parent1);
 
-	    int specificVar = Random.nextIntIE(parent1.getNumberOfVariables());
+	    int specificVar = random.nextIntIE(parent1.getNumberOfVariables());
 	    //double CR = 1.0;
 	    //double F = 0.5;
-	    double F = Random.nextDoubleIE() *(1.0 - 0.2) + 0.2;
-		double CR = Random.nextDoubleIE() *(1.0 - 0.1) + 0.1;
-		int k = Random.nextIntIE(parent1.getNumberOfVariables());
+	    double F = random.nextDoubleIE() *(1.0 - 0.2) + 0.2;
+		double CR = random.nextDoubleIE() *(1.0 - 0.1) + 0.1;
+		int k = random.nextIntIE(parent1.getNumberOfVariables());
 
 		for (int var = 0; var < parent1.getNumberOfVariables();var++){
 			double t = (MAXEVALS - evals + 1) / (double)MAXEVALS * (parent1.getUpperlimit(var) - parent1.getLowerlimit(var)) / 10.;	//fine tune the radius bound adaptively
@@ -79,7 +78,7 @@ public class DESpecialCareCrossover extends Crossover {
 			if (val > parent1.getUpperlimit(var)) val = parent1.getUpperlimit(var);
 			if (val < parent1.getLowerlimit(var)) val = parent1.getLowerlimit(var);
 
-			if (k == val || Random.nextDoubleIE() < CR){
+			if (k == val || random.nextDoubleIE() < CR){
 				offSpring[0].setValue(var, val);
 			}
 			else{

@@ -276,20 +276,19 @@ public class Sort {
 		//		Permutation.randomPermutation(ret);
 	int numberOfTasks = 10;
 	for(int t = 0;t<numberOfTasks;t++){
-		BuiltInRandom random = new BuiltInRandom(); 
-		Random.set_seed(t);
+		BuiltInRandom random = new BuiltInRandom(100); 
 		int size_of_list = 200;
 		Double[] answer = new Double[size_of_list];
 		for(int i=0;i<size_of_list;i++){
 			answer[i] = (Double)(i+1.0);//1.0/(i+1);
 		}
 
-		Double[] ret = random_sort(answer);
+		Double[] ret = random_sort(answer,random);
 
 		int[] perm = new int[ret.length];
 
 		Permutation.setPermutation(perm);
-		Comparator comp = new NormalComparator(true);
+		Comparator comp = new NormalComparator(true,random);
 
 		double d = ret[ret.length/2];
 		System.out.println("敷居値"+ d);

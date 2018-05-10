@@ -23,7 +23,7 @@ public class DebMethodRandomSelection extends Selection{
 	public Object execute(Object object) {
 		Population population = (Population) object;
 		int[]  perm = new int[population.size()];
-		Permutation.randomPermutation(perm);
+		Permutation.randomPermutation(perm,random);
 
 		return perm;
 	} // Execute

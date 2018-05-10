@@ -2,6 +2,7 @@ package momfo.util.Comparator;
 
 import java.util.HashMap;
 
+import lib.math.BuiltInRandom;
 import momfo.core.Solution;
 import momfo.util.Front;
 import momfo.util.JMException;
@@ -9,13 +10,12 @@ import momfo.util.POINT;
 
 public class DominationComparator extends Comparator{
 
-	public DominationComparator(HashMap<String, Object> parameters) {
+	public DominationComparator(HashMap<String, Object> parameters) throws JMException {
 		super(parameters);
-		// TODO 自動生成されたコンストラクター・スタブ
 	}
 
-	public DominationComparator(boolean d){
-		super(d);
+	public DominationComparator(boolean d,BuiltInRandom random_){
+		super(d,random_);
 	}
 
 	@Override

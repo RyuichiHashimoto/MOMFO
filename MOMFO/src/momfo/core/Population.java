@@ -1,13 +1,12 @@
 package momfo.core;
 
-import java.io.BufferedWriter;
+import java.io.BufferedWriter; 
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
 import lib.math.Permutation;
 import momfo.util.JMException;
-import momfo.util.Random;
 import momfo.util.Sort;
 import momfo.util.Comparator.ScalarFitnessComparator;
 
@@ -36,11 +35,7 @@ public class Population {
 
 	int maxDimOfObjective = 0;
 
-
 	int getCapacity(){return capacity;}
-
-
-	private final Random random = new Random();
 
 	public void setMultitaskID(){
 		for(int p = 0 ; p < populationSize;p++){

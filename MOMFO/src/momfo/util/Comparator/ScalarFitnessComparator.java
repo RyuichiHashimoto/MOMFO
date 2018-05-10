@@ -2,18 +2,19 @@ package momfo.util.Comparator;
 
 import java.util.HashMap;
 
+import lib.math.BuiltInRandom;
 import momfo.core.Solution;
 import momfo.util.JMException;
 
 public class ScalarFitnessComparator extends Comparator{
 
-	public ScalarFitnessComparator(HashMap parameters) {
+	public ScalarFitnessComparator(HashMap parameters) throws JMException {
 		super(parameters);
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
 
-	public ScalarFitnessComparator(boolean b) {
-		super(b);
+	public ScalarFitnessComparator(boolean b,BuiltInRandom random) {
+		super(b,random);
 // 	TODO 自動生成されたコンストラクター・スタブ
 	}
 

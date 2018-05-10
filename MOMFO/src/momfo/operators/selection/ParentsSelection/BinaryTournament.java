@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 import momfo.core.Population;
 import momfo.util.JMException;
-import momfo.util.Random;
 import momfo.util.Comparator.Comparator;
 
 public class BinaryTournament extends ParentsSelection{
@@ -27,9 +26,9 @@ public class BinaryTournament extends ParentsSelection{
 		int a = 0;
 		int b = 0;
 		int size = d.size();
-		a = Random.nextIntIE(0, size);
+		a = random.nextIntIE(0, size);
 		do {
-			b = Random.nextIntIE(0,size);
+			b = random.nextIntIE(0,size);
 		}while( a == b);
 		if(comparator_.execute(d.get(a), d.get(b)) == 1){
 			ret = a;

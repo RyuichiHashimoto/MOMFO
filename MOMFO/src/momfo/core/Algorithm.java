@@ -5,7 +5,7 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import momfo.util.Random;
+import lib.math.BuiltInRandom;
 
 
 public abstract  class Algorithm implements Serializable {
@@ -13,16 +13,20 @@ public abstract  class Algorithm implements Serializable {
 
 	protected ProblemSet problemSet_;
 
-	Random random;
+	protected BuiltInRandom random;
 	
 	public ProblemSet getProblemSet(){
 		return problemSet_;
 	}
 
-	public void setRandom(Random d){
+	public void setRandom(BuiltInRandom d){
 		random = d;
 	}
 
+	public BuiltInRandom getRandom(){
+		return random;
+	}
+	
 	protected int tasknumber;
 	public void setTaskNumber(int d){
 		tasknumber = d;

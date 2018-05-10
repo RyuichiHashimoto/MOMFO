@@ -1,12 +1,13 @@
 package momfo.util.Comparator;
 
+import lib.math.BuiltInRandom;
 import momfo.core.Solution;
 import momfo.util.JMException;
 
 public class CrowdingDistanceComparator extends Comparator{
 
-	public CrowdingDistanceComparator(boolean is) {
-		super(is);
+	public CrowdingDistanceComparator(boolean is,BuiltInRandom random) {
+		super(is,random);
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
 

@@ -1,6 +1,6 @@
 package momfo.problems.SOP;
 
-import momfo.util.Random;
+import lib.math.BuiltInRandom;
 
 public class rotationMatrix {
 
@@ -128,7 +128,8 @@ public class rotationMatrix {
 		double[][] mat = new double[10][10];
 
 		double[] vect = new double[10];
-
+		BuiltInRandom Random  = new BuiltInRandom(1995);
+		
 		for(int i=0;i< mat.length;i++){
 			vect[i] = Random.nextIntIE(5);
 			for(int j = 0;j < mat[i].length;j ++)

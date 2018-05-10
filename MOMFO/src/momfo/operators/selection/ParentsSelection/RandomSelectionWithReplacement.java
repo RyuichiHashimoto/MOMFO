@@ -3,7 +3,6 @@ package momfo.operators.selection.ParentsSelection;
 import java.util.HashMap;
 
 import momfo.core.Population;
-import momfo.util.Random;
 
 public class RandomSelectionWithReplacement extends ParentsSelection{
 	public RandomSelectionWithReplacement(HashMap<String, Object> parameters) {
@@ -23,7 +22,7 @@ public class RandomSelectionWithReplacement extends ParentsSelection{
 		Population population = (Population) object;
 		int perm;
 
-		perm = Random.nextIntII(0, population.size() - 1);
+		perm = random.nextIntII(0, population.size() - 1);
 
 		return perm;
 	} // Execute

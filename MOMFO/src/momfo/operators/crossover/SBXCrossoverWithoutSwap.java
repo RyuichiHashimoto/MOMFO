@@ -26,7 +26,6 @@ import java.util.HashMap;
 import momfo.core.Solution;
 import momfo.util.Configuration;
 import momfo.util.JMException;
-import momfo.util.Random;
 
 /**
  * This class allows to apply a SBX crossover operator using two parent
@@ -77,7 +76,7 @@ public class SBXCrossoverWithoutSwap extends Crossover {
 	    int numberOfVariables = offSpring[0].getNumberOfVariables();
 	    for(int i = 0; i < numberOfVariables;i++){
 
-	     	double u = Random.nextDoubleIE();
+	     	double u = random.nextDoubleIE();
 	    	double cf = 0;
 
 	    	if (u<=0.5){

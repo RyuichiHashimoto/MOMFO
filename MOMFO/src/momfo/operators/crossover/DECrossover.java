@@ -26,7 +26,6 @@ import java.util.HashMap;
 import momfo.core.Solution;
 import momfo.util.Configuration;
 import momfo.util.JMException;
-import momfo.util.Random;
 
 /**
  * This class allows to apply a SBX crossover operator using two parent
@@ -65,13 +64,13 @@ public class DECrossover extends Crossover {
 
 	    offSpring[0] = new Solution(parent1);
 
-	    int specificVar = Random.nextIntIE(parent1.getNumberOfVariables());
+	    int specificVar = random.nextIntIE(parent1.getNumberOfVariables());
 	    double CR = 1.0;
 	    double F = 0.5;
 
 	    for(int var = 0; var < parent1.getNumberOfVariables();var++){
 
-	    	if (Random.nextDoubleII() < CR || var == specificVar){
+	    	if (random.nextDoubleII() < CR || var == specificVar){
 	    		double d = parent1.getValue(var) + F * (parent2.getValue(var) - parent3.getValue(var));
 	    		if(d > parent1.getUpperlimit(var)){
 	    			d  = parent1.getUpperlimit(var);
@@ -79,7 +78,7 @@ public class DECrossover extends Crossover {
 	    			d = parent1.getLowerlimit(var);
 	    		}
 	    		offSpring[0].setValue(var, d);
-	    	} else if (Random.nextDoubleII() >= CR && var != specificVar){
+	    	} else if (random.nextDoubleII() >= CR && var != specificVar){
 	    		offSpring[0].setValue(var, parent1.getValue(var));
 	    	}
 	    }

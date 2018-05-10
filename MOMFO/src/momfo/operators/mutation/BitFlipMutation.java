@@ -25,7 +25,6 @@ import java.util.HashMap;
 
 import momfo.core.Solution;
 import momfo.util.JMException;
-import momfo.util.Random;
 
 /**
  * This class implements a bit flip mutation operator.
@@ -62,7 +61,7 @@ public class BitFlipMutation extends Mutation {
 		probability = probability >= 0 ? probability : (double)Math.abs(probability)/size;
 
 		for(int i = 0;i< size;i++){
-			if(Random.nextDoubleIE() < probability){
+			if(random.nextDoubleIE() < probability){
 				if((int)Math.round(solution.getValue(i)) == 1){
 					solution.setValue(i, 0.0);
 				} else if ((int)Math.round(solution.getValue(i))  == 0){

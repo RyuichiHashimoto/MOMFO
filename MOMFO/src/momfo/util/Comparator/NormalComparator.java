@@ -1,12 +1,12 @@
 package momfo.util.Comparator;
 
+import lib.math.BuiltInRandom;
 import momfo.util.JMException;
 
 public class NormalComparator extends Comparator{
 
-	public NormalComparator(boolean is) {
-		super(is);
-		// TODO 自動生成されたコンストラクター・スタブ
+	public NormalComparator(boolean is,BuiltInRandom random_) {
+		super(is,random_);
 	}
 
 	@Override
