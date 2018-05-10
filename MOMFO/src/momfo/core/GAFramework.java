@@ -9,8 +9,8 @@ import javax.naming.NamingException;
 import Network.Solver;
 import Network.GridComputing.asg.cliche.Command;
 import lib.experiments.FormatDate;
-import lib.experiments.NeedParameters;
 import lib.experiments.Seeder;
+import momfo.util.JMException;
 
 public class GAFramework extends Solver{
 
@@ -22,9 +22,9 @@ public class GAFramework extends Solver{
 	protected GeneticAlgorithm ga_;
 
 	@Override
-	@NeedParameters({NTRIALS, RESULT, SEEDER, SEEDER_SEED, INITIALIZATION,
-		EVALUATION, RECOMBINATION, MUTATION})
-	protected void buildImpl() throws NamingException, IOException, ReflectiveOperationException {
+//	@NeedParameters({NTRIALS, RESULT, SEEDER, SEEDER_SEED, INITIALIZATION,
+//		EVALUATION, RECOMBINATION, MUTATION})
+	protected void buildImpl() throws NamingException, IOException, ReflectiveOperationException, JMException {
 /*		
 		if (!(setting.get(PROBLEM) instanceof MOProblem)) {
 			setting.put(PROBLEM, setting.getToClass(PROBLEM, "mo.problem").getDeclaredConstructor(Setting.class).newInstance(setting));
