@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.HashMap;
 
 import lib.io.input.FileReader;
-import lib.math.BuiltInRandom;
+import lib.math.BuildInRandom;
 import lib.math.Distance;
 import momfo.core.Population;
 import momfo.util.JMException;
@@ -151,7 +151,7 @@ public class IGD  extends Indicator{
 		return "IGD";
 	}
 	public static double CalcNormalizeIGD_To_NonDominated(double[][] objective, boolean[] checker,
-		double[][] referencePoint, double[] maxValue, double[] minValue,BuiltInRandom random) {
+		double[][] referencePoint, double[] maxValue, double[] minValue,BuildInRandom random) {
 		double ret = 0;
 		int refSize = referencePoint.length;
 		int obj = referencePoint[0].length;
@@ -199,7 +199,7 @@ public class IGD  extends Indicator{
 		return Math.sqrt(ret)/refSize;
 	}
 	public static double CalcNormalizeIGD_To_NonDominated(double[][] objective, double[][] referencePoint,
-			double[] maxValue, double[] minValue,BuiltInRandom random) {
+			double[] maxValue, double[] minValue,BuildInRandom random) {
 		double ret = 0;
 		int refSize = referencePoint.length;
 
@@ -237,7 +237,7 @@ public class IGD  extends Indicator{
 
 		double[][] refdata = IGDRef.getRefs(0);
 
-		double d= CalcNormalizeIGD_To_NonDominated(TaskFUN_2,refdata,IGDRef.getMaxValue(0),IGDRef.getMinValue(0),new BuiltInRandom(3));
+		double d= CalcNormalizeIGD_To_NonDominated(TaskFUN_2,refdata,IGDRef.getMaxValue(0),IGDRef.getMinValue(0),new BuildInRandom(3));
 //		double d= CalcNormalizeIGD(TaskFUN_2,refdata,IGDRef.getMaxValue(0),IGDRef.getMinValue(0));
 
 

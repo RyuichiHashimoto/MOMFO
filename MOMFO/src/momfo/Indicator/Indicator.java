@@ -2,15 +2,15 @@ package momfo.Indicator;
 
 import java.util.HashMap;
 
-import lib.math.BuiltInRandom;
+import lib.math.BuildInRandom;
 import momfo.core.Population;
 import momfo.util.JMException;
 
 public abstract class Indicator {
 
-	BuiltInRandom random;
+	BuildInRandom random;
 
-	public void setRandom(BuiltInRandom  random_){
+	public void setRandom(BuildInRandom  random_){
 		random = random_;
 	}
 

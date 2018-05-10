@@ -2,7 +2,11 @@ package momfo.operators.selection.ParentsSelection;
 
 import java.util.HashMap;
 
+import javax.naming.NameNotFoundException;
+
+import lib.experiments.CommandSetting;
 import momfo.core.Population;
+import momfo.util.JMException;
 
 
 /*
@@ -11,23 +15,20 @@ import momfo.core.Population;
  */
 
 public class RandomSelectionWithoutReplacement extends ParentsSelection {
-	public RandomSelectionWithoutReplacement(HashMap<String, Object> parameters) {
-		super(parameters);
-		// TODO 自動生成されたコンストラクター・スタブ
-	}
-
-
-	public Object execute(Object object) {
-		Population population = (Population) object;
-		assert population.size() >1 : "population size is " + population.size();
+	
+	
+	
+	@Override
+	public int selection(Population pop) throws JMException {
+		assert pop.size() >1 : "population size is " + pop.size();
 		int[] perm = new int[2];
-		perm[0] = random.nextIntII(0, population.size() - 1);
-/*		perm[1] = Random.nextIntII(0, population.size() - 1);
-		while ((perm[1] == perm[0])) {
-			perm[1] = Random.nextIntII(0, population.size() - 1);
-		}
-*/		return perm[0];
-	} // Execute
-
+		perm[0] = random.nextIntII(0, pop.size() - 1);
+		return perm[0];
+	}
+	
+	public void build(CommandSetting st) throws NameNotFoundException, JMException {
+		super.build(st);
+	}
+	
 
 }

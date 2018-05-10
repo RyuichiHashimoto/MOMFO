@@ -1,7 +1,10 @@
 package Network;
 
-import static Network.CommonSolverEvent.*;
-import static Network.GridComputing.RunSetting.*;
+import static Network.CommonSolverEvent.AFTER_RUN;
+import static Network.CommonSolverEvent.BEFORE_RUN;
+import static Network.CommonSolverEvent.EXCEPTION_RISE;
+import static Network.GridComputing.RunSetting.RESULT;
+import static Network.GridComputing.RunSetting.RESULT_DELIMITER;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -18,11 +21,12 @@ import lib.experiments.Exception.CommandSetting.CannotConvertException;
 import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.lang.Generics;
 import lib.lang.NeedOverriden;
+import momfo.util.JMException;
 
 public abstract class Solver implements Runnable, Buildable {
 
 	public static void buildObject(Buildable b, CommandSetting s) throws ReflectiveOperationException, NamingException,
-			IOException, IllegalArgumentException, notFoundException, CannotConvertException {
+			IOException, IllegalArgumentException, notFoundException, CannotConvertException, JMException {
 		setParameters(b, s);
 		b.build(s);
 	}
@@ -91,7 +95,7 @@ public abstract class Solver implements Runnable, Buildable {
 
 	@Override
 	public void build(CommandSetting s) throws NamingException, IOException, ReflectiveOperationException,
-			notFoundException, IllegalArgumentException, CannotConvertException {
+			notFoundException, IllegalArgumentException, CannotConvertException, JMException {
 		setting = s;
 		buildImpl();
 		// instantiate Results
@@ -103,14 +107,14 @@ public abstract class Solver implements Runnable, Buildable {
 		}
 	}
 
-	abstract protected void buildImpl() throws NamingException, IOException, ReflectiveOperationException;
+	abstract protected void buildImpl() throws NamingException, IOException, ReflectiveOperationException, JMException;
 
 	@NeedOverriden
 	public void reset() {
 		thrown_ = null;
 	}
 
-	abstract protected void solve() throws IOException;
+	abstract protected void solve() throws IOException, ClassNotFoundException, JMException;
 
 	/**
 	 * The same as {@link #run()} except for this method can throw exceptions.

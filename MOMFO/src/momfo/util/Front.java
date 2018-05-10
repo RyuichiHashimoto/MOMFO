@@ -3,7 +3,7 @@ package momfo.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import lib.math.BuiltInRandom;
+import lib.math.BuildInRandom;
 import lib.math.Permutation;
 import momfo.core.Population;
 import momfo.util.Comparator.Comparator;
@@ -21,7 +21,7 @@ public class Front {
 
 	private List<POINT>  Front_;
 
-	private BuiltInRandom random;
+	private BuildInRandom random;
 
 	public Front(){
 		Front_ = new ArrayList<POINT>();
@@ -36,7 +36,7 @@ public class Front {
 		return ret;
 	}
 
-	public void setRandomGenerator(BuiltInRandom random_){
+	public void setRandomGenerator(BuildInRandom random_){
 		random =  random_;
 	}
 

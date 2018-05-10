@@ -19,7 +19,7 @@ public class Permutation {
 	}
 
 
-	public static int[]  randomPermutation(int[] list, int size,BuiltInRandom Random){
+	public static int[]  randomPermutation(int[] list, int size,BuildInRandom Random){
 		int[] 	array = new int[size];
 
 		for(int i = 0;i < size ;i++){
@@ -42,7 +42,7 @@ public class Permutation {
 
 		return list ;
 	}
-	public static int[]  randomPermutation(int[] list,BuiltInRandom random){
+	public static int[]  randomPermutation(int[] list,BuildInRandom random){
 		int size = list.length;
 		int[] 	array = new int[size];
 
@@ -70,7 +70,7 @@ public class Permutation {
 
 
 
- 	public int[] intPermutation(int length,BuiltInRandom Random) {
+ 	public int[] intPermutation(int length,BuildInRandom Random) {
 		int[] aux = new int[length];
 		int[] result = new int[length];
 

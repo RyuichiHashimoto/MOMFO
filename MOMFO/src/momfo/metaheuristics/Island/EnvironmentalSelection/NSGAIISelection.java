@@ -2,7 +2,7 @@ package momfo.metaheuristics.Island.EnvironmentalSelection;
 
 import java.util.HashMap;
 
-import lib.math.BuiltInRandom;
+import lib.math.BuildInRandom;
 import lib.math.Permutation;
 import momfo.core.Population;
 import momfo.core.Solution;
@@ -14,7 +14,7 @@ public class NSGAIISelection extends EnvironmentalSelection{
 
 	NSGAIIComparatorBinary comparatorBinary;
 
-	public NSGAIISelection(int popsize,boolean isMax,HashMap<String, Object> parameter_,BuiltInRandom random) {
+	public NSGAIISelection(int popsize,boolean isMax,HashMap<String, Object> parameter_,BuildInRandom random) {
 		super(popsize,isMax,parameter_,random);
 	}
 

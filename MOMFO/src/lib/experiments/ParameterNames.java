@@ -4,9 +4,16 @@ public class ParameterNames {
 
 	public static final String NTRIALS = "nTrials";
 	public static final String RESULT = "result";
-	public static final String PROBLEM = "problem";
+	public static final String PROBLEM_SET = "problem_set";
 	public static final String GA = "ga";
 	public static final String INITIALIZATION = "initializationMethod";
+	public static final String ParentsSelection ="ParentsSelection";
+	public static final String POPULATION_SIZE ="populationSize";
+	public static final String IS_MAX ="IS_MAX";
+	public static final String TASK_NUMBER ="TASK_NUMBER";
+	
+	
+	
 	public static final String EVALUATION = "evaluation";
 	public static final String CROSSOVER = "crossoverMethod";
 	public static final String MUTATION = "mutationMethod";
@@ -16,9 +23,12 @@ public class ParameterNames {
 	public static final String RANDOM_GENERATOR = "randomGenerator";
 	public static final String SBXDisIndex = "SBXDisIndex";
 	public static final String PMDisIndex = "PMDisIndex";
-
+	public static final String BinaryTounamentComparator = "BinaryTounamentComparator";
+	public static final String DEF_GA_PACKAGE = "momfo.metaheuristics.";
 	public static final String CROSSOVERProbability = "crossoverProbability";
-	public static final String MutationProbability = "mutationProbability";
+	public static final String MUTATIONProbability = "mutationProbability";
+	
+	
 	public static final String DE_CR = "DE_CR";
 	public static final String DE_F = "F";
 	public static final String DE_CR_UPPER = "DE_UPPER_CR";

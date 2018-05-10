@@ -1,4 +1,4 @@
-package momfo.metaheuristics.nsgaII;
+package momfo.metaheuristics.nsga2;
 
 import momfo.core.Solution;
 import momfo.util.JMException;

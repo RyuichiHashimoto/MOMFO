@@ -1,13 +1,13 @@
 package momfo.util.Dominator;
 
-import lib.math.BuiltInRandom;
+import lib.math.BuildInRandom;
 import momfo.core.Population;
 import momfo.util.JMException;
 
 public class nonDominatedSelection extends Dominance{
 
 
-	public nonDominatedSelection(double[] ref,boolean isMax,BuiltInRandom random) {
+	public nonDominatedSelection(double[] ref,boolean isMax,BuildInRandom random) {
 		super(ref,isMax,random);
 		// TODO 自動生成されたコンストラクター・スタブ
 	}

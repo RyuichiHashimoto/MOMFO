@@ -9,10 +9,13 @@ import java.util.Map;
 
 import javax.naming.NamingException;
 
+import experiments.Generics;
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
-import lib.math.BuiltInRandom;
+import lib.lang.NeedOverriden;
+import lib.math.BuildInRandom;
 import momfo.operators.crossover.Crossover;
+import momfo.operators.initializer.Initializer;
 import momfo.operators.mutation.Mutation;
 import momfo.operators.selection.ParentsSelection.ParentsSelection;
 import momfo.util.JMException;
@@ -23,8 +26,9 @@ public abstract  class GeneticAlgorithm implements Serializable {
 
 	protected ProblemSet problemSet_;
 
-	protected BuiltInRandom random;
+	protected BuildInRandom random;
 
+	protected Initializer initialization;
 	protected Crossover crossover;	
 	protected Mutation mutation;
 	protected ParentsSelection parentsSelection;
@@ -36,11 +40,11 @@ public abstract  class GeneticAlgorithm implements Serializable {
 		return problemSet_;
 	}
 
-	public void setRandom(BuiltInRandom d){
+	public void setRandom(BuildInRandom d){
 		random = d;
 	}
 
-	public BuiltInRandom getRandom(){
+	public BuildInRandom getRandom(){
 		return random;
 	}
 
@@ -85,9 +89,6 @@ public abstract  class GeneticAlgorithm implements Serializable {
 
 	public Operator getOperator(String name) {
 		Operator ret = operators_.get(name);
-		ret.setRandomGenerator(random);
-
-
 		return ret;
 	}
 
@@ -122,25 +123,44 @@ public abstract  class GeneticAlgorithm implements Serializable {
 
 	final public void build(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException, JMException {
 		setting = s;
-		random = (BuiltInRandom)s.get(ParameterNames.RANDOM_GENERATOR);
+		random = (BuildInRandom)s.get(ParameterNames.RANDOM_GENERATOR);
 		
-//		initializer = Generics.cast(s.getAsInstanceByName(INITIALIZATION, genotypePack));
-//		s.put(INITIALIZATION, initializer);
-//		evaluation = Generics.cast(s.getAsInstanceByName(ParameterNames.RANDOM_GENERATOR, genotypePack));
-//		s.put(EVALUATION, evaluation);
-//		crossover = Generics.cast(s.getAsInstanceByName(ParameterNames.CROSSOVER, genotypePack));
+		String genotypePack = "momfo.operators.";
+		
+		initialization = Generics.cast(s.getAsInstanceByName(ParameterNames.INITIALIZATION, genotypePack));
+		crossover = Generics.cast(s.getAsInstanceByName(ParameterNames.CROSSOVER, genotypePack));
 		s.put(ParameterNames.CROSSOVER, crossover);
-//		mutation = Generics.cast(s.getAsInstanceByName(ParameterNames.MUTATION, genotypePack));
+		mutation = Generics.cast(s.getAsInstanceByName(ParameterNames.MUTATION, genotypePack));
 		s.put(ParameterNames.MUTATION, mutation);
-
+		parentsSelection = Generics.cast(s.getAsInstanceByName(ParameterNames.ParentsSelection, genotypePack));;
 		buildImpl(s);
 
-//		initializer.build(s);
+		initialization.build(s);
 		crossover.build(s);
 		mutation.build(s);
+		parentsSelection.build(s);
 //		evaluation.build(s);
 		//s.remove(GENOTYPE_PACKAGE);
 	}
+	
+	@NeedOverriden
+	public void initialize(int seed) throws ClassNotFoundException, JMException {
+		random.setSeed(seed);
+	}
+
+	abstract public void recombination() throws JMException;
+
+	abstract public void nextGeneration() throws JMException;
+
+	abstract public boolean terminate();
+
+	abstract public int getEvaluations();
+
+	abstract public int getGeneration();
+
+	
+	abstract public Population getPopulation();
+	
 	
 	abstract protected void buildImpl(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException;
 

@@ -2,7 +2,7 @@ package momfo.util.Comparator;
 
 import java.util.HashMap;
 
-import lib.math.BuiltInRandom;
+import lib.math.BuildInRandom;
 import momfo.core.Solution;
 import momfo.util.JMException;
 
@@ -13,7 +13,7 @@ public class ScalarFitnessComparator extends Comparator{
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
 
-	public ScalarFitnessComparator(boolean b,BuiltInRandom random) {
+	public ScalarFitnessComparator(boolean b,BuildInRandom random) {
 		super(b,random);
 // 	TODO 自動生成されたコンストラクター・スタブ
 	}

@@ -2,7 +2,7 @@ package momfo.util;
 
 import java.util.Random;
 
-import lib.math.BuiltInRandom;
+import lib.math.BuildInRandom;
 import lib.math.Permutation;
 import momfo.core.Population;
 import momfo.core.Solution;
@@ -19,7 +19,7 @@ import momfo.util.Comparator.NormalComparator;
 public class Sort {
 
 
-	public static int[] random_sort(int[] Sort,BuiltInRandom random){
+	public static int[] random_sort(int[] Sort,BuildInRandom random){
 		int size = Sort.length;
 		int[] list = new int[size];
 		for(int i=0;i<size;i++){
@@ -198,7 +198,7 @@ public class Sort {
 		}
 	}
 
-	public static Double[] random_sort(double[] Sort,BuiltInRandom radom){
+	public static Double[] random_sort(double[] Sort,BuildInRandom radom){
 		int size = Sort.length;
 
 		Double[] list = new Double[size];
@@ -216,7 +216,7 @@ public class Sort {
 		return list;
 	}
 
-	public static Double[] random_sort(Double[] Sort,BuiltInRandom random){
+	public static Double[] random_sort(Double[] Sort,BuildInRandom random){
 		int size = Sort.length;
 
 		Double[] list = new Double[size];
@@ -276,7 +276,7 @@ public class Sort {
 		//		Permutation.randomPermutation(ret);
 	int numberOfTasks = 10;
 	for(int t = 0;t<numberOfTasks;t++){
-		BuiltInRandom random = new BuiltInRandom(100); 
+		BuildInRandom random = new BuildInRandom(100); 
 		int size_of_list = 200;
 		Double[] answer = new Double[size_of_list];
 		for(int i=0;i<size_of_list;i++){

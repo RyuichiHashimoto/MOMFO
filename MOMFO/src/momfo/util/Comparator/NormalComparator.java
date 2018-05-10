@@ -1,11 +1,11 @@
 package momfo.util.Comparator;
 
-import lib.math.BuiltInRandom;
+import lib.math.BuildInRandom;
 import momfo.util.JMException;
 
 public class NormalComparator extends Comparator{
 
-	public NormalComparator(boolean is,BuiltInRandom random_) {
+	public NormalComparator(boolean is,BuildInRandom random_) {
 		super(is,random_);
 	}
 

@@ -45,13 +45,13 @@ public class ProblemSet {
 	} // SolutionSet
 
 
-	public void add(Problem problem) {
+	public ProblemSet add(Problem problem) {
 		problemsList_.add(problem);
 		accObjsList_.add(problem.getNumberOfObjectives());
 		if(problem.getNumberOfVariables() > maxDim_){
 			maxDim_ = problem.getNumberOfVariables();
 		}
-
+		return this;
 	} // add
 
 	public Problem get(int i) {

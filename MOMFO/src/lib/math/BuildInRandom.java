@@ -1,6 +1,6 @@
 package lib.math;
 
-public class BuiltInRandom {
+public class BuildInRandom {
 	private MersenneTwisterFast random = new MersenneTwisterFast(1995);
 
 	public void setSeed(int s){
@@ -8,7 +8,7 @@ public class BuiltInRandom {
 //		random = new MersenneTwisterFast(s);
 	}
 
-	public BuiltInRandom(int seed){
+	public BuildInRandom(int seed){
 		random.setSeed(seed);
 	}
 

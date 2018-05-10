@@ -1,6 +1,6 @@
 package momfo.util.Ranking;
 
-import lib.math.BuiltInRandom;
+import lib.math.BuildInRandom;
 import momfo.core.Population;
 import momfo.core.Solution;
 
@@ -156,7 +156,7 @@ public class test {
 
 		double[][] objectives =  {{10,2},{6,6},{2,8},{16,0},{14,4},{12,8},{8,10},{2,12},{16,4},{18,18},{18,18},{12,18},{16,16},{18,12},{10,16},{14,14},{15,9},{18,6},{4,14},{9,13},{12,11}};
 
-		BuiltInRandom random = new BuiltInRandom(214);
+		BuildInRandom random = new BuildInRandom(214);
 
 		NDSRanking ranking = new NDSRanking(true,random);
 		ret = new Population(objectives);
@@ -367,7 +367,7 @@ public class test {
 		ret.add(new Solution(a));
 		a.setSkillFactor(0);
 
-		BuiltInRandom random = new BuiltInRandom(214);
+		BuildInRandom random = new BuildInRandom(214);
 		NDSRanking ranking = new NDSRanking(true,random);
 
 		ranking.setPop(ret);

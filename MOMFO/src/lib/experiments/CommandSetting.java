@@ -73,7 +73,7 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 		return parameter.keySet();
 	}
 
-	public Object put(String key, Object value) {
+	public CommandSetting put(String key, Object value) {
 		if (!parameter.containsKey(key))
 			parameter.put(key, value);
 		
