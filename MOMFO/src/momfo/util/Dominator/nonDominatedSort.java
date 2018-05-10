@@ -3,14 +3,15 @@ package momfo.util.Dominator;
 import java.util.ArrayList;
 import java.util.List;
 
+import lib.math.BuiltInRandom;
 import momfo.core.Population;
 import momfo.core.Solution;
 import momfo.util.JMException;
 
 public class nonDominatedSort extends Dominance{
 
-	public nonDominatedSort(double[] ref) {
-		super(ref);
+	public nonDominatedSort(double[] ref,boolean isMax_,BuiltInRandom random_){
+		super(ref,isMax_,random_);
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
 

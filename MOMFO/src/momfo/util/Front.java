@@ -3,6 +3,7 @@ package momfo.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import lib.math.BuiltInRandom;
 import lib.math.Permutation;
 import momfo.core.Population;
 import momfo.util.Comparator.Comparator;
@@ -17,7 +18,10 @@ public class Front {
 
 	private int nOfD_ = -1;
 
+
 	private List<POINT>  Front_;
+
+	private BuiltInRandom random;
 
 	public Front(){
 		Front_ = new ArrayList<POINT>();
@@ -32,6 +36,9 @@ public class Front {
 		return ret;
 	}
 
+	public void setRandomGenerator(BuiltInRandom random_){
+		random =  random_;
+	}
 
 	public Front(double[][] Font){
 		assert Font.length > 0 : "initialither in Front ::  argment has no size ";
@@ -253,9 +260,8 @@ public class Front {
 	public double[] getNadia(boolean isMAX){
 		double[] d = this.get(0).get().clone();
 
-		Comparator comp = new DominationComparator(null); //DominaitonComaparatorでなくてもよい
-		comp.setIs(isMAX);
-		
+		Comparator comp = new DominationComparator(isMAX,random); //DominaitonComaparatorでなくてもよい
+
 
 		for(int i=0;i<this.size();i++){
 			for(int j=0;j<this.getDimension();j++){

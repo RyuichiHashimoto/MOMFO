@@ -3,7 +3,7 @@ package lib.math;
 public class BuiltInRandom {
 	private MersenneTwisterFast random = new MersenneTwisterFast(1995);
 
-	public void set_seed(int s){
+	public void setSeed(int s){
 		random.setSeed(s);
 //		random = new MersenneTwisterFast(s);
 	}
@@ -12,6 +12,8 @@ public class BuiltInRandom {
 		random.setSeed(seed);
 	}
 
+		
+	
 	public  double nextDoubleII(){
 		return random.nextDoubleII();
 	}

@@ -8,12 +8,12 @@ import momfo.util.ScalarzingFunction.ScalarzingFunction;
 
 public class NomalMOEADComapator extends MOEADComparator {
 
-	public NomalMOEADComapator(HashMap<String, Object> parameters) {
+	public NomalMOEADComapator(HashMap<String, Object> parameters) throws JMException {
 		super(parameters);
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
 
-	public NomalMOEADComapator(HashMap<String, Object> parameters, ScalarzingFunction set) {
+	public NomalMOEADComapator(HashMap<String, Object> parameters, ScalarzingFunction set) throws JMException {
 		super(parameters, set);
 	}
 

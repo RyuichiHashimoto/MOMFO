@@ -1,0 +1,59 @@
+e# These Hyervolumes can be calculated exactly in double precision
+-
+  file: obj2_run100.csv
+  data:
+    - reference: [0.0, 0.0]
+      hv: !!float 3.8985360788E8
+-
+  file: o2_100.csv
+  data:
+    - reference: [0.0, 0.0]
+      hv: 390826053.
+-
+  file: greedyselection3.csv
+  data:
+    - hv: 7889997319123.
+      reference: [0.0, 0.0, 0.0]
+# not necessarily caluculated exactly
+-
+  file: 3obj_100itm.csv
+  data:
+    - hv: !!float 5.6004552925E10
+      reference: [0., 0., 0.]
+-
+  file: 3obj_to3.csv
+  data:
+    - hv: !!float 8.015853341026E12
+      reference: [0., 0., 0.]
+-
+  file: obj3.csv
+  data:
+    - hv: !!float 7.29228549012534960938e+12
+      reference: [0., 0., 0.]
+-
+  file: hv3.csv
+  data:
+    - hv: !!float 6.59883933975440039062e12
+      reference: [0.0, 0.0, 0.0]
+-
+  file: 3obj1000p.csv
+  data:
+    - hv: 1.05211259808326901357e+32
+      reference: [0.0, 0.0, 0.0]
+-
+  file: obj4.csv
+  data:
+    - hv: 1.22004850299651120000e+17
+      reference: [0., 0., 0., 0.]
+-
+  file: obj6.csv
+  data:
+    - hv: !!float 3.6967875100406905E25
+      reference: [0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+-
+  file: obj10_run100.csv
+  data:
+    - hv: !!float 3.84745098239672378712e+42
+      reference: [0., 0., 0., 0., 0., 0., 0., 0., 0., 0.]
+    - hv: !!float 6.35757360095413960046e+38
+      reference: [10000., 10000., 10000., 10000., 10000., 10000., 10000., 10000., 10000., 10000.]

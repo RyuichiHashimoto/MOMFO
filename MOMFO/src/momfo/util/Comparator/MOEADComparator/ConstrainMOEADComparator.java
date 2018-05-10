@@ -8,12 +8,12 @@ import momfo.util.ScalarzingFunction.ScalarzingFunction;
 
 public class  ConstrainMOEADComparator extends MOEADComparator{
 
-	public ConstrainMOEADComparator(HashMap<String, Object> parameters) {
+	public ConstrainMOEADComparator(HashMap<String, Object> parameters) throws JMException {
 		super(parameters);
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
 
-	public ConstrainMOEADComparator(HashMap<String, Object> parameters,ScalarzingFunction d ){
+	public ConstrainMOEADComparator(HashMap<String, Object> parameters,ScalarzingFunction d ) throws JMException{
 		super(parameters,d);
 	}
 

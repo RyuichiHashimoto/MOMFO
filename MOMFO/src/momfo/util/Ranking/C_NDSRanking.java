@@ -3,6 +3,7 @@ package momfo.util.Ranking;
 import java.util.ArrayList;
 import java.util.List;
 
+import lib.math.BuiltInRandom;
 import momfo.core.Population;
 import momfo.core.Solution;
 import momfo.util.JMException;
@@ -30,9 +31,12 @@ public class C_NDSRanking {
 
 	boolean isMAX_;
 
-	public C_NDSRanking(boolean s) {
+	BuiltInRandom random ;
+
+	public C_NDSRanking(boolean s,BuiltInRandom random_){
 		isMAX_ = s;
-		comparator_ = new DominationComparator(s);
+		random = random_;
+		comparator_ = new DominationComparator(s,random);
 	}
 
 	DominationComparator comparator_;

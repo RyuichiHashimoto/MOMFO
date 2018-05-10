@@ -8,12 +8,12 @@ import momfo.util.JMException;
 
 public abstract class Indicator {
 
-	BuiltInRandom Random;
-	
-	public void setRandom(BuiltInRandom  random){
-		Random = random;
+	BuiltInRandom random;
+
+	public void setRandom(BuiltInRandom  random_){
+		random = random_;
 	}
-	
+
 	protected static boolean isMAXproblem_;
 
 	public void setMAXProblem(){

@@ -42,7 +42,6 @@ import momfo.operators.crossover.DECrossover;
 import momfo.operators.crossover.DESpecialCareCrossover;
 import momfo.util.JMException;
 import momfo.util.Neiborhood;
-import momfo.util.Random;
 import momfo.util.WeightedVector;
 import momfo.util.Comparator.MOEADComparator.MOEADComparator;
 import momfo.util.Comparator.MOEADComparator.NomalMOEADComapator;
@@ -187,7 +186,7 @@ public class MultitaskMOEAD_DE extends Algorithm {
 		}
 
 		int[] permutation = new int[totalPopulationSize_];
-		Permutation.randomPermutation(permutation,totalPopulationSize_);
+		Permutation.randomPermutation(permutation,totalPopulationSize_,random);
 
 		Solution offSpring;
 
@@ -351,7 +350,7 @@ public class MultitaskMOEAD_DE extends Algorithm {
 				weight = weight_one;
 			}
 			a.setWeightedVector(weight);
-			a.setNeiborhood(Math.max(sizeOfNeiborhoodRepleaced_[t],sizeOfMatingNeiborhood_[t]));
+			a.setNeiborhood(Math.max(sizeOfNeiborhoodRepleaced_[t],sizeOfMatingNeiborhood_[t]),random);
 			neighborhood_[t] = a.getNeiborhood().clone();
 			WeightedVector_[t]       = a.getWeight().clone();
 		}
@@ -360,7 +359,7 @@ public class MultitaskMOEAD_DE extends Algorithm {
 	public void initPopulation() throws JMException, ClassNotFoundException {
 		for(int t = 0 ; t < problemSet_.countProblem();t++){
 	 		for (int i = 0; i < populationSize_[t]; i++) {
-				Solution newSolution = new Solution(problemSet_, i%problemSet_.countProblem());
+				Solution newSolution = new Solution(problemSet_, i%problemSet_.countProblem(),random);
 //				Solution newSolution = new Solution(problemSet_.get(t));
 
 				problemSet_.get(t).repair(newSolution,null);
@@ -396,19 +395,19 @@ public class MultitaskMOEAD_DE extends Algorithm {
 
 
 		//他タスクを解く個体との交叉
-		if (Random.nextDoubleIE() < rmp){
+		if (random.nextDoubleIE() < rmp){
 			returnflag = true;
 			do {
-				taskID = Random.nextIntIE(problemSet_.countProblem());
+				taskID = random.nextIntIE(problemSet_.countProblem());
 			} while(taskID == tasknumber);
 
-			p = Random.nextIntIE(populationSize_[taskID]);
+			p = random.nextIntIE(populationSize_[taskID]);
 			flag = true;
 			pop_list.addElement(p);
 			task_list.addElement(taskID);
 			taskID = tasknumber;
 
-			r = Random.nextIntIE(ss);
+			r = random.nextIntIE(ss);
 			p = neighborhood_[taskID][cid][r];
 
 			pop_list.addElement(p); //近傍を取る
@@ -420,7 +419,7 @@ public class MultitaskMOEAD_DE extends Algorithm {
 			while (pop_list.size() < size) {
 
 				taskID = tasknumber;
-				r = Random.nextIntIE(ss);
+				r = random.nextIntIE(ss);
 				p = neighborhood_[taskID][cid][r];
 
 				flag = true;
@@ -504,7 +503,7 @@ public class MultitaskMOEAD_DE extends Algorithm {
 		int[] perm = new int[size];
 
 		// generate teh random permutation.
-		Permutation.randomPermutation(perm, size);
+		Permutation.randomPermutation(perm, size,random);
 
 
 		for (int i = 0; i < size; i++) {

@@ -72,14 +72,14 @@ public class tester {
 		double retval = 0;
 		for(int i=0;i<f_.length;i++){
 //			f_[i].subscript();
-			WFGHV d = new WFGHV(ret);
+			WFGHV d = new WFGHV(ret,null);
 			try {
 				Front front_ = new Front(f_[i]);
 				double dretval = d.wfg(front_,ret, it);
 
 				for(int j = 0 ; j < f_[i].size();j++){
 					Front sss = new Front(f_[i]);
-					d = new WFGHV(ret);
+					d = new WFGHV(ret,null);
 					sss.remove(j);
 					retval = dretval - d.wfg(sss, ret, it);
 					contribution[i] =  retval;
@@ -165,7 +165,7 @@ public class tester {
 		double average = 0;
 		double retval = 0;
 		for(int i=0;i<f_.length;i++){
-			WFGHV d = new WFGHV(ret);
+			WFGHV d = new WFGHV(ret,null);
 			try {
 				retval = d.wfg(f_[i], ret, it);
 				average += retval / f_.length;

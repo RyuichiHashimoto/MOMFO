@@ -1,5 +1,6 @@
 package momfo.Indicator.Hypervolume;
 
+import lib.math.BuiltInRandom;
 import momfo.Indicator.Indicator;
 import momfo.util.Front;
 import momfo.util.POINT;
@@ -10,65 +11,70 @@ public abstract class HypervolumeCalculator extends Indicator {
 
 	protected ReferencePoint referencePoint_;
 
-
 	int nObj = 0;
 
-	protected static DominationComparator Dominator = new DominationComparator(null);
+	final protected  DominationComparator Dominator;
 
-	public HypervolumeCalculator(){
 
+	public HypervolumeCalculator(BuiltInRandom random){
+		Dominator = new DominationComparator(false,random);
 	}
 
-
-	public HypervolumeCalculator(double[] ReferencePoint){
+	public HypervolumeCalculator(double[] ReferencePoint,BuiltInRandom random){
+		Dominator = new DominationComparator(false,random);
 		referencePoint_ = new ReferencePoint(ReferencePoint);
 	}
 
-	public HypervolumeCalculator(ReferencePoint ReferencePoint){
+	public HypervolumeCalculator(ReferencePoint ReferencePoint,BuiltInRandom random) {
+		Dominator = new DominationComparator(false,random);
 		referencePoint_ = new ReferencePoint(ReferencePoint);
 	}
 
-	public void setReferencePoint(ReferencePoint d ){
+	public void setReferencePoint(ReferencePoint d) {
 		referencePoint_ = new ReferencePoint(d);
 	}
 
-	public void setReferencePoint(double[] ReferencePoint){
+	public void setReferencePoint(double[] ReferencePoint) {
 		referencePoint_ = new ReferencePoint(ReferencePoint);
 	}
 
-	public POINT getReferencePoint(){
+	public POINT getReferencePoint() {
 		return referencePoint_;
 	}
 
-
-	public void setMAXProblem(){
+	public void setMAXProblem() {
 		Dominator.setIsMAX();
 		isMAXproblem_ = true;
 	}
-	public void setMINProblem(){
+
+	public void setMINProblem() {
 		Dominator.setIsMIN();
 		isMAXproblem_ = false;
 	}
 
-	public Front nds(Front pop){
-//		return nonDominatedSelection.nonDominatedSelection(pop, Dominator.get());
+	public Front nds(Front pop) {
+		// return nonDominatedSelection.nonDominatedSelection(pop,
+		// Dominator.get());
 		return null;
 	}
-	public Front ndswithoutsamepoint(Front pop){
-	//	return nonDominatedSelection.nonDominatedSelectionWithoutSamePoint(pop, Dominator.get());
+
+	public Front ndswithoutsamepoint(Front pop) {
+		// return
+		// nonDominatedSelection.nonDominatedSelectionWithoutSamePoint(pop,
+		// Dominator.get());
 		return null;
 	}
-	public double inclhv(POINT d){
-//		assert d.getDimension() <= nObj : "the dimension of POINT is " + d.getDimension();
+
+	public double inclhv(POINT d) {
+		// assert d.getDimension() <= nObj : "the dimension of POINT is " +
+		// d.getDimension();
 		double ret = 1.0;
-		for(int i=0;i<nObj;i++){
+		for (int i = 0; i < nObj; i++) {
 			ret = ret * (d.get(i) - referencePoint_.get(i));
 		}
 
 		return ret;
 	}
-
-
 
 	public double iex2(Front points) {
 		assert points.size() == 2 : "Point size is " + points.size();

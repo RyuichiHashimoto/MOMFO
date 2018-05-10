@@ -7,7 +7,7 @@ import momfo.util.JMException;
 
 public class SMSEMOASelectionComparator extends SMSEMOAComparator {
 
-	public SMSEMOASelectionComparator(HashMap<String, Object> parameters) {
+	public SMSEMOASelectionComparator(HashMap<String, Object> parameters) throws JMException {
 		super(parameters);
 		// TODO 自動生成されたコンストラクター・スタブ
 	}

@@ -1,6 +1,6 @@
 package momfo.metaheuristics.moead;
 
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 import javax.naming.NameNotFoundException;
 

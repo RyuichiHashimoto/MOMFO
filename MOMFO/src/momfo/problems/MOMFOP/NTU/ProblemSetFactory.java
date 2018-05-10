@@ -166,9 +166,9 @@ public class ProblemSetFactory{
 			String problemName = problemNameSet[p] ;
 			ProblemSet problemSet = getProblemSet(problemName);
 
-			Solution sol = new Solution(problemSet,0);
+			Solution sol = new Solution(problemSet,0,null);
 			for(int val = 0 ; val < sol.getNumberOfVariables();val++){
-				sol.setValue(val, 0.3);				
+				sol.setValue(val, 0.3);
 			}
 			problemSet.get(0).evaluate(sol);
 
@@ -180,7 +180,7 @@ public class ProblemSetFactory{
 			System.out.println();
 			System.out.print(problemName + "	Task2	");
 
-			sol = new Solution(problemSet,1);
+			sol = new Solution(problemSet,1,null);
 
 			for(int val = 0 ; val < sol.getNumberOfVariables();val++){
 				sol.setValue(val, 0.3);
@@ -193,8 +193,8 @@ public class ProblemSetFactory{
 			}
 			System.out.println();
 			System.out.print(problemName + "	Task3	");
-			
-			sol = new Solution(problemSet,2);
+
+			sol = new Solution(problemSet,2,null);
 
 			for(int val = 0 ; val < sol.getNumberOfVariables();val++){
 				sol.setValue(val, 0.3);

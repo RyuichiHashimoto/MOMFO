@@ -33,7 +33,7 @@ import momfo.util.Comparator.DominationComparator;
 
 public class IHyperVolume  extends Indicator{
 
-	public static Comparator comparator_ = new DominationComparator(null);
+	public static Comparator comparator_ = new DominationComparator(false, null);
 
 
 	public static void  setMIN(){
@@ -162,11 +162,11 @@ public class IHyperVolume  extends Indicator{
 
 	private static double[] IHVOver4D(Front d) throws JMException {
 		double[] ret = new double[d.size()];
-		WFGHV wfghv_ = new WFGHV(referencePoint_);
+		WFGHV wfghv_ = new WFGHV(referencePoint_,null);
 		// contribution v in S is calclated by the (HV(S) - HV(S/v))
 		// HV(S) is same, So we calclated only HV(S/v)
 		for(int i=0;i<d.size();i++){
-			 wfghv_ = new WFGHV(referencePoint_);
+			 wfghv_ = new WFGHV(referencePoint_,null);
 			 ret[i] = wfghv_.exclhv(d,i,referencePoint_,comparator_.get());
 		}
 		return ret;
@@ -234,7 +234,7 @@ public class IHyperVolume  extends Indicator{
 */
 	public static void main(String[] argv){
 		System.out.println("start");
-		
+
 		//double base = 		tester.test(false,"DTLZ3OBJ.csv");
 		double[] ret = new double[91];
 

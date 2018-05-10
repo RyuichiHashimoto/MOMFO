@@ -22,6 +22,7 @@
 package momfo.metaheuristics.MultitaskMOEAD;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
@@ -40,7 +41,6 @@ import momfo.core.ProblemSet;
 import momfo.core.Solution;
 import momfo.util.JMException;
 import momfo.util.Neiborhood;
-import momfo.util.Random;
 import momfo.util.WeightedVector;
 import momfo.util.Comparator.MOEADComparator.MOEADComparator;
 import momfo.util.Comparator.MOEADComparator.NomalMOEADComapator;
@@ -170,12 +170,12 @@ public class MultitaskMOEAD extends Algorithm {
 			}
 			//IGD計算
 			igd[0] = counter;
-			igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_[t].getAllObjectives(),calc, IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t)));
+			igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_[t].getAllObjectives(),calc, IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t),random));
 			replacingRate.add(new ArrayList<double []>(d));
 
 			setOutputParameter("InitialFUN"+t,population_[t].get(0).getObjectives());
 			setOutputParameter("InitialVAR"+t,population_[t].get(1).getValue());
-			
+
 			d.add(igd.clone());
 			igdHistory.add(new ArrayList<double []>(d));
 			cont[t] = false;
@@ -186,7 +186,7 @@ public class MultitaskMOEAD extends Algorithm {
 		}
 
 		int[] permutation = new int[totalPopulationSize_];
-		Permutation.randomPermutation(permutation,totalPopulationSize_);
+		Permutation.randomPermutation(permutation,totalPopulationSize_,random);
 
 		Solution offSpring;
 
@@ -262,7 +262,7 @@ public class MultitaskMOEAD extends Algorithm {
 			}
 			for(int t = 0 ;t < numberOfTasks;t++){
 				igd[0] = counter;
-				igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_[t].getAllObjectives(), IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t)));
+				igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_[t].getAllObjectives(), IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t),random));
 				igdHistory.get(t).add(igd.clone());
 
 				Replacing[0] = counter;
@@ -282,12 +282,12 @@ public class MultitaskMOEAD extends Algorithm {
 	//	if(outNormal_)population_.Normalization();
 		for(int t=0;t < problemSet_.countProblem();t++){
 			fileSubscription. printToFile(directoryname.replace("Task1", "Task"+String.valueOf(t+1)) + "/IGDHistory/"+"IGD"+time+".dat",igdHistory.get(t));
-			
+
 			fileSubscription. printToFile(directoryname.replace("Task1", "Task"+String.valueOf(t+1)) + "/ReplacingRateHistory/"+"ReplacingRate"+time+".dat",replacingRate.get(t));
 //			fileSubscription. printToFile(directoryname.replace("Task1", "Task"+String.valueOf(t+1)) + "/Animation/"+"Dat"+time+".dat",igdHistory.get(t));
 			population_[t].printVariablesToFile(directoryname.replace("Task1", "Task"+String.valueOf(t+1))  + "/FinalVAR/FinalVAR" + time + ".dat");
 			population_[t].printObjectivesToFile(directoryname.replace("Task1", "Task"+String.valueOf(t+1))  +  "/FinalFUN/FinalFUN" + time + ".dat");
-			
+
 			setOutputParameter("IGD"+(t+1),igdHistory.get(t).get(igdHistory.get(t).size()-1)[1]);
 			setOutputParameter("FinalFUN"+(t+1),population_[t].get(0).getObjectives());
 			setOutputParameter("FinalVAR"+(t+1),population_[t].get(1).getValue());
@@ -353,7 +353,7 @@ public class MultitaskMOEAD extends Algorithm {
 				weight = weight_one;
 			}
 			a.setWeightedVector(weight);
-			a.setNeiborhood(Math.max(sizeOfNeiborhoodRepleaced_[t],sizeOfMatingNeiborhood_[t]));
+			a.setNeiborhood(Math.max(sizeOfNeiborhoodRepleaced_[t],sizeOfMatingNeiborhood_[t]),random);
 			neighborhood_[t] = a.getNeiborhood().clone();
 			WeightedVector_[t]       = a.getWeight().clone();
 		}
@@ -362,7 +362,7 @@ public class MultitaskMOEAD extends Algorithm {
 	public void initPopulation() throws JMException, ClassNotFoundException {
 		for(int t = 0 ; t < problemSet_.countProblem();t++){
 	 		for (int i = 0; i < populationSize_[t]; i++) {
-				Solution newSolution = new Solution(problemSet_, i%problemSet_.countProblem());
+				Solution newSolution = new Solution(problemSet_, i%problemSet_.countProblem(),random);
 //				Solution newSolution = new Solution(problemSet_.get(t));
 
 				problemSet_.get(t).repair(newSolution,null);
@@ -398,18 +398,18 @@ public class MultitaskMOEAD extends Algorithm {
 
 
 		//他タスクを解く個体との交叉
-		if (Random.nextDoubleIE() < rmp){
+		if (random.nextDoubleIE() < rmp){
 			returnflag = true;
 			do {
-				taskID = Random.nextIntIE(problemSet_.countProblem());
+				taskID = random.nextIntIE(problemSet_.countProblem());
 			} while(taskID == tasknumber);
 
-			p = Random.nextIntIE(populationSize_[taskID]);
+			p = random.nextIntIE(populationSize_[taskID]);
 			flag = true;
 			pop_list.addElement(p);
 			task_list.addElement(taskID);
 			taskID = tasknumber;
-			r = Random.nextIntIE(ss);
+			r = random.nextIntIE(ss);
 			p = neighborhood_[taskID][cid][r];
 			pop_list.addElement(p);
 			task_list.addElement(taskID);
@@ -418,7 +418,7 @@ public class MultitaskMOEAD extends Algorithm {
 			while (pop_list.size() < size) {
 
 				taskID = tasknumber;
-				r = Random.nextIntIE(ss);
+				r = random.nextIntIE(ss);
 				p = neighborhood_[taskID][cid][r];
 
 				flag = true;
@@ -457,7 +457,7 @@ public class MultitaskMOEAD extends Algorithm {
 		int[] perm = new int[size];
 
 		// generate teh random permutation.
-		Permutation.randomPermutation(perm, size);
+		Permutation.randomPermutation(perm, size,random);
 
 
 		for (int i = 0; i < size; i++) {
@@ -491,8 +491,8 @@ public class MultitaskMOEAD extends Algorithm {
 
 		comparator = new MOEADComparator[numberOfTasks];
 		evaluations_ = new int[numberOfTasks];
-		crossover_ = operators_.get("crossover");
-		mutation_ = operators_.get("mutation");
+		crossover_ = getOperator("crossover");
+		mutation_ = getOperator("mutation");
 		alpha = ((double)this.getInputParameter("alphar"));
 
 		sizeOfNeiborhoodRepleaced_ = new int[numberOfTasks];// ((Integer)this.getInputParameter("sizeOfNeiborhoodRepleaced_"));
@@ -510,6 +510,9 @@ public class MultitaskMOEAD extends Algorithm {
 		indArray_ = new Solution[numberOfTasks][];
 		maxEvaluations = new int[numberOfTasks];
 
+		HashMap<String,Object> parameter = new HashMap<String,Object>();
+		parameter.put("RandomGenerator",random);
+
 		for(int t =0;t < numberOfTasks;t++){
 			DirectoryMaker.Make(directoryname.replace("Task1", "Task"+String.valueOf(t+1)) + "/ReplacingRateHistory");
 
@@ -518,9 +521,8 @@ public class MultitaskMOEAD extends Algorithm {
 			numberOfDivision_[t] = ((Integer)this.getInputParameter("numberOfDivision"+ String.valueOf(1+t))).intValue();
 			numberofObjectives_[t] =problemSet_.get(t).getNumberOfObjectives();
 			ScalarzingFunction_[t] = ScalarzingFunctionFactory.getScalarzingFunctionOperator(ScalarzingFunctionName[t],(Double)this.getInputParameter("PBITheta"+String.valueOf(t+1)));
-
 			functionType_[t] = ScalarzingFunction_[t].getFunctionName();
-			comparator[t] =  new NomalMOEADComapator(null,ScalarzingFunction_[t]);
+			comparator[t] =  new NomalMOEADComapator(parameter,ScalarzingFunction_[t]);
 			evaluations_[t] = 0;
 			rmp = ((Double)this.getInputParameter("rmp"));
 			sizeOfNeiborhoodRepleaced_[t] = ((Integer)this.getInputParameter("sizeOfNeiborhoodRepleaced_"+String.valueOf(t+1)));

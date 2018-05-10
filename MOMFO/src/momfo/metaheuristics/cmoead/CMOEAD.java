@@ -34,7 +34,6 @@ import momfo.core.Problem;
 import momfo.core.Solution;
 import momfo.util.JMException;
 import momfo.util.Neiborhood;
-import momfo.util.Random;
 import momfo.util.WeightedVector;
 import momfo.util.Comparator.MOEADComparator.ConstrainSumMOEADComparator;
 import momfo.util.Comparator.MOEADComparator.MOEADComparator;
@@ -186,7 +185,7 @@ public class CMOEAD extends Algorithm {
 
 
 		int[] permutation = new int[populationSize_];
-		Permutation.randomPermutation(permutation,populationSize_);
+		Permutation.randomPermutation(permutation,populationSize_,random);
 
 
 
@@ -213,7 +212,7 @@ public class CMOEAD extends Algorithm {
 				Solution[] offSpring;
 				offSpring = (Solution[]) crossover_.execute(parents);
 
-				if (Random.nextDoubleIE() < 0.5){
+				if (random.nextDoubleIE() < 0.5){
 					child = new Solution(offSpring[0]);
 				} else {
 					child = new Solution(offSpring[1]);
@@ -341,7 +340,7 @@ public class CMOEAD extends Algorithm {
 		}
 
 		a.setWeightedVector(weight);
-		a.setNeiborhood(sizeOfNeiborhoodRepleaced_);
+		a.setNeiborhood(sizeOfNeiborhoodRepleaced_,random);
 		neighborhood_ = a.getNeiborhood();
 		WeightedVector_       = a.getWeight();
 	}
@@ -359,7 +358,7 @@ public class CMOEAD extends Algorithm {
 
 	public void initPopulation() throws JMException, ClassNotFoundException {
  		for (int i = 0; i < populationSize_; i++) {
-			Solution newSolution = new Solution(problem_);
+			Solution newSolution = new Solution(problem_,random);
 			problem_.repair(newSolution,null);
 			problem_.evaluate(newSolution);
 			evaluations_++;
@@ -370,7 +369,7 @@ public class CMOEAD extends Algorithm {
 
 
 	public void initReferencePoint() throws ClassNotFoundException, JMException{
-		Solution a = new Solution(problem_);
+		Solution a = new Solution(problem_,random);
 
 		for (int n = 0; n < problem_.getNumberOfObjectives(); n++) {
 				ReferencePoint_[n] =  a.getObjective(n);
@@ -389,7 +388,7 @@ public class CMOEAD extends Algorithm {
 		ss = sizeOfMatingNeiborhood_;
 		while (list.size() < size) {
 
-				r = Random.nextIntIE(ss);
+				r = random.nextIntIE(ss);
 				p = neighborhood_[cid][r];
 
 				// p = population[cid].table[r];
@@ -415,7 +414,7 @@ public class CMOEAD extends Algorithm {
 		ss = sizeOfMatingNeiborhood_;
 		while (list.size() < size) {
 
-				r = Random.nextIntIE(ss);
+				r =random.nextIntIE(ss);
 				p = neighborhood_[cid][r];
 				// p = population[cid].table[r];
 				list.addElement(p);
@@ -440,7 +439,7 @@ public class CMOEAD extends Algorithm {
 		int[] perm = new int[size];
 
 		// generate teh random permutation.
-		Permutation.randomPermutation(perm, size);
+		Permutation.randomPermutation(perm, size,random);
 
 
 		for (int i = 0; i < size; i++) {

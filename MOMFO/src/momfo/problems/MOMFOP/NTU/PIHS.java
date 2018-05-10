@@ -53,7 +53,7 @@ public class PIHS {
 
 	public static void main(String[] args) throws IOException, JMException {
 		ProblemSet problem = getT2();
-		Solution sol = new Solution(problem.get(0));
+		Solution sol = new Solution(problem.get(0),null);
 
 		for(int i =1;i<50;i++){
 			sol.setValue(i, 0.5);

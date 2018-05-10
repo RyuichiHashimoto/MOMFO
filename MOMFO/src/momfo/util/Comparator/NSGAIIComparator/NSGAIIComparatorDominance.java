@@ -9,7 +9,7 @@ import momfo.util.JMException;
 
 public class NSGAIIComparatorDominance extends NSGAIIComparator {
 
-	public NSGAIIComparatorDominance(HashMap<String, Object> parameters) {
+	public NSGAIIComparatorDominance(HashMap<String, Object> parameters) throws JMException {
 		super(parameters);
 		// TODO 自動生成されたコンストラクター・スタブ
 	}

@@ -16,7 +16,6 @@ import momfo.metaheuristics.Island.EnvironmentalSelection.NSGAIISelection;
 import momfo.operators.selection.ParentsSelection.BinaryTournament;
 import momfo.operators.selection.ParentsSelection.ParentsSelection;
 import momfo.util.JMException;
-import momfo.util.Random;
 import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorBinary;
 
 public class IslandModel extends Algorithm {
@@ -135,7 +134,7 @@ public class IslandModel extends Algorithm {
 			population[t] = new Population(populationSize[t]);
 			offSpring[t] = new Population(populationSize[t]);
 			for(int p = 0 ; p < populationSize[t];p++){
-				Solution newSolution = new Solution(problemSet_, t);
+				Solution newSolution = new Solution(problemSet_, t,random);
 				problemSet_.get(t).evaluate(newSolution);
 				evaluations[t]++;
 				population[t].add(new Solution(newSolution));
@@ -149,24 +148,24 @@ public class IslandModel extends Algorithm {
 		Solution[] parents = new Solution[2];
 		for(int p = 0; p  < populationSize[taskNumber];p++){
 			if (evaluations[taskNumber] == maxEvaluations[taskNumber]) break;
-			if(Random.nextDoubleIE() < rmp){
+			if(random.nextDoubleIE() < rmp){
 				int parentTaskNumber;
 				do {
-					parentTaskNumber= Random.nextIntIE(problemSet_.countProblem());
+					parentTaskNumber= random.nextIntIE(problemSet_.countProblem());
 				} while(parentTaskNumber == taskNumber);
-				int popIndex = Random.nextIntIE(currentArchive[parentTaskNumber].size());
+				int popIndex = random.nextIntIE(currentArchive[parentTaskNumber].size());
 				parents[0] = currentArchive[parentTaskNumber].get(popIndex);
 				parents[1] = population[taskNumber].get((Integer)parantsSelection[taskNumber].execute(population[taskNumber]));
 
-				
+
 				/*int popIndex = Random.nextIntIE(currentArchive[parentTaskNumber].size());
 				parents[0] = currentArchive[parentTaskNumber].get(popIndex);
-				int popIndex_2 = Random.nextIntIE(population[taskNumber].size());				
+				int popIndex_2 = Random.nextIntIE(population[taskNumber].size());
 				parents[1] = population[taskNumber].get(popIndex_2);*/
 			} else{
-/*				int popIndex = Random.nextIntIE(population[taskNumber].size());				
+/*				int popIndex = Random.nextIntIE(population[taskNumber].size());
 				parents[0] = population[taskNumber].get(popIndex);
-				int popIndex_2 = Random.nextIntIE(population[taskNumber].size());				
+				int popIndex_2 = Random.nextIntIE(population[taskNumber].size());
 				parents[1] = population[taskNumber].get(popIndex_2);
 */
 				parents[0] = population[taskNumber].get((Integer)parantsSelection[taskNumber].execute(population[taskNumber]));
@@ -189,7 +188,7 @@ public class IslandModel extends Algorithm {
 		population[taskNumber] =  environmentalSelection[taskNumber].getNextPopulation(empty);
 	}
 
-	public void setting(){
+	public void setting() throws JMException{
 		crossover = operators_.get("crossover"); // default: DE crossover
 		mutation = operators_.get("mutation"); // default: polynomial mutation
 		populationSize = new int[problemSet_.countProblem()];
@@ -213,9 +212,9 @@ public class IslandModel extends Algorithm {
 			evaluations[t] = 0;
 			parantsSelection[t] = new BinaryTournament(null,new NSGAIIComparatorBinary(null));
 
-			
+
 			isMax[t] = ((boolean)this.getInputParameter("IsMax"+String.valueOf(t+1)));
-			environmentalSelection[t] = new NSGAIISelection(populationSize[t],isMax[t],null);
+			environmentalSelection[t] = new NSGAIISelection(populationSize[t],isMax[t],null,random);
 
 		}
 		generation = 1;

@@ -38,7 +38,6 @@ import momfo.core.Problem;
 import momfo.core.Solution;
 import momfo.util.JMException;
 import momfo.util.Neiborhood;
-import momfo.util.Random;
 import momfo.util.WeightedVector;
 import momfo.util.Comparator.MOEADComparator.MOEADComparator;
 import momfo.util.Comparator.MOEADComparator.NomalMOEADComapator;
@@ -136,10 +135,10 @@ public class MOEAD extends Algorithm {
 		List<double[]> igdHistory = new ArrayList<double[]>();
 		double[] igd = new double[2];
 		igd[0] = counter;
-		igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber)));
+		igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber),random));
 		igdHistory.add(igd.clone());
 		int[] permutation = new int[populationSize_];
-		Permutation.randomPermutation(permutation,populationSize_);
+		Permutation.randomPermutation(permutation,populationSize_,random);
 		Solution offSpring;
 		boolean cont = true;
 
@@ -190,7 +189,7 @@ public class MOEAD extends Algorithm {
 //			population_.printObjectivesToFile(directoryname +  "/Animation/FUN" + generation + ".dat");
 
 			igd[0] = ++counter;
-			igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber)));
+			igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber),random));
 			igdHistory.add(igd.clone());
 		} while (cont);
 		System.out.print(evaluations_ +"	");
@@ -295,7 +294,7 @@ public class MOEAD extends Algorithm {
 		}
 
 		a.setWeightedVector(weight);
-		a.setNeiborhood(Math.max(sizeOfNeiborhoodRepleaced_,sizeOfMatingNeiborhood_));
+		a.setNeiborhood(Math.max(sizeOfNeiborhoodRepleaced_,sizeOfMatingNeiborhood_),random);
 		neighborhood_ = a.getNeiborhood();
 		WeightedVector_       = a.getWeight();
 	}
@@ -313,7 +312,7 @@ public class MOEAD extends Algorithm {
 
 	public void initPopulation() throws JMException, ClassNotFoundException {
  		for (int i = 0; i < populationSize_; i++) {
-			Solution newSolution = new Solution(problem_);
+			Solution newSolution = new Solution(problem_,random);
 			problem_.repair(newSolution,null);
 			problem_.evaluate(newSolution);
 			evaluations_++;
@@ -344,7 +343,7 @@ public class MOEAD extends Algorithm {
 //		System.out.println(sizeOfMatingNeiborhood_ + " 	");
 		while (list.size() < size) {
 
-				r = Random.nextIntIE(ss);
+				r = random.nextIntIE(ss);
 				p = neighborhood_[cid][r];
 
 				// p = population[cid].table[r];
@@ -369,7 +368,7 @@ public class MOEAD extends Algorithm {
 		ss = sizeOfMatingNeiborhood_;
 		while (list.size() < size) {
 
-				r = Random.nextIntIE(ss);
+				r = random.nextIntIE(ss);
 				p = neighborhood_[cid][r];
 				// p = population[cid].table[r];
 				list.addElement(p);
@@ -394,7 +393,7 @@ public class MOEAD extends Algorithm {
 		int[] perm = new int[size];
 
 		// generate teh random permutation.
-		Permutation.randomPermutation(perm, size);
+		Permutation.randomPermutation(perm, size,random);
 
 
 		for (int i = 0; i < size; i++) {

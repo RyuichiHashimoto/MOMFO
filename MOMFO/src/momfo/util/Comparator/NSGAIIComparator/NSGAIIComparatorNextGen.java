@@ -7,7 +7,7 @@ import momfo.util.JMException;
 
 public class NSGAIIComparatorNextGen extends NSGAIIComparator{
 
-	public NSGAIIComparatorNextGen(HashMap<String, Object> parameters) {
+	public NSGAIIComparatorNextGen(HashMap<String, Object> parameters) throws JMException {
 		super(parameters);
 		// TODO 自動生成されたコンストラクター・スタブ
 	}

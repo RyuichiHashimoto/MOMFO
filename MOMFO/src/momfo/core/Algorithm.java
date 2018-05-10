@@ -14,7 +14,7 @@ public abstract  class Algorithm implements Serializable {
 	protected ProblemSet problemSet_;
 
 	protected BuiltInRandom random;
-	
+
 	public ProblemSet getProblemSet(){
 		return problemSet_;
 	}
@@ -26,7 +26,7 @@ public abstract  class Algorithm implements Serializable {
 	public BuiltInRandom getRandom(){
 		return random;
 	}
-	
+
 	protected int tasknumber;
 	public void setTaskNumber(int d){
 		tasknumber = d;
@@ -48,7 +48,7 @@ public abstract  class Algorithm implements Serializable {
 		tasknumber = -1;
 		problem_ = null;
 		problemSet_ = d;
-	}	
+	}
 	protected boolean isMAX_;
 
 
@@ -67,7 +67,11 @@ public abstract  class Algorithm implements Serializable {
 	}
 
 	public Operator getOperator(String name) {
-		return operators_.get(name);
+		Operator ret = operators_.get(name);
+		ret.setRandomGenerator(random);
+
+
+		return ret;
 	}
 
 	public void setInputParameter(String name, Object object) {

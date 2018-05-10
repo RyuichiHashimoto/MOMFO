@@ -2,6 +2,7 @@
 
 import java.util.HashMap;
 
+import lib.math.BuiltInRandom;
 import momfo.core.Population;
 import momfo.core.Solution;
 import momfo.util.Front;
@@ -35,11 +36,11 @@ public class WFGHV extends HypervolumeCalculator {
 
 
 
-	public WFGHV(double[] ReferencePoint) {
-		super(ReferencePoint);
+	public WFGHV(double[] ReferencePoint,BuiltInRandom random){
+		super(ReferencePoint,random);
 	}
 	public WFGHV() {
-
+		super(null);
 	}
 
 

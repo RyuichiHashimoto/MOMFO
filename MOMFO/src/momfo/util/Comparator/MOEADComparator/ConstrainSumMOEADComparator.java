@@ -11,13 +11,13 @@ public class  ConstrainSumMOEADComparator extends MOEADComparator{
 
 	double parameter = 10;
 
-	public ConstrainSumMOEADComparator(HashMap<String, Object> parameters) {
+	public ConstrainSumMOEADComparator(HashMap<String, Object> parameters) throws JMException {
 		super(parameters);
 
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
 
-	public ConstrainSumMOEADComparator(HashMap<String, Object> parameters,ScalarzingFunction d ){
+	public ConstrainSumMOEADComparator(HashMap<String, Object> parameters,ScalarzingFunction d ) throws JMException{
 		super(parameters,d);
 
 		if(parameters != null)
@@ -25,7 +25,7 @@ public class  ConstrainSumMOEADComparator extends MOEADComparator{
 				parameter = (double)parameters.get("parameter");
 			}
 	}
-	public ConstrainSumMOEADComparator(HashMap<String, Object> parameters,ScalarzingFunction d , double para){
+	public ConstrainSumMOEADComparator(HashMap<String, Object> parameters,ScalarzingFunction d , double para) throws JMException{
 		super(parameters,d);
 		parameter = para;
 	}

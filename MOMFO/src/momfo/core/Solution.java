@@ -1,7 +1,7 @@
 package momfo.core;
 
+import lib.math.BuiltInRandom;
 import momfo.util.POINT;
-import momfo.util.Random;
 
 
 // Solution type  is　1 mean  that Solution Type is digit　
@@ -13,7 +13,8 @@ public class Solution {
 	ProblemSet problemSet_;
 
 	int multitaskID_;
-
+	
+	private final BuiltInRandom random;
 	
 	public int getMultitaskID(){
 		return multitaskID_;
@@ -181,13 +182,13 @@ public class Solution {
 
 	public void ramakeWithInt(){
 		for(int i = 0;i<numberOfVariables_;i++){
-			value_[i] = Random.nextIntII((int)Math.round(upperlimit_[i] - lowerlimit_[i])) +  lowerlimit_[i];
+			value_[i] = random.nextIntII((int)Math.round(upperlimit_[i] - lowerlimit_[i])) +  lowerlimit_[i];
 		}
 	}
 
 	public void remakeWithDouble(){
 		for(int i = 0;i<numberOfVariables_;i++){
-			value_[i] = lowerlimit_[i] + Random.nextDoubleII()*(upperlimit_[i]-lowerlimit_[i]);
+			value_[i] = lowerlimit_[i] + random.nextDoubleII()*(upperlimit_[i]-lowerlimit_[i]);
 		}
 	}
 
@@ -203,12 +204,12 @@ public class Solution {
 		return 		numberOftasks;
 	}
 
-	public Solution(ProblemSet a, int numberOfTasks){
+	public Solution(ProblemSet a, int numberOfTasks,BuiltInRandom random_){
 		numberOfVariables_ = a.getMaxDimension();
 		problemSet_ = a;
 		problem_ = a.get(numberOfTasks);
 		value_ = new double[numberOfVariables_];
-
+		random = random_;
 		factorialrank = new int[a.countProblem()];
 
 
@@ -249,11 +250,11 @@ public class Solution {
 		remake();
 	}
 
-	public Solution(Problem a){
+	public Solution(Problem a,BuiltInRandom random_){
 		problemSet_ = null;
 		problem_ = a;
 		numberOftasks =1;
-
+		random = random_;
  		scalarfitness = Double.MIN_VALUE;
  		value_ = new double[a.getNumberOfVariables()];
 		numberOfVariables_ = a.getNumberOfVariables();
@@ -288,6 +289,7 @@ public class Solution {
 		numberOfObjectives_ = numberOfObjective;
 		constrain_ = new double[numberOfObjective];
 		numberOfConstrain_ = numberOfObjective;
+		random  = null;
 
 	}
 	public void setFeasible(boolean d){
@@ -318,7 +320,8 @@ public class Solution {
 		return totalConstrain_;
 	}
 
-	public Solution(POINT a){
+	public Solution(POINT a,BuiltInRandom random_){
+		random = random_;
 		rank_ = Integer.MAX_VALUE;
 		value_ = null;
 		numberOfVariables_ = 0;
@@ -342,11 +345,40 @@ public class Solution {
 
 
 	}
+	public Solution(POINT a){
+		random = null;
+		rank_ = Integer.MAX_VALUE;
+		value_ = null;
+		numberOfVariables_ = 0;
+		numberOfObjectives_ = a.getDimension();
 
+		numberOfinfeasibleconstraint_ = Integer.MAX_VALUE;
+		totalConstrain_ = Double.MAX_VALUE;
+		feasibleSolution_ = false;
+		numberOfConstrain_ = Integer.MAX_VALUE;
+		constrain_ = null;
+
+		crowedDistance_ = Double.NEGATIVE_INFINITY;
+		upperlimit_ = null;
+		lowerlimit_ = null;
+		objective_ = new double[numberOfObjectives_];
+
+		for(int i = 0; i< numberOfObjectives_;i++){
+			objective_[i]= a.get(i);
+		}
+		DominatedRank_ = Integer.MAX_VALUE;
+
+
+	}
+	
+	public BuiltInRandom getRandomGenerator(){
+		return random;
+	}
 
 	public Solution(Solution a){
 		skillfactor_ = a.getSkillFactor();
 		rank_ = a.getRank();
+		random = a.getRandomGenerator();
 		value_ = new double[a.getNumberOfVariables()];
 		numberOfVariables_ = a.getNumberOfVariables();
 		numberOfObjectives_ = a.getNumberOfObjectives();

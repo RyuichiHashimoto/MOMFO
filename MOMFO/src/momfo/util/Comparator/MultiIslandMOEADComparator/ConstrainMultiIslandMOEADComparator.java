@@ -8,12 +8,12 @@ import momfo.util.ScalarzingFunction.ScalarzingFunction;
 
 public class ConstrainMultiIslandMOEADComparator extends MultiIslandMOEADComparator{
 
-	public ConstrainMultiIslandMOEADComparator(HashMap<String, Object> parameters) {
+	public ConstrainMultiIslandMOEADComparator(HashMap<String, Object> parameters) throws JMException {
 		super(parameters);
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
 
-	public ConstrainMultiIslandMOEADComparator(HashMap<String, Object> parameters,ScalarzingFunction[] d ) {
+	public ConstrainMultiIslandMOEADComparator(HashMap<String, Object> parameters,ScalarzingFunction[] d ) throws JMException {
 		super(parameters,d);
 	}
 	public void setScalarFunctionindex(int key){

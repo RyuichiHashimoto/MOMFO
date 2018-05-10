@@ -86,25 +86,30 @@ public class NSGAII extends Algorithm {
 	private boolean outNormal_;
 	private String directoryname;
 
-	public void setting(){
+	public void setting() throws JMException{
 		evaluations_  = 0;
-		comparator_binary = new NSGAIIComparatorBinary(parameters);
 
+		parameters = new HashMap<String,Object>();
+
+		parameters.put("RandomGenerator",random);
+		comparator_binary = new NSGAIIComparatorBinary(parameters);
 		comparator_nextGen = new NSGAIIComparatorNextGen(parameters);
 		comparator_Dominance = new NSGAIIComparatorDominance(parameters);
+
 		maxEvaluations_ = ((Integer) this.getInputParameter("maxEvaluations")).intValue();
 		isMAX_    = ((boolean)this.getInputParameter("ismax"));
 		comparator_binary.setIs(isMAX_);
 		comparator_nextGen.setIs(isMAX_);
 		comparator_Dominance.setIs(isMAX_);
 		selection_ = new BinaryTournament(null,comparator_binary);
+		selection_.setRandomGenerator(random);
 	//	outNormal_ = ((boolean) this.getInputParameter("outputNormal"));
 		outNormal_ = false;
 		directoryname = ((String) this.getInputParameter("DirectoryName"));
 		generation=0;
 		populationSize_ = ((Integer)this.getInputParameter("populationSize"));
-		crossover_ = operators_.get("crossover"); // default: DE crossover
-		mutation_ = operators_.get("mutation"); // default: polynomial mutation
+		crossover_ = getOperator("crossover"); // default: DE crossover
+		mutation_ = getOperator("mutation"); // default: polynomial mutation
 		int time = ((Integer) this.getInputParameter("times")).intValue();
 	}
 
@@ -122,7 +127,7 @@ public class NSGAII extends Algorithm {
 		List<double[]> igdHistory = new ArrayList<double[]>();
 		double[] igd = new double[2];
 		int counter = 0;
-		NDSRanking ranking = new NDSRanking(isMAX_);
+		NDSRanking ranking = new NDSRanking(isMAX_,random);
 		ranking.setPop(population_);
 		ranking.Ranking();
 		for(int i=0;i<ranking.getworstrank();i++){
@@ -130,7 +135,7 @@ public class NSGAII extends Algorithm {
 		}
 		ranking = null;
 		igd[0] = counter;
-		igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber)));
+		igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber),random));
 //		igd[1] = (IGD.CalcIGD(population_.getAllObjectives(), IGDRef.getRefs(tasknumber)));
 
 		igdHistory.add(igd.clone());
@@ -147,11 +152,11 @@ public class NSGAII extends Algorithm {
 
 			igd[0] = counter;
 
-			NDSRanking ranki_ = new NDSRanking(false);
+			NDSRanking ranki_ = new NDSRanking(false,random);
 			ranki_.setPop(population_);
 			ranki_.Ranking();
 //			igd[1] = (IGD.CalcNormalizeIGD_To_No(ranki_.get(0).getAllObjectives(), IGDRef.getRefs(tasknumber)));
-			igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber)));
+			igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber),random));
 			igdHistory.add(igd.clone());
 			population_.printObjectivesToFile(directoryname +  "/Animation/FUN" + generation + ".dat");
 
@@ -196,7 +201,7 @@ public class NSGAII extends Algorithm {
 	public void initPopulation() throws JMException, ClassNotFoundException {
 		population_ = new Population(populationSize_);
  		for (int i = 0; i < populationSize_; i++) {
-			Solution newSolution = new Solution(problem_);
+			Solution newSolution = new Solution(problem_,random);
 			problem_.repair(newSolution,null);
 			evaluations_++;
 			problem_.evaluate(newSolution);
@@ -208,7 +213,7 @@ public class NSGAII extends Algorithm {
 
 	private void GotoNextGeneration() throws JMException{
 
-		NDSRanking Ranking = new NDSRanking(isMAX_);
+		NDSRanking Ranking = new NDSRanking(isMAX_,random);
 		Ranking.setPop(merge_);
 
 		Ranking.Ranking();

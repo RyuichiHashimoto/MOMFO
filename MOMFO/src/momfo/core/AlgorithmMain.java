@@ -5,8 +5,8 @@ import javax.naming.NameNotFoundException;
 import experiments.Setting;
 import experiments.SettingWriter;
 import lib.directory.DirectoryMaker;
+import lib.math.BuiltInRandom;
 import momfo.util.JMException;
-import momfo.util.Random;
 
 /*
  * ここでアルゴリズムの実行を行う．
@@ -26,6 +26,8 @@ public abstract class AlgorithmMain implements Runnable{
 	protected Algorithm algorithm;
 
 
+	BuiltInRandom random;
+
 	//0は独立探索，1はマルチタスク
 	int AlgorithmType_;
 
@@ -38,7 +40,7 @@ public abstract class AlgorithmMain implements Runnable{
 	public Algorithm getAlgorithm(){
 		return algorithm;
 	}
-	
+
 	public AlgorithmMain(Setting test){
 		setting_ = test;
 		try {
@@ -79,7 +81,7 @@ public abstract class AlgorithmMain implements Runnable{
 		}
 	}
 	public final void setSeed(int seed){
-		Random.set_seed(seed);
+		random.setSeed(seed);
 	}
 
 	//実際に実行する場所
@@ -89,10 +91,12 @@ public abstract class AlgorithmMain implements Runnable{
 		int counter=0;
 		long initTime = System.currentTimeMillis();
 		int  NumberOfRun = setting_.getAsInt("NumberOfTrial");
+		random = new BuiltInRandom(100);
 		do {
-			counter++;
 
-			setSeed(nowTrial + counter + setting_.getAsInt("Seed"));
+			counter++;
+			random.setSeed(nowTrial + counter + setting_.getAsInt("Seed"));
+			algorithm.setRandom(random);
 			algorithm.setInputParameter("times",nowTrial+counter);
 			algorithm.setTaskNumber(tasknumber);
 			System.out.println("Task"+String.valueOf(tasknumber+1)+"	"+counter + "th start");

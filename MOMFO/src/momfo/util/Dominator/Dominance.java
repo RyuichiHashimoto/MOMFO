@@ -1,5 +1,6 @@
 package momfo.util.Dominator;
 
+import lib.math.BuiltInRandom;
 import momfo.core.Population;
 import momfo.util.JMException;
 import momfo.util.Comparator.Comparator;
@@ -9,10 +10,16 @@ public abstract class Dominance {
 
 	double[] referencePoint_;
 
-	protected Comparator comparator = new DominationComparator(null);
+	protected Comparator comparator;;
 
-	public Dominance(double[] ref){
+	BuiltInRandom random;
+
+	boolean isMax_;
+
+
+	public Dominance(double[] ref,boolean isMax,BuiltInRandom random){
 		referencePoint_ = ref;
+		 comparator = new DominationComparator(isMax,random);
 	}
 
 	public void setReferencePoint(double[] ref){

@@ -4,11 +4,10 @@ import java.util.HashMap;
 
 import momfo.core.Solution;
 import momfo.util.JMException;
-import momfo.util.Random;
 
 public class CrowdingDistanceComparator extends  NSGAIIComparator{
 
-	public CrowdingDistanceComparator(HashMap<String, Object> parameters) {
+	public CrowdingDistanceComparator(HashMap<String, Object> parameters) throws JMException {
 		super(parameters);
 	}
 
@@ -23,7 +22,7 @@ public class CrowdingDistanceComparator extends  NSGAIIComparator{
 			return -1;
 		}
 
-		if(Random.nextDoubleIE() > 0.5){
+		if(random.nextDoubleIE() > 0.5){
 			return 1;
 		}  else  {
 			return -1;

@@ -43,7 +43,7 @@ public abstract class Operator implements Serializable {
   }
 
   public Operator(HashMap<String , Object> parameters) {
-    parameters_ = parameters;
+	parameters_ = parameters;
   }
 
   public Map<String,Object> getMap(){

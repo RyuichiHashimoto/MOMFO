@@ -38,7 +38,6 @@ import momfo.core.Solution;
 import momfo.operators.selection.ParentsSelection.BinaryTournament;
 import momfo.operators.selection.ParentsSelection.ParentsSelection;
 import momfo.util.JMException;
-import momfo.util.Random;
 import momfo.util.Sort;
 import momfo.util.Comparator.Comparator;
 import momfo.util.Comparator.CrowdingDistanceComparator;
@@ -95,8 +94,9 @@ public class MOMFEA extends Algorithm {
 	private boolean outNormal_;
 	private String directoryname;
 
-	public void setting(){
+	public void setting() throws JMException{
 		evaluations_  = 0;
+		parameters.put("RandomGenerator", random);
 		comparator_binary = new ScalarFitnessComparator(parameters);
 		comparator_nextGen = new NSGAIIComparatorNextGen(parameters);
 		comparator_Dominance = new NSGAIIComparatorDominance(parameters);
@@ -151,7 +151,7 @@ public class MOMFEA extends Algorithm {
 //			igd[1] = (IGD.CalcIGD(population_.getAllObjectives(), calc,IGDRef.getRefs(t)));
 //			igd[1] = (IGD.CalcNormalizeIGD(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber)));
 			igd[0] = counter;
-			igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(),calc, IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t)));
+			igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(),calc, IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t),random));
 			d.add(igd.clone());
 			igdHistory.add(new ArrayList<double []>(d));
 		}
@@ -172,7 +172,7 @@ public class MOMFEA extends Algorithm {
 				}
 				igd[0] = counter;
 //				igd[1] = (IGD.CalcIGD(population_.getAllObjectives(), calc,IGDRef.getRefs(t)));
-				igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(),calc,IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t)));
+				igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(),calc,IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t),random));
 				igdHistory.get(t).add(igd.clone());
 			}
 		} while (evaluations_ < maxEvaluations_ );
@@ -200,7 +200,7 @@ public class MOMFEA extends Algorithm {
 			int[] sfs = new int[2];
 			sfs[0] = parents[0].getSkillFactor();
 			sfs[1] = parents[1].getSkillFactor();
-			double rand = Random.nextDoubleIE();
+			double rand = random.nextDoubleIE();
 
 			Solution[] offSpring;
 
@@ -210,8 +210,8 @@ public class MOMFEA extends Algorithm {
 				mutation_.execute(offSpring[0]);
 				mutation_.execute(offSpring[1]);
 
-				int p0 = Random.nextIntIE(0, problemSet_.countProblem());
-				int p1 = Random.nextIntIE(0, problemSet_.countProblem());
+				int p0 = random.nextIntIE(0, problemSet_.countProblem());
+				int p1 = random.nextIntIE(0, problemSet_.countProblem());
 			//	int p1 = 1 - p0;
 				offSpring[0].setSkillFactor(sfs[p0]);
 				offSpring[1].setSkillFactor(sfs[p1]);
@@ -256,7 +256,7 @@ public class MOMFEA extends Algorithm {
 		offSpring_  = new Population(populationSize_);
 		merge_ = new Population(populationSize_*2);
 		for (int i = 0; i < populationSize_; i++) {
-			Solution newSolution = new Solution(problemSet_,i%problemSet_.countProblem());
+			Solution newSolution = new Solution(problemSet_,i%problemSet_.countProblem(),random);
 			evaluations_++;
 			problemSet_.evaluate(newSolution);
 			population_.add(newSolution);
@@ -296,7 +296,7 @@ public class MOMFEA extends Algorithm {
 			for(int p = 0; p<pop.size();p++){
 				judge[p] = (t == pop.get(p).getSkillFactor());
 			}
-			NDSRanking ranking = new NDSRanking(isMAX_);
+			NDSRanking ranking = new NDSRanking(isMAX_,random);
 			ranking.setPop(pop);
 			ranking.Ranking(t);
 			int counter = 0;
@@ -327,7 +327,7 @@ public class MOMFEA extends Algorithm {
 		perm =  Permutation.setPermutation(perm);
 
 		try {
-			Sort.QuickSort(d.getAllSolutions(), perm, new CrowdingDistanceComparator(true), 0, perm.length-1);
+			Sort.QuickSort(d.getAllSolutions(), perm, new CrowdingDistanceComparator(true,random), 0, perm.length-1);
 		} catch (JMException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();

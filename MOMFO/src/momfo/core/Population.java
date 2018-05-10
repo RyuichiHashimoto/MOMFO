@@ -1,6 +1,6 @@
 package momfo.core;
 
-import java.io.BufferedWriter; 
+import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
@@ -495,7 +495,7 @@ public class Population {
 
 
 		try {
-			Sort.QuickSort(population_, new ScalarFitnessComparator(true), 0, populationSize - 1);;
+			Sort.QuickSort(population_, new ScalarFitnessComparator(true,null), 0, populationSize - 1);;
 		} catch (JMException e) {
 			e.printStackTrace();
 		}

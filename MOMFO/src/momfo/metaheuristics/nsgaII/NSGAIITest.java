@@ -1,13 +1,13 @@
 package momfo.metaheuristics.nsgaII;
 
-import static org.junit.jupiter.api.Assertions.fail; 
+import static org.junit.jupiter.api.Assertions.fail;
+
 import javax.naming.NameNotFoundException;
 
 import org.junit.jupiter.api.Test;
 
 import experiments.Setting;
 import momfo.core.AlgorithmMain;
-import momfo.main.AlgorithmMainFactory;
 import momfo.main.NSGAIIMain;
 import momfo.util.JMException;
 

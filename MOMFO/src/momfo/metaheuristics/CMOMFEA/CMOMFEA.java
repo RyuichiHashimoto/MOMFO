@@ -40,7 +40,6 @@ import momfo.operators.selection.ParentsSelection.BinaryTournament;
 import momfo.operators.selection.ParentsSelection.ParentsSelection;
 import momfo.problems.ProposingPaper.tenRC_tenA;
 import momfo.util.JMException;
-import momfo.util.Random;
 import momfo.util.Sort;
 import momfo.util.Comparator.Comparator;
 import momfo.util.Comparator.CrowdingDistanceComparator;
@@ -97,8 +96,9 @@ public class CMOMFEA extends Algorithm {
 	private boolean outNormal_;
 	private String directoryname;
 
-	public void setting(){
+	public void setting() throws JMException{
 		evaluations_  = 0;
+		parameters.put("RandomGenerator", random);
 		comparator_binary = new ScalarFitnessComparator(parameters);
 		comparator_nextGen = new NSGAIIComparatorNextGen(parameters);
 		comparator_Dominance = new NSGAIIComparatorDominance(parameters);
@@ -189,7 +189,7 @@ public class CMOMFEA extends Algorithm {
 				for(int p = 0 ; p < population_.size();p++){
 					calc[p] = (population_.get(p).getSkillFactor() == t) && (population_.get(p).getFeasible());
 				}
-				
+
 				igd[0] = counter;
 				igd[1] = (IGD.CalcIGD(population_.getAllObjectives(), calc,IGDRef.getRefs(t)));
 //				igd[1] = (IGD.CalcNormalizeIGD(population_.getAllObjectives(),calc,IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t)));
@@ -219,7 +219,7 @@ public class CMOMFEA extends Algorithm {
 			int[] sfs = new int[2];
 			sfs[0] = parents[0].getSkillFactor();
 			sfs[1] = parents[1].getSkillFactor();
-			double rand = Random.nextDoubleIE();
+			double rand = random.nextDoubleIE();
 
 			Solution[] offSpring;
 
@@ -229,8 +229,8 @@ public class CMOMFEA extends Algorithm {
 				mutation_.execute(offSpring[0]);
 				mutation_.execute(offSpring[1]);
 
-				int p0 = Random.nextIntIE(0, problemSet_.countProblem());
-				int p1 = Random.nextIntIE(0, problemSet_.countProblem());
+				int p0 = random.nextIntIE(0, problemSet_.countProblem());
+				int p1 = random.nextIntIE(0, problemSet_.countProblem());
 			//	int p1 = 1 - p0;
 				offSpring[0].setSkillFactor(sfs[p0]);
 				offSpring[1].setSkillFactor(sfs[p1]);
@@ -276,7 +276,7 @@ public class CMOMFEA extends Algorithm {
 		offSpring_  = new Population(populationSize_);
 		merge_ = new Population(populationSize_*2);
 		for (int i = 0; i < populationSize_; i++) {
-			Solution newSolution = new Solution(problemSet_,i%problemSet_.countProblem());
+			Solution newSolution = new Solution(problemSet_,i%problemSet_.countProblem(),random);
 			evaluations_++;
 			problemSet_.evaluate(newSolution);
 			population_.add(newSolution);
@@ -319,7 +319,7 @@ public class CMOMFEA extends Algorithm {
 			for(int p = 0; p<pop.size();p++){
 				judge[p] = (t == pop.get(p).getSkillFactor());
 			}
-			C_NDSRanking ranking = new C_NDSRanking(isMAX_);
+			C_NDSRanking ranking = new C_NDSRanking(isMAX_,random);
 			ranking.setPop(pop);
 			ranking.Ranking(t);
 			int counter = 0;
@@ -350,7 +350,7 @@ public class CMOMFEA extends Algorithm {
 		perm =  Permutation.setPermutation(perm);
 
 		try {
-			Sort.QuickSort(d.getAllSolutions(), perm, new CrowdingDistanceComparator(true), 0, perm.length-1);
+			Sort.QuickSort(d.getAllSolutions(), perm, new CrowdingDistanceComparator(true,random), 0, perm.length-1);
 		} catch (JMException e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();

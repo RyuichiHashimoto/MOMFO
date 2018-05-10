@@ -2,6 +2,7 @@ package momfo.metaheuristics.Island.EnvironmentalSelection;
 
 import java.util.HashMap;
 
+import lib.math.BuiltInRandom;
 import lib.math.Permutation;
 import momfo.core.Population;
 import momfo.core.Solution;
@@ -13,14 +14,14 @@ public class NSGAIISelection extends EnvironmentalSelection{
 
 	NSGAIIComparatorBinary comparatorBinary;
 
-	public NSGAIISelection(int popsize,boolean isMax,HashMap<String, Object> parameter_) {
-		super(popsize,isMax,parameter_);
+	public NSGAIISelection(int popsize,boolean isMax,HashMap<String, Object> parameter_,BuiltInRandom random) {
+		super(popsize,isMax,parameter_,random);
 	}
 
 	@Override
 	public Population getNextPopulation(Population pop) throws JMException {
 		comparatorBinary = new NSGAIIComparatorBinary(null);
-		NDSRanking Ranking = new NDSRanking(isMax_);
+		NDSRanking Ranking = new NDSRanking(isMax_,random);
 		Ranking.setPop(pop);
 
 		Ranking.Ranking();

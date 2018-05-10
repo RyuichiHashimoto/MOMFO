@@ -3,11 +3,12 @@ package momfo.util.Comparator.SMSEMOAComparator;
 import java.util.HashMap;
 
 import momfo.core.Solution;
+import momfo.util.JMException;
 import momfo.util.Comparator.Comparator;
 
 public abstract class SMSEMOAComparator extends Comparator {
 
-	public SMSEMOAComparator(HashMap<String, Object> parameters) {
+	public SMSEMOAComparator(HashMap<String, Object> parameters) throws JMException {
 		super(parameters);
 		// TODO 自動生成されたコンストラクター・スタブ
 	}

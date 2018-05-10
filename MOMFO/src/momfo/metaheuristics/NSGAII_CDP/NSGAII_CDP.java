@@ -89,9 +89,10 @@ public class NSGAII_CDP extends Algorithm {
 	private boolean outNormal_;
 	private String directoryname;
 
-	public void setting(){
+	public void setting() throws JMException{
 		evaluations_  = 0;
 		maxEvaluations_ = ((Integer) this.getInputParameter("maxEvaluations")).intValue();
+		parameters.put("randomGenerator",random);
 		comparator_binary = new NSGAIIComparatorBinary(parameters);
 		comparator_nextGen = new NSGAIIComparatorNextGen(parameters);
 		comparator_Dominance = new NSGAIIComparatorDominance(parameters);
@@ -144,7 +145,7 @@ public class NSGAII_CDP extends Algorithm {
 
 
 
-		NDSRanking ranking = new NDSRanking(isMAX_);
+		NDSRanking ranking = new NDSRanking(isMAX_,random);
 		ranking.setPop(population_);
 		ranking.Ranking();
 		for(int i=0;i<ranking.getworstrank();i++){
@@ -161,7 +162,7 @@ public class NSGAII_CDP extends Algorithm {
 
 			GotoNextGeneration();
 
-			C_NDSRanking Ranking = new C_NDSRanking(isMAX_);
+			C_NDSRanking Ranking = new C_NDSRanking(isMAX_,random);
 			Ranking.setPop(population_);
 			Ranking.Ranking();
 			igd[0] = ++counter;
@@ -209,7 +210,7 @@ public class NSGAII_CDP extends Algorithm {
 	public void initPopulation() throws JMException, ClassNotFoundException {
 		population_ = new Population(populationSize_);
  		for (int i = 0; i < populationSize_; i++) {
-			Solution newSolution = new Solution(problem_);
+			Solution newSolution = new Solution(problem_,random);
 			problem_.repair(newSolution,null);
 			evaluations_++;
 			problem_.evaluate(newSolution);
@@ -220,7 +221,7 @@ public class NSGAII_CDP extends Algorithm {
 
 
 	private void GotoNextGeneration() throws JMException{
-		C_NDSRanking Ranking = new C_NDSRanking(isMAX_);
+		C_NDSRanking Ranking = new C_NDSRanking(isMAX_,random);
 		Ranking.setPop(merge_);
 		Ranking.Ranking();
 		population_ = new Population(populationSize_);

@@ -1,5 +1,6 @@
 package momfo.util.Ranking;
 
+import lib.math.BuiltInRandom;
 import momfo.core.Population;
 import momfo.core.Solution;
 
@@ -11,7 +12,7 @@ public class test {
 		Solution a = new Solution(2);
 		System.out.println();
 		a.setFeasible(true);
-		
+
 
 		a.setObjective(0, 18);
 		a.setObjective(1, 18);
@@ -61,7 +62,7 @@ public class test {
 		a.calctotalCalc();
 
 
-		
+
 		ret.add(new Solution(a));
 		a.setObjective(0,18 );
 		a.setObjective(1, 6);
@@ -93,7 +94,7 @@ public class test {
 		a.calctotalCalc();
 
 
-		
+
 		ret.add(new Solution(a));
 		a.setObjective(0,2 );
 		a.setObjective(1, 12);
@@ -155,8 +156,9 @@ public class test {
 
 		double[][] objectives =  {{10,2},{6,6},{2,8},{16,0},{14,4},{12,8},{8,10},{2,12},{16,4},{18,18},{18,18},{12,18},{16,16},{18,12},{10,16},{14,14},{15,9},{18,6},{4,14},{9,13},{12,11}};
 
-		
-		NDSRanking ranking = new NDSRanking(true);
+		BuiltInRandom random = new BuiltInRandom(214);
+
+		NDSRanking ranking = new NDSRanking(true,random);
 		ret = new Population(objectives);
 //		ranking.setPop(new Population(objectives));
 		ranking.setPop(ret);
@@ -365,7 +367,8 @@ public class test {
 		ret.add(new Solution(a));
 		a.setSkillFactor(0);
 
-		NDSRanking ranking = new NDSRanking(true);
+		BuiltInRandom random = new BuiltInRandom(214);
+		NDSRanking ranking = new NDSRanking(true,random);
 
 		ranking.setPop(ret);
 		ranking.Ranking(0);

@@ -8,11 +8,11 @@ import momfo.util.JMException;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;
 public class NormalizeMOEAComparator extends MOEADComparator {
 
-	public NormalizeMOEAComparator(HashMap<String, Object> parameters) {
+	public NormalizeMOEAComparator(HashMap<String, Object> parameters) throws JMException {
 		super(parameters);
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
-	public NormalizeMOEAComparator(HashMap<String, Object> parameters,ScalarzingFunction set) {
+	public NormalizeMOEAComparator(HashMap<String, Object> parameters,ScalarzingFunction set) throws JMException {
 		super(parameters,set);
 	}
 

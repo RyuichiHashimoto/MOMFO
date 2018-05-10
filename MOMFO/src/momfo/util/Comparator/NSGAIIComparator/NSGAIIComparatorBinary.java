@@ -4,11 +4,10 @@ import java.util.HashMap;
 
 import momfo.core.Solution;
 import momfo.util.JMException;
-import momfo.util.Random;
 
 public class NSGAIIComparatorBinary extends NSGAIIComparator{
 
-	public NSGAIIComparatorBinary(HashMap<String, Object> parameters) {
+	public NSGAIIComparatorBinary(HashMap<String, Object> parameters) throws JMException {
 		super(parameters);
 		// TODO 自動生成されたコンストラクター・スタブ
 	}
@@ -31,7 +30,7 @@ public class NSGAIIComparatorBinary extends NSGAIIComparator{
 			return -1;
 		}
 
-		if(Random.nextDoubleIE() > 0.5){
+		if(random.nextDoubleIE() > 0.5){
 			return 1;
 		}  else  {
 			return -1;
