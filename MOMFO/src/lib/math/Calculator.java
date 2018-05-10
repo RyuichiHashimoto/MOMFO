@@ -1,4 +1,4 @@
-package momfo.util;
+package lib.math;
 
 public class Calculator {
 

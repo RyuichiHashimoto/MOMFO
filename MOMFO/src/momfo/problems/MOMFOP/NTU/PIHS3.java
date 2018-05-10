@@ -3,12 +3,12 @@ package momfo.problems.MOMFOP.NTU;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import momfo.Indicator.IGDRef;
 import momfo.core.Problem;
 import momfo.core.ProblemSet;
 import momfo.problems.MOMFOP.NTU.base.IO;
 import momfo.problems.MOMFOP.NTU.base.MMDTLZ;
 import momfo.problems.MOMFOP.NTU.base.MMZDT;
-import momfo.util.Indicator.IGDRef;
 
 
 public class PIHS3 {

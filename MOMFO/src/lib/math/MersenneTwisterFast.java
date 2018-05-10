@@ -1,4 +1,4 @@
-package momfo.util.MersenneTwister;
+package lib.math;
 
 import java.io.Serializable;
 import java.util.Arrays;

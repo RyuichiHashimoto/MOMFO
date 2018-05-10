@@ -1,5 +1,9 @@
 package momfo.util;
 
+import java.util.Random;
+
+import lib.math.BuiltInRandom;
+import lib.math.Permutation;
 import momfo.core.Population;
 import momfo.core.Solution;
 import momfo.util.Comparator.Comparator;
@@ -15,14 +19,14 @@ import momfo.util.Comparator.NormalComparator;
 public class Sort {
 
 
-	public static int[] random_sort(int[] Sort){
+	public static int[] random_sort(int[] Sort,BuiltInRandom random){
 		int size = Sort.length;
 		int[] list = new int[size];
 		for(int i=0;i<size;i++){
 			list[i] = Sort[i];
 		}
 		for(int i = size - 1;i > 0; i--){
-			int j = Random.nextIntIE(i+1);
+			int j = random.nextIntIE(i+1);
 			if (i != j ){
 				int t = list[i];
 				list[i]  = list[j];
@@ -194,7 +198,7 @@ public class Sort {
 		}
 	}
 
-	public static Double[] random_sort(double[] Sort){
+	public static Double[] random_sort(double[] Sort,BuiltInRandom radom){
 		int size = Sort.length;
 
 		Double[] list = new Double[size];
@@ -202,7 +206,7 @@ public class Sort {
 			list[i] = Sort[i];
 		}
 		for(int i = size - 1;i > 0; i--){
-			int j = Random.nextIntIE(i+1);
+			int j = radom.nextIntIE(i+1);
 			if (i != j ){
 				double t = list[i];
 				list[i]  = list[j];
@@ -212,7 +216,7 @@ public class Sort {
 		return list;
 	}
 
-	public static Double[] random_sort(Double[] Sort){
+	public static Double[] random_sort(Double[] Sort,BuiltInRandom random){
 		int size = Sort.length;
 
 		Double[] list = new Double[size];
@@ -220,7 +224,7 @@ public class Sort {
 			list[i] = Sort[i];
 		}
 		for(int i = size - 1;i > 0; i--){
-			int j = Random.nextIntIE(i+1);
+			int j = random.nextIntIE(i+1);
 			if (i != j ){
 				double t = list[i];
 				list[i]  = list[j];
@@ -272,6 +276,7 @@ public class Sort {
 		//		Permutation.randomPermutation(ret);
 	int numberOfTasks = 10;
 	for(int t = 0;t<numberOfTasks;t++){
+		BuiltInRandom random = new BuiltInRandom(); 
 		Random.set_seed(t);
 		int size_of_list = 200;
 		Double[] answer = new Double[size_of_list];

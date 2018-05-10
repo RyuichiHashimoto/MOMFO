@@ -4,7 +4,7 @@ import javax.naming.NameNotFoundException;
 
 import experiments.Setting;
 import experiments.SettingWriter;
-import momfo.util.DirectoryMaker;
+import lib.directory.DirectoryMaker;
 import momfo.util.JMException;
 import momfo.util.Random;
 

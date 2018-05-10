@@ -1,4 +1,4 @@
-package momfo.util;
+package lib.io.output;
 
 import java.io.BufferedWriter;
 import java.io.FileOutputStream;

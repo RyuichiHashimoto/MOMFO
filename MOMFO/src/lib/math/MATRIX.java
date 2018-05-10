@@ -1,4 +1,7 @@
-package momfo.util;
+package lib.math;
+
+import momfo.util.Front;
+import momfo.util.POINT;
 
 /*
  * this class is for the NSGAIII

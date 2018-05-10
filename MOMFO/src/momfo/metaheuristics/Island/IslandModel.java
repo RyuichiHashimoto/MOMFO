@@ -3,6 +3,9 @@ package momfo.metaheuristics.Island;
 import java.util.ArrayList;
 import java.util.List;
 
+import lib.io.output.fileSubscription;
+import momfo.Indicator.IGD;
+import momfo.Indicator.IGDRef;
 import momfo.core.Algorithm;
 import momfo.core.Operator;
 import momfo.core.Population;
@@ -14,10 +17,7 @@ import momfo.operators.selection.ParentsSelection.BinaryTournament;
 import momfo.operators.selection.ParentsSelection.ParentsSelection;
 import momfo.util.JMException;
 import momfo.util.Random;
-import momfo.util.fileSubscription;
 import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorBinary;
-import momfo.util.Indicator.IGD;
-import momfo.util.Indicator.IGDRef;
 
 public class IslandModel extends Algorithm {
 	public IslandModel(ProblemSet problem) {

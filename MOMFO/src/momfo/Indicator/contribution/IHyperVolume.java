@@ -1,9 +1,11 @@
-package momfo.util.Indicator.contribution;
+package momfo.Indicator.contribution;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import momfo.Indicator.Indicator;
+import momfo.Indicator.Hypervolume.WFGHV;
 import momfo.core.Population;
 import momfo.core.Solution;
 import momfo.util.Front;
@@ -11,9 +13,6 @@ import momfo.util.JMException;
 import momfo.util.POINT;
 import momfo.util.Comparator.Comparator;
 import momfo.util.Comparator.DominationComparator;
-import momfo.util.Indicator.Indicator;
-import momfo.util.Indicator.Hypervolume.WFGHV;
-import momfo.util.Indicator.Hypervolume.tester;
 
 
 
@@ -235,13 +234,13 @@ public class IHyperVolume  extends Indicator{
 */
 	public static void main(String[] argv){
 		System.out.println("start");
-
-		double base = 		tester.test(false,"DTLZ3OBJ.csv");
+		
+		//double base = 		tester.test(false,"DTLZ3OBJ.csv");
 		double[] ret = new double[91];
 
 		for(int i = 0;i < 91;i++){
 			String name = "DTLZ3OBJ_" + String.valueOf(i) + ".csv";
-			ret[i] = base - tester.test(false,name);
+			//ret[i] = base - tester.test(false,name);
 			System.out.println(ret[i]);
 		}
 

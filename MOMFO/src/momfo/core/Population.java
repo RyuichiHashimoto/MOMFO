@@ -5,8 +5,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import lib.math.Permutation;
 import momfo.util.JMException;
-import momfo.util.Permutation;
 import momfo.util.Random;
 import momfo.util.Sort;
 import momfo.util.Comparator.ScalarFitnessComparator;

@@ -2,14 +2,14 @@ package momfo.problems.MOMFOP.NTU;
 
 import java.io.IOException;
 
+import lib.io.output.fileSubscription;
+import momfo.Indicator.IGDRef;
 import momfo.core.Problem;
 import momfo.core.ProblemSet;
 import momfo.core.Solution;
 import momfo.problems.MOMFOP.NTU.base.IO;
 import momfo.problems.MOMFOP.NTU.base.MMZDT;
 import momfo.util.JMException;
-import momfo.util.fileSubscription;
-import momfo.util.Indicator.IGDRef;
 
 public class PIHS {
 

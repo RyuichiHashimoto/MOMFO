@@ -3,6 +3,7 @@ package momfo.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import lib.math.Permutation;
 import momfo.core.Population;
 import momfo.util.Comparator.Comparator;
 import momfo.util.Comparator.DominationComparator;

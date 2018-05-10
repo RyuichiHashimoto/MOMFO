@@ -1,13 +1,19 @@
-package momfo.util.Indicator;
+package momfo.Indicator;
 
 import java.util.HashMap;
 
+import lib.math.BuiltInRandom;
 import momfo.core.Population;
 import momfo.util.JMException;
 
 public abstract class Indicator {
 
-
+	BuiltInRandom Random;
+	
+	public void setRandom(BuiltInRandom  random){
+		Random = random;
+	}
+	
 	protected static boolean isMAXproblem_;
 
 	public void setMAXProblem(){
@@ -17,9 +23,6 @@ public abstract class Indicator {
 	public void setMINProblem(){
 		isMAXproblem_ = false;
 	}
-
-
-
 
 	abstract public Object execute(Population ind, HashMap<String,Object> d) throws JMException;
 

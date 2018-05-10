@@ -1,9 +1,10 @@
-package momfo.util;
+package lib.math;
 
 import java.util.ArrayList;
 
 import momfo.core.Population;
 import momfo.core.Solution;
+import momfo.util.POINT;
 
 public class Distance {
 

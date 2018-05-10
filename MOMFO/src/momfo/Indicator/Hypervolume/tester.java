@@ -1,4 +1,4 @@
-package momfo.util.Indicator.Hypervolume;
+package momfo.Indicator.Hypervolume;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

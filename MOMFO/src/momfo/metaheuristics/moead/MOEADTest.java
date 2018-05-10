@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import javax.naming.NameNotFoundException;
 
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
 
 import experiments.Setting;
 import momfo.core.AlgorithmMain;

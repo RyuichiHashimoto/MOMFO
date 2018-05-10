@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import lib.math.Permutation;
 import momfo.core.Algorithm;
 import momfo.core.Operator;
 import momfo.core.Population;
@@ -34,7 +35,6 @@ import momfo.core.Solution;
 import momfo.operators.selection.ParentsSelection.BinaryTournament;
 import momfo.operators.selection.ParentsSelection.ParentsSelection;
 import momfo.util.JMException;
-import momfo.util.Permutation;
 import momfo.util.Random;
 import momfo.util.Sort;
 import momfo.util.Comparator.Comparator;

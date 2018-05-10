@@ -1,4 +1,4 @@
-package momfo.util.MersenneTwister;
+package lib.math;
 
 
 /**

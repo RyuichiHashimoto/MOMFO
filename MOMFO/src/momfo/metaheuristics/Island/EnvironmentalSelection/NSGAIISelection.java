@@ -2,10 +2,10 @@ package momfo.metaheuristics.Island.EnvironmentalSelection;
 
 import java.util.HashMap;
 
+import lib.math.Permutation;
 import momfo.core.Population;
 import momfo.core.Solution;
 import momfo.util.JMException;
-import momfo.util.Permutation;
 import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorBinary;
 import momfo.util.Ranking.NDSRanking;
 

@@ -1,5 +1,7 @@
 package momfo.util;
 
+import lib.math.Calculator;
+
 /*
  *  this class is for the MOEA/D implementation
  *  Mainly used for the generate the WeightedVector

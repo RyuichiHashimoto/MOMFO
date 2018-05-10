@@ -25,15 +25,15 @@ import java.util.HashMap;
 import java.util.Vector;
 
 import experiments.SettingWriter;
+import lib.math.Calculator;
+import lib.math.Permutation;
 import momfo.core.Algorithm;
 import momfo.core.Operator;
 import momfo.core.Population;
 import momfo.core.Problem;
 import momfo.core.Solution;
-import momfo.util.Calculator;
 import momfo.util.JMException;
 import momfo.util.Neiborhood;
-import momfo.util.Permutation;
 import momfo.util.Random;
 import momfo.util.WeightedVector;
 import momfo.util.Comparator.MOEADComparator.ConstrainSumMOEADComparator;

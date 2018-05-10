@@ -1,13 +1,13 @@
-package momfo.util.Indicator;
+package momfo.Indicator;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 
+import lib.io.input.FileReader;
+import lib.math.Distance;
 import momfo.core.Population;
-import momfo.util.Distance;
 import momfo.util.JMException;
-import momfo.util.fileReader;
 import momfo.util.Ranking.NDSRanking;
 
 
@@ -230,7 +230,7 @@ public class IGD  extends Indicator{
 
 	public static void main(String[] args) throws FileNotFoundException, IOException{
 		//double[][] TaskFUN_1 = fileReader.FileReading("Data/IGDConfigtion/FinalFUN_task1.dat"," ");
-		double[][] TaskFUN_2 = fileReader.FileReading("Data/IGDConfigtion/FinalFUN_task2.dat"," ");
+		double[][] TaskFUN_2 = FileReader.FileReading("Data/IGDConfigtion/FinalFUN_task2.dat"," ");
 
 		IGDRef.AddRefFiles("Data/PF/concave.pf");
 

@@ -3,9 +3,9 @@ package momfo.util.Ranking;
 import java.util.ArrayList;
 import java.util.List;
 
+import lib.math.Permutation;
 import momfo.core.Population;
 import momfo.core.Solution;
-import momfo.util.Permutation;
 import momfo.util.Comparator.DominationComparator;
 
 

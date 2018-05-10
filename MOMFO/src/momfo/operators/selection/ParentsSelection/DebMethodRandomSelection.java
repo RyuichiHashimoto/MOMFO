@@ -2,9 +2,9 @@ package momfo.operators.selection.ParentsSelection;
 
 import java.util.HashMap;
 
+import lib.math.Permutation;
 import momfo.core.Population;
 import momfo.operators.selection.Selection;
-import momfo.util.Permutation;
 
 public class DebMethodRandomSelection extends Selection{
 	public DebMethodRandomSelection(HashMap<String, Object> parameters) {

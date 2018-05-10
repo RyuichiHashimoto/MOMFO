@@ -1,4 +1,5 @@
-package momfo.util;
+package lib.math;
+
 
 /**
  * Class providing int [] permutations
@@ -18,7 +19,7 @@ public class Permutation {
 	}
 
 
-	public static int[]  randomPermutation(int[] list, int size){
+	public static int[]  randomPermutation(int[] list, int size,BuiltInRandom Random){
 		int[] 	array = new int[size];
 
 		for(int i = 0;i < size ;i++){
@@ -41,7 +42,7 @@ public class Permutation {
 
 		return list ;
 	}
-	public static int[]  randomPermutation(int[] list){
+	public static int[]  randomPermutation(int[] list,BuiltInRandom random){
 		int size = list.length;
 		int[] 	array = new int[size];
 

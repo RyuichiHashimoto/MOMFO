@@ -25,6 +25,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import lib.io.output.fileSubscription;
+import lib.math.Permutation;
+import momfo.Indicator.IGD;
+import momfo.Indicator.IGDRef;
 import momfo.core.Algorithm;
 import momfo.core.Operator;
 import momfo.core.Population;
@@ -34,18 +38,14 @@ import momfo.core.Solution;
 import momfo.operators.selection.ParentsSelection.BinaryTournament;
 import momfo.operators.selection.ParentsSelection.ParentsSelection;
 import momfo.util.JMException;
-import momfo.util.Permutation;
 import momfo.util.Random;
 import momfo.util.Sort;
-import momfo.util.fileSubscription;
 import momfo.util.Comparator.Comparator;
 import momfo.util.Comparator.CrowdingDistanceComparator;
 import momfo.util.Comparator.ScalarFitnessComparator;
 import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparator;
 import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorDominance;
 import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorNextGen;
-import momfo.util.Indicator.IGD;
-import momfo.util.Indicator.IGDRef;
 import momfo.util.Ranking.NDSRanking;
 
 

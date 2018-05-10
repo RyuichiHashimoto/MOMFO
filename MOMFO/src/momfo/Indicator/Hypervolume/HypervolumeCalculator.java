@@ -1,10 +1,10 @@
-package momfo.util.Indicator.Hypervolume;
+package momfo.Indicator.Hypervolume;
 
+import momfo.Indicator.Indicator;
 import momfo.util.Front;
 import momfo.util.POINT;
 import momfo.util.ReferencePoint;
 import momfo.util.Comparator.DominationComparator;
-import momfo.util.Indicator.Indicator;
 
 public abstract class HypervolumeCalculator extends Indicator {
 

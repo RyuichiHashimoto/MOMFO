@@ -3,6 +3,7 @@ package momfo.problems.MOMFOP.NTU;
 
 import java.io.IOException;
 
+import momfo.Indicator.IGDRef;
 import momfo.core.ProblemSet;
 import momfo.core.Solution;
 import momfo.problems.MOMFOP.Many_NTU.ManyCIHS;
@@ -17,7 +18,6 @@ import momfo.problems.MOMFOP.Many_NTU.ManyPIMS;
 import momfo.problems.ProposingPaper.tenRC_tenA;
 import momfo.problems.ProposingPaper.tenR_tenG;
 import momfo.util.JMException;
-import momfo.util.Indicator.IGDRef;
 
 
 public class ProblemSetFactory{

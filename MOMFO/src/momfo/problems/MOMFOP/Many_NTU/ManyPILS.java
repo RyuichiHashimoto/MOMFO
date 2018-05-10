@@ -2,11 +2,11 @@ package momfo.problems.MOMFOP.Many_NTU;
 
 import java.io.IOException;
 
+import momfo.Indicator.IGDRef;
 import momfo.core.Problem;
 import momfo.core.ProblemSet;
 import momfo.problems.MOMFOP.Many_NTU.base.MMDTLZ;
 import momfo.problems.MOMFOP.NTU.base.IO;
-import momfo.util.Indicator.IGDRef;
 
 
 public class ManyPILS {
