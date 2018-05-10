@@ -46,7 +46,7 @@ public class Distance {
 			if (max - min < 1.0E-14) {
 				continue;
 			}
-
+			System.out.println("");
 			for (int n = 1; n < front.size() - 1; n++) {
 				Solution sp = front.get(e[n]);
 				em = sp.getCrowdDistance_();
