@@ -15,9 +15,15 @@ public abstract class Crossover extends Operator{
 	
 	protected double crossoverProbability;
 
+
 	public abstract void crossover(Solution offspring1, Solution offspring2 ,Solution ... parent) throws JMException;
 
 	public void build(CommandSetting setting) throws NameNotFoundException {
+		
 		random = (BuildInRandom)setting.get(ParameterNames.RANDOM_GENERATOR);
+
+	  random.setSeed(0);
+		
 	}
+
 }
