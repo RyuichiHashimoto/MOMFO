@@ -1,4 +1,4 @@
-WFG‚ÍŠî–{“I‚É‘“c‚³‚ñ‚Ìƒ\[ƒXƒR[ƒh‚à‚µ‚­‚ÍwfgC++‚Ìƒ\[ƒXƒR[ƒh‚ðŒ©‚È‚ª‚ç‚Å‚à‚¢‚¢‚Ì‚Å‡‚í‚¹‚Ä‚­‚¾‚³‚¢D
+Šî–{“I‚É‘“c‚³‚ñ‚Ìƒ\[ƒXƒR[ƒh‚à‚µ‚­‚ÍwfgC++‚Ìƒ\[ƒXƒR[ƒh‚ðŒ©‚È‚ª‚ç‚Å‚à‚¢‚¢‚Ì‚Å‡‚í‚¹‚Ä‚­‚¾‚³‚¢D
 indicator.jar‚ð‰ð“€‚µ‚½‚ç‘“c‚³‚ñ‚Ìƒ\[ƒXƒR[ƒh‚Ío‚Ä‚«‚½‚ÆŽv‚¢‚Ü‚·i–{l‚¢‚í‚­ŽÀsƒXƒs[ƒhdŽ‹‚Ì‚½‚ß‰Â“Ç«‚Í‚ ‚Ü‚è‚È‚¢‚Å‚·‚ªjD
 ‘“c‚³‚ñ‚Ìƒ\[ƒXƒR[ƒh‚ª“ï‚µ‚¢‚È‚çWFG‚Ì’˜ŽÒ‚ªŒöŠJ‚µ‚Ä‚¢‚éƒ\[ƒXƒR[ƒh‚ðŽQl‚É‚µ‚Ä‚­‚¾‚³‚¢D‘“c‚³‚ñ‚Ì‚æ‚è‚Í‰Â“Ç«‚Í‚ ‚é‚©‚ÆŽv‚¢‚Ü‚·D
 
@@ -8,5 +8,4 @@ indicator.jar‚ð‰ð“€‚µ‚½‚ç‘“c‚³‚ñ‚Ìƒ\[ƒXƒR[ƒh‚Ío‚Ä‚«‚½‚ÆŽv‚¢‚Ü‚·i–{l‚¢‚í‚­Ž
 ‘“c‚³‚ñ‚ªŽc‚µ‚Ä‚­‚ê‚½–Ú“IŠÖ”ƒf[ƒ^‚ªmaxƒfƒBƒŒƒNƒgƒŠ‚ÉŠi”[‚µ‚Ä‚¨‚ètestsuite.yaml‚ÉŒvŽZŒ‹‰Ê‚ª‚ ‚è‚Ü‚·‚Ì‚Å‚»‚ê‚Å‘g‚ñ‚Å‚­‚¾‚³‚¢D
 
 Å‘å‰»‚ª‘g‚ß‚½‚çÅ¬‰»‚à10•ª‚à‚ ‚ê‚Î‘g‚ß‚é‚ÆŽv‚¢‚Ü‚·D
-‚»‚Ì——R‚Í‚¿‚å‚Á‚ÆŽ©•ª‚Ål‚¦‚Ä‚Ý‚Ä‚­‚¾‚³‚¢D
 ƒqƒ“ƒg‚Íhv.bat‚Ìreadme.txti‚¾‚Á‚½‚Á‚¯j‚ðŒ©‚Ä‚­‚¾‚³‚¢

@@ -38,11 +38,11 @@ public class IHyperVolume  extends Indicator{
 
 	public static void  setMIN(){
 		isMAXproblem_ =false;
-		comparator_.setIsMIN();
+		comparator_.setMin();
 	}
 	public static void setMAX(){
 		isMAXproblem_ = true;
-		comparator_.setIsMAX();
+		comparator_.setMax();
 	}
 
 	public static void set(boolean arg){
@@ -167,7 +167,7 @@ public class IHyperVolume  extends Indicator{
 		// HV(S) is same, So we calclated only HV(S/v)
 		for(int i=0;i<d.size();i++){
 			 wfghv_ = new WFGHV(referencePoint_,null);
-			 ret[i] = wfghv_.exclhv(d,i,referencePoint_,comparator_.get());
+			 ret[i] = wfghv_.exclhv(d,i,referencePoint_,comparator_.isMax());
 		}
 		return ret;
 	}

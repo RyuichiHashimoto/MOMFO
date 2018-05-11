@@ -1,7 +1,8 @@
-package momfo.Indicator;
+package momfo.Indicator.contribution;
 
 import java.util.HashMap;
 
+import momfo.Indicator.Indicator;
 import momfo.core.Population;
 import momfo.util.Front;
 import momfo.util.JMException;

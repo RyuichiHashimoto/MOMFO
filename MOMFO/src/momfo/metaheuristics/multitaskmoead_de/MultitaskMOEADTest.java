@@ -1,4 +1,4 @@
-package momfo.metaheuristics.MultitaskMOEAD;
+package momfo.metaheuristics.multitaskmoead_de;
 
 import static org.junit.jupiter.api.Assertions.fail;
 

@@ -43,12 +43,12 @@ public abstract class HypervolumeCalculator extends Indicator {
 	}
 
 	public void setMAXProblem() {
-		Dominator.setIsMAX();
+		Dominator.setMax();
 		isMAXproblem_ = true;
 	}
 
 	public void setMINProblem() {
-		Dominator.setIsMIN();
+		Dominator.setMin();
 		isMAXproblem_ = false;
 	}
 

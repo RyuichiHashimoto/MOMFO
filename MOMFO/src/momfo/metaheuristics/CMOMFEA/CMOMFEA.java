@@ -28,8 +28,8 @@ import java.util.List;
 
 import lib.io.output.fileSubscription;
 import lib.math.Permutation;
-import momfo.Indicator.IGD;
-import momfo.Indicator.IGDRef;
+import momfo.Indicator.IGD.IGD;
+import momfo.Indicator.IGD.IGDRef;
 import momfo.core.GA;
 import momfo.core.Operator;
 import momfo.core.Population;

@@ -30,8 +30,9 @@ public class PolynomialMutation extends Mutation {
 	}
 
 	@Override
-	public void mutation(Solution offspring, Solution parent) throws JMException {
-		offspring = doMutation(mutationProbability, parent);
+	public Solution mutation( Solution parent) throws JMException {
+
+		return doMutation(mutationProbability, parent);
 	}
 
 	public Solution doMutation(double probability, Solution solution) throws JMException {

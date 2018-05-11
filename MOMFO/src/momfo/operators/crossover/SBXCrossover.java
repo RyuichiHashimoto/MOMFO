@@ -41,7 +41,7 @@ public class SBXCrossover extends Crossover {
 
 	@Override
 	@NeedParameters({RANDOM_GENERATOR,SBXDisIndex,CROSSOVERProbability})
-	public void build(CommandSetting s) throws NameNotFoundException {  
+	public void build(CommandSetting s) throws NameNotFoundException {
 		super.build(s);
 		double disindex = s.getAsDouble(SBXDisIndex);;
 		double cp = s.getAsDouble(CROSSOVERProbability);
@@ -52,13 +52,11 @@ public class SBXCrossover extends Crossover {
 	}
 
 	@Override
-	public void crossover(Solution offspring1, Solution offspring2, Solution[] parent) throws JMException {  
-		Solution[] off = doCrossover(crossoverProbability ,parent[0],parent[1]);
-		offspring1 = off[0];
-		offspring2 = off[1];
+	public Solution[] crossover(Solution[] parent) throws JMException {
+		return doCrossover(crossoverProbability ,parent[0],parent[1]);
 	}
 
-	public Solution[] doCrossover(double probability, Solution parent1, Solution parent2) throws JMException { 
+	public Solution[] doCrossover(double probability, Solution parent1, Solution parent2) throws JMException {
 		Solution [] offSpring = new Solution[2];
 
 	    offSpring[0] = new Solution(parent1);

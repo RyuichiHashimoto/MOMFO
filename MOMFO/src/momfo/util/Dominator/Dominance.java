@@ -31,11 +31,11 @@ public abstract class Dominance {
 
 
 	public void setMAX(){
-		comparator.setMAX();
+		comparator.setMax();
 	}
 
 	public void setMIN(){
-		comparator.setMIN();
+		comparator.setMin();
 	}
 
 	public void set(boolean d){

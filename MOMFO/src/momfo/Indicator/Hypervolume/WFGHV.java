@@ -205,7 +205,7 @@ public class WFGHV extends HypervolumeCalculator {
 	public double wfghv(Front a) throws JMException{
 		assert a.size() > 0 : "the size of Front is " +  a.size();
 		assert a.getDimension() >= nObj : "the Dimension of Front is "  + a.getDimension();
-
+		
 		Front ret = a;
 		if(ret.size() == 1) return inclhv(ret.get(0));
 		if(ret.size() == 2) return iex2(ret);
@@ -273,7 +273,7 @@ public class WFGHV extends HypervolumeCalculator {
 	//true なら最大化，　false なら最小化
 	public static void main(String[] args){
 		System.out.print("start");
-		tester.test(true,"greedyselection3.csv");
+		//tester.test(true,"greedyselection3.csv");
 	}
 
 
@@ -283,7 +283,7 @@ public class WFGHV extends HypervolumeCalculator {
 	public Object execute(Population ind, HashMap<String, Object> d) throws JMException {
 		int[] perm = ind.sortObjectivereturnperm(0);
 		Population ret = new Population(ind);
-		return wfg(new Front(ret),referencePoint_,Dominator.get());
+		return wfg(new Front(ret),referencePoint_,Dominator.isMax());
 	}
 
 	@Override
@@ -293,7 +293,7 @@ public class WFGHV extends HypervolumeCalculator {
 
 
 	public Object execute(Front d, Object d2) throws JMException{
-		return wfg(new Front(d),referencePoint_,Dominator.get());
+		return wfg(new Front(d),referencePoint_,Dominator.isMax());
 	}
 
 

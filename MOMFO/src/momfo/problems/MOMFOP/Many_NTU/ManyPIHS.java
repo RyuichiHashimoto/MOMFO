@@ -2,7 +2,7 @@ package momfo.problems.MOMFOP.Many_NTU;
 
 import java.io.IOException;
 
-import momfo.Indicator.IGDRef;
+import momfo.Indicator.IGD.IGDRef;
 import momfo.core.Problem;
 import momfo.core.ProblemSet;
 import momfo.problems.MOMFOP.Many_NTU.base.MMZDT;

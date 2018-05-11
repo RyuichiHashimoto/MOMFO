@@ -2,14 +2,27 @@ package momfo.problems.MOMFOP.NTU;
 
 import java.io.IOException;
 
-import momfo.Indicator.IGDRef;
+import lib.experiments.CommandSetting;
+import momfo.Indicator.IGD.IGDRef;
 import momfo.core.Problem;
 import momfo.core.ProblemSet;
 import momfo.problems.MOMFOP.NTU.base.MMDTLZ;
 import momfo.problems.MOMFOP.NTU.base.MMZDT;
 
 
-public class CIHS {
+public class CIHS extends ProblemSet{
+	public CIHS(CommandSetting st) throws IOException {
+		
+		IGDRef.clear();
+		ProblemSet ps1 = getT1();
+		ProblemSet ps2 = getT2();
+		ProblemSet problemSet = new ProblemSet(2);
+		problemSet.setProblemSetName("CIHS");
+		problemSet.setMaxDimensionOfObjective(2);
+		add(ps1.get(0)).add(ps2.get(0));
+	}
+
+
 
 	public static ProblemSet getProblem() throws IOException {
 		IGDRef.clear();
@@ -48,6 +61,6 @@ public class CIHS {
 		problemSet.add(prob);
 		return problemSet;
 	}
-	
-	
+
+
 }

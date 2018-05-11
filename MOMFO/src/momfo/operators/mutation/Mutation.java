@@ -14,7 +14,7 @@ public abstract class Mutation extends Operator {
 
 	protected double mutationProbability;
 
-	public abstract void mutation(Solution offspring,Solution parent) throws JMException;
+	public abstract Solution mutation(Solution parent) throws JMException;
 
 	public void build(CommandSetting setting) throws NameNotFoundException, JMException {
 		random = (BuildInRandom)setting.get(ParameterNames.RANDOM_GENERATOR);

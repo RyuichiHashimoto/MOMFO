@@ -1,17 +1,8 @@
 package momfo.core;
 
 
-import static lib.experiments.ParameterNames.DEF_GA_PACKAGE;
-import static lib.experiments.ParameterNames.GA;
-import static lib.experiments.ParameterNames.NTRIALS;
-import static lib.experiments.ParameterNames.PROBLEM_SET;
-import static lib.experiments.ParameterNames.RANDOM_GENERATOR;
-import static lib.experiments.ParameterNames.SEEDER;
-import static lib.experiments.ParameterNames.SEEDER_SEED;
-import static lib.experiments.ParameterNames.SEED_OFFSET;
-import static momfo.util.GAEvent.AFTER_GENERATION;
-import static momfo.util.GAEvent.AFTER_INTITIALIZATION;
-import static momfo.util.GAEvent.AFTER_TRIAL;
+import static lib.experiments.ParameterNames.*;
+import static momfo.util.GAEvent.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -36,11 +27,11 @@ public class GAFramework extends Solver{
 	protected PrintWriter info;
 	protected Seeder seeder_;
 	protected GeneticAlgorithm ga_;
-	
+
 	public GeneticAlgorithm getGA() {
 		return ga_;
 	}
-	
+
 	@Override
 //	@NeedParameters({NTRIALS, RESULT, SEEDER, SEEDER_SEED, INITIALIZATION,
 //		EVALUATION, RECOMBINATION, MUTATION})
@@ -52,13 +43,13 @@ public class GAFramework extends Solver{
 		nTrials = setting.getAsInt(NTRIALS);
 		seeder_ = (Seeder) setting.getAsInstance(SEEDER);
 		seeder_.setSeed(setting.getAsInt(SEEDER_SEED));
-		
+
 		try {
-			seeder_.skip(setting.getAsInt(SEED_OFFSET));			
+			seeder_.skip(setting.getAsInt(SEED_OFFSET));
 		} catch (NamingException e) {
-			
+
 		}
-//\\		
+//\\
 		setting.put(RANDOM_GENERATOR, new BuildInRandom(ParameterNames.DEFAULT_SEED));
 		String ga = setting.getAsStr(GA);
 		System.out.println(DEF_GA_PACKAGE + ga.toLowerCase() +"."+ ga);
@@ -70,7 +61,7 @@ public class GAFramework extends Solver{
 		 * in the initialize() method;
 		 */
 		ga_.build(setting);
-	
+
 	}
 
 
@@ -94,7 +85,9 @@ public class GAFramework extends Solver{
 			ga_.nextGeneration();
 			notifyEvent(AFTER_GENERATION);
 		}
+
 		notifyEvent(AFTER_TRIAL);
+
 	}
 
 	@Command

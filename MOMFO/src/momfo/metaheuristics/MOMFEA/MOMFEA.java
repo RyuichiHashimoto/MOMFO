@@ -21,15 +21,20 @@
 
 package momfo.metaheuristics.MOMFEA;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import javax.naming.NamingException;
+
+import lib.experiments.CommandSetting;
+import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.io.output.fileSubscription;
 import lib.math.Permutation;
-import momfo.Indicator.IGD;
-import momfo.Indicator.IGDRef;
-import momfo.core.GA;
+import momfo.Indicator.IGD.IGD;
+import momfo.Indicator.IGD.IGDRef;
+import momfo.core.GeneticAlgorithm;
 import momfo.core.Operator;
 import momfo.core.Population;
 import momfo.core.Problem;
@@ -48,7 +53,7 @@ import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorNextGen;
 import momfo.util.Ranking.NDSRanking;
 
 
-public class MOMFEA extends GA {
+public class MOMFEA extends GeneticAlgorithm {
 
 	/**
 	 * Stores the population size
@@ -364,6 +369,111 @@ public class MOMFEA extends GA {
 	//	System.out.println();
 	//	System.out.println("関数内");
 
+	}
+
+	@Override
+	public void recombination() throws JMException {
+		Solution[] parents = new Solution[2];
+		offSpring_.clear();
+		for (int p = 0; p < (populationSize_ / 2); p++) {
+
+			parents[0] = population_.get(parentsSelection.selection(population_));
+			parents[1] = population_.get(parentsSelection.selection(population_));
+			//親個体のスキルファクター
+			int[] sfs = new int[2];
+			sfs[0] = parents[0].getSkillFactor();
+			sfs[1] = parents[1].getSkillFactor();
+			double rand = random.nextDoubleIE();
+
+			Solution[] offSpring;
+
+			//交叉と突然変異により生成
+			if (sfs[0] == sfs[1] || rand < rmp) {
+				offSpring = (Solution[]) crossover.crossover(parents);
+				offSpring[0] = mutation.mutation(offSpring[0]);
+				offSpring[1] = mutation.mutation(offSpring[1]);
+				
+				int p0 = random.nextIntIE(0, problemSet_.countProblem());
+				int p1 = random.nextIntIE(0, problemSet_.countProblem());
+			//	int p1 = 1 - p0;
+				offSpring[0].setSkillFactor(sfs[p0]);
+				offSpring[1].setSkillFactor(sfs[p1]);
+
+				problemSet_.evaluate(offSpring[0]);
+				problemSet_.evaluate(offSpring[1]);
+
+				evaluations_ += 2;
+
+			} else {
+				offSpring = new Solution[2];
+				offSpring[0] = new Solution(parents[0]);
+				offSpring[1] = new Solution(parents[1]);
+
+				offSpring[0] = mutation.mutation(offSpring[0]);
+				offSpring[1] = mutation.mutation(offSpring[1]);
+
+				offSpring[0].setSkillFactor(sfs[0]);
+				offSpring[1].setSkillFactor(sfs[1]);
+
+
+				problemSet_.evaluate(offSpring[0]);
+				problemSet_.evaluate(offSpring[1]);
+
+				evaluations_ += 2;
+			}
+
+			offSpring_.add(offSpring[0]);
+			offSpring_.add(offSpring[1]);
+			if (evaluations_ == maxEvaluations_){
+				break;
+			}
+		} // for
+
+	}
+
+	@Override
+	public void nextGeneration() throws JMException {
+		SetScalarFitness(merge_);
+
+		//factorialcostでソート
+		merge_.ScalarFitnessSort();
+
+		//ソート後merge
+		population_.clear();
+		for(int p = 0; p < populationSize_;p++){
+			population_.add(merge_.get( p));
+		}
+	}
+
+	@Override
+	public boolean terminate() {
+		// TODO 自動生成されたメソッド・スタブ
+		return false;
+	}
+
+	@Override
+	public int getEvaluations() {
+		// TODO 自動生成されたメソッド・スタブ
+		return 0;
+	}
+
+	@Override
+	public int getGeneration() {
+		// TODO 自動生成されたメソッド・スタブ
+		return 0;
+	}
+
+	@Override
+	public Population getPopulation() {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}
+
+	@Override
+	protected void buildImpl(CommandSetting s)
+			throws ReflectiveOperationException, NamingException, IOException, notFoundException, JMException {
+		// TODO 自動生成されたメソッド・スタブ
+		
 	}
 
 

@@ -1,21 +1,30 @@
 package momfo.metaheuristics.moead;
 
+
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.IOException;
+
 import javax.naming.NameNotFoundException;
+import javax.naming.NamingException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import experiments.Setting;
-import momfo.core.AlgorithmMain;
-import momfo.main.MOEADMain;
+import lib.experiments.CommandSetting;
+import lib.experiments.ParameterNames;
+import lib.experiments.Exception.CommandSetting.CannotConvertException;
+import lib.experiments.Exception.CommandSetting.notFoundException;
+import momfo.Indicator.IGD.IGDRef;
+import momfo.core.GAFramework;
 import momfo.util.JMException;
+
 
 class MOEADTest {
 
 	@Test
-	void test() throws ClassNotFoundException, NameNotFoundException, JMException {
-		for (int i = 7; i < 9; i++) {
+	public void test() throws JMException, notFoundException, IllegalArgumentException, CannotConvertException, NamingException, IOException, ReflectiveOperationException {
+		for (int i = 0; i < 9; i++) {
+
 			eachTest(i);
 		}
 	}
@@ -23,53 +32,59 @@ class MOEADTest {
 	private final String[] ProblemName = { "CIHS", "CIMS", "CILS", "PIHS", "PIMS", "PILS", "NIHS", "NIMS", "NILS" };
 
 	public void eachTestTask(int problemNumber, int taskNumber)
-			throws ClassNotFoundException, NameNotFoundException, JMException {
-		Setting hashmap = new Setting();
-		AlgorithmMain algorithm;
+			throws JMException, notFoundException, IllegalArgumentException, CannotConvertException, NamingException, IOException, ReflectiveOperationException {
+		CommandSetting setting = new CommandSetting();
+		System.out.println(IGDRef.CountTask());
 
-		String geneticAlgorithmName = "NSGAII";
-		hashmap
-		.add("CrossoverName", "SBXCrossover")
-		.add("CrossoverProbability", "0.9")
-		.add("CrossoverDistribution", "20")
-		.add("MutationName", "PolynomialMutation")
-		.add("MutationProbability", "-1")
-		.add("MutationDistribution", "20")
-		.add("populationSize", "100")
-		.add("Problem", ProblemName[problemNumber])
-		.add("Seed", "1")
-		.add("NumberOfTrial", 1)
-		.add("maxEvaluations", "100000")
-		.add("IsMax", false)
-		.add("TaskNumber", taskNumber);
+		setting
+		.put(ParameterNames.GA, "MOEAD")
+		.put(ParameterNames.CROSSOVER, "momfo.operators.crossover.SBXCrossover")
+		.put(ParameterNames.CROSSOVERProbability, "0.9")
+		.put(ParameterNames.SBXDisIndex, "20")
+		.put(ParameterNames.MUTATION, "momfo.operators.mutation.PolynomialMutation")
+		.put(ParameterNames.MUTATIONProbability, "-1")
+		.put(ParameterNames.PMDisIndex, "20")
+		.put(ParameterNames.SCALAR_FUNCTION_NAME,"TchebycheffFormin")
+		.put(ParameterNames.INNER_DIVISION_SIZE, 0 )
+		.put(ParameterNames.OUTER_DIVISION_SIZE,( ( problemNumber== 8 ||problemNumber== 7) && (taskNumber == 0) )  ? 13:99)
+		.put(ParameterNames.MOEAD_ALPHA,1.0)
+		.put(ParameterNames.SIZE_OF_NEIBORHOOD_At_UPDATE,20)
+		.put(ParameterNames.IS_NORM,false)
+		.put(ParameterNames.SIZE_OF_NEIBORHOOD_At_MATING,20)
+		.put(ParameterNames.SEEDER, "lib.experiments.SequenceSeeder")
+		.put(ParameterNames.INITIALIZATION, "momfo.operators.initializer.testInitializer")
+		.put(ParameterNames.ParentsSelection, "momfo.operators.selection.ParentsSelection.BinaryTournament")
+		.put(ParameterNames.EVALUATION, "momfo.operators.evaluation.NTUProblemEvaluation")
+		.put(ParameterNames.POPULATION_SIZE, "100")
+		.put(ParameterNames.PROBLEM_SET, (ProblemName[problemNumber]))
+		.put(ParameterNames.SEEDER_SEED, "1")
+		.put(ParameterNames.NTRIALS, 1)
+		.put(ParameterNames.N_OF_EVALUATIONS, 100000)
+		.put(ParameterNames.N_OF_PARENTS, 2)
+		.put(ParameterNames.IS_MAX, false)
+		.put(ParameterNames.TASK_NUMBER, taskNumber)
+		.put("times",0);
+		System.out.println(ProblemName[problemNumber]+ ": Task" + (taskNumber+1));
+		GAFramework solver = new GAFramework();
+		solver.build(setting);
+		solver.runOnce();
 
-		
-		hashmap
-	    .add("ScalarFunction","TchebycheffFormin")
-	    .add("matingNeighborhood", "20")
-	    .add("ReplaceNeighborhood", "20")
-	    .add("Division", ((problemNumber == 7 && taskNumber == 0)||(problemNumber == 8 && taskNumber == 0))? "13":"99")
-	    .add("InnerWeightDivision","0")
-	    .add("alpha","1.0")
-	    .add("PBITheta","5.0")
-		.add("IsNorm","false");
+//		double[] obj = (double[]) algorithm.getAlgorithm().getOutputParameter("FinalFUN");
+//		double[] val = (double[]) algorithm.getAlgorithm().getOutputParameter("FinalVAR");
 
-				
-		algorithm = new MOEADMain(hashmap);
-		algorithm.run(0);
-
-		double IGD = (double) algorithm.getAlgorithm().getOutputParameter("IGD");
-
+		double IGD = (double) solver.getGA().getOutputParameter("IGD");
 		if (taskNumber == 0) {
 			if (!(IGD == IGDValues_Task1[problemNumber]))
-				fail("IGD Value of Task 1 is wrong");
+				fail("IGD Value of Task 1 is wrong " + "corrct anser is " + IGDValues_Task1[problemNumber] + " but my answer is" + IGD);
+			else
+				System.out.println("success");
 		} else if(taskNumber == 1){
 			if (!(IGD == IGDValues_Task2[problemNumber]))
-				fail("IGD Value of Task 2 is wrong");			
+				fail("IGD Value of Task 2 is wrong " + "corrct anser is " + IGDValues_Task2[problemNumber] + " but my answer is" + IGD);
 		}
 	}
 
-	public void eachTest(int problemNumber) throws ClassNotFoundException, NameNotFoundException, JMException {
+	public void eachTest(int problemNumber) throws JMException, notFoundException, IllegalArgumentException, CannotConvertException, NamingException, IOException, ReflectiveOperationException {
 		eachTestTask(problemNumber,0);
 		eachTestTask(problemNumber,1);
 	}
@@ -78,7 +93,7 @@ class MOEADTest {
 	}
 
 	private final double[] IGDValues_Task1 = {6.555719926443199065e-04, 8.455804890991372447e-02,5.040729666030300260e-01,
-			9.643073518346039538e-04,2.057718859321112578e-03, 1.748346790366789229e-04, 
+			9.643073518346039538e-04,2.057718859321112578e-03, 1.748346790366789229e-04,
 			5.429671353946223356e+00, 6.721122910707991727e-01, 8.429169374070397732e-04 };
 
 	private final double[] IGDValues_Task2 = { 8.177472011362102097e-03, 1.531828337174828691e-01, 1.725847814598050281e-04,

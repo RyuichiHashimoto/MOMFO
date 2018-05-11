@@ -3,7 +3,7 @@ package momfo.problems.MOMFOP.NTU;
 
 import java.io.IOException;
 
-import momfo.Indicator.IGDRef;
+import momfo.Indicator.IGD.IGDRef;
 import momfo.core.ProblemSet;
 import momfo.core.Solution;
 import momfo.problems.MOMFOP.Many_NTU.ManyCIHS;

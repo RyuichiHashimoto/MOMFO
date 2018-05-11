@@ -1,7 +1,6 @@
 package momfo.util.Comparator;
 
 import java.io.Serializable;
-import java.util.HashMap;
 
 import javax.naming.NameNotFoundException;
 
@@ -58,18 +57,26 @@ public abstract class Comparator implements Serializable, Buildable {
 		}
 	}
 
-	public void setMAX(){
+	public void setMax(){
 		isMAX_ = true;
 	}
 
-	public void setMIN(){
+	public void setMin(){
 		isMAX_ = false;
 	}
 
 	public void set(boolean d){
 		isMAX_ = d;
 	}
-	
+	public boolean isMax(){
+		return isMAX_;
+	}
+
+
+	public boolean compare(double a, double b){
+		return (isMAX_ == (a > b));
+	}
+
 	abstract public int execute(Object one, Object two) throws JMException;
 
 	public Comparator(boolean is, BuildInRandom random_) {

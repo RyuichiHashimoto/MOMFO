@@ -1,4 +1,4 @@
-package momfo.Indicator;
+package momfo.Indicator.IGD;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -7,6 +7,7 @@ import java.util.HashMap;
 import lib.io.input.FileReader;
 import lib.math.BuildInRandom;
 import lib.math.Distance;
+import momfo.Indicator.Indicator;
 import momfo.core.Population;
 import momfo.util.JMException;
 import momfo.util.Ranking.NDSRanking;
@@ -20,10 +21,10 @@ import momfo.util.Ranking.NDSRanking;
  */
 public class IGD  extends Indicator{
 
-
 	public static double IGD(Population d,double[][] ref){
 		return IGD.CalcIGD(d.getAllObjectives(), ref);
 	}
+	
 	public static double CalcIGD(double[][]  population , double[][] referencePoint){
 
 		double ret = 0;

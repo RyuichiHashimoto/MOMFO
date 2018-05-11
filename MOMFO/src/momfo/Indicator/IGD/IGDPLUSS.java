@@ -1,4 +1,4 @@
-package momfo.Indicator;
+package momfo.Indicator.IGD;
 
 import java.util.HashMap;
 

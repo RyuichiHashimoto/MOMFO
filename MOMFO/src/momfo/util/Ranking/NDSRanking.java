@@ -54,7 +54,7 @@ public class NDSRanking {
 	}
 
 	public Population get(int key) {
-		assert (object.size() > key) : "Population size is " + object.size() + "	key is " + key;
+		assert (object.size() > key) : "front size is " + object.size() + "	but key is " + key;
 		return object.get(key);
 	}
 

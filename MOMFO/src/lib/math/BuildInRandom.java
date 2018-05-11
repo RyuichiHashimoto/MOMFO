@@ -3,17 +3,20 @@ package lib.math;
 public class BuildInRandom {
 	private MersenneTwisterFast random = new MersenneTwisterFast(1995);
 
+	int seed = 0;
+
 	public void setSeed(int s){
 		random.setSeed(s);
+
 //		random = new MersenneTwisterFast(s);
 	}
 
 	public BuildInRandom(int seed){
-		random.setSeed(seed);
+		this.setSeed(seed);
 	}
 
-		
-	
+
+
 	public  double nextDoubleII(){
 		return random.nextDoubleII();
 	}

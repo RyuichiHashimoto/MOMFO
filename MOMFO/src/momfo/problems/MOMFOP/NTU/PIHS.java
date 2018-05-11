@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import lib.experiments.CommandSetting;
 import lib.io.output.fileSubscription;
-import momfo.Indicator.IGDRef;
+import momfo.Indicator.IGD.IGDRef;
 import momfo.core.Problem;
 import momfo.core.ProblemSet;
 import momfo.core.Solution;
@@ -15,6 +15,7 @@ import momfo.util.JMException;
 public class PIHS extends ProblemSet{
 
 	public PIHS(CommandSetting st) throws IOException {
+		IGDRef.clear();
 		ProblemSet ps1 = getT1();
 		ProblemSet ps2 = getT2();
 		ProblemSet problemSet = new ProblemSet(2);

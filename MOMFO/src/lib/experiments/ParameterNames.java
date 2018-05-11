@@ -11,11 +11,12 @@ public class ParameterNames {
 	public static final String ParentsSelection ="ParentsSelection";
 	public static final String POPULATION_SIZE ="populationSize";
 	public static final String IS_MAX ="IS_MAX";
+	public static final String IS_NORM ="IS_norm";
 	public static final String TASK_NUMBER ="TASK_NUMBER";
 	public static final String N_OF_EVALUATIONS ="N_OF_EVALUATIONS";
-	
-	
-	
+	public static final String N_OF_PARENTS = "N_OF_PARENTS";
+
+
 	public static final String EVALUATION = "evaluation";
 	public static final String CROSSOVER = "crossoverMethod";
 	public static final String MUTATION = "mutationMethod";
@@ -29,8 +30,21 @@ public class ParameterNames {
 	public static final String DEF_GA_PACKAGE = "momfo.metaheuristics.";
 	public static final String CROSSOVERProbability = "crossoverProbability";
 	public static final String MUTATIONProbability = "mutationProbability";
-	
-	
+
+
+
+//	Parameter set MOEAD and its extensions.
+
+	public static final String  SIZE_OF_NEIBORHOOD_At_UPDATE = "sizeOfNeiborhoodRepleaced";
+	public static final String  SIZE_OF_NEIBORHOOD_At_MATING = "sizeOfNeiborhoodMating";
+	public static final String  OUTER_DIVISION_SIZE = "OUTER_DIVISION_SIZE";
+	public static final String  INNER_DIVISION_SIZE = "INNER_DIVISION_SIZE";
+	public static final String  MOEAD_ALPHA = "MOEAD_ALPHA";
+	public static final String SCALAR_FUNCTION_NAME ="ScalarFunctionName";
+
+
+
+
 	public static final String DE_CR = "DE_CR";
 	public static final String DE_F = "F";
 	public static final String DE_CR_UPPER = "DE_UPPER_CR";
@@ -43,5 +57,5 @@ public class ParameterNames {
 	public static final double EPS = 1.0e-14;
 	public static final int DEFAULT_SEED = 1995;
 
-	
+
 }

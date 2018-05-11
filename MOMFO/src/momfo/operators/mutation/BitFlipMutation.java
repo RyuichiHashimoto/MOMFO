@@ -49,8 +49,8 @@ public class BitFlipMutation extends Mutation {
 	}
 
 	@Override
-	public void mutation(Solution offspring, Solution parent) throws JMException {
-		offspring = doMutation(mutationProbability,parent);
+	public Solution mutation(Solution parent) throws JMException {
+		return doMutation(mutationProbability,parent);
 	}
 
 
@@ -62,7 +62,6 @@ public class BitFlipMutation extends Mutation {
 		int size = solution.getNumberOfVariables();
 
 		probability = probability >= 0 ? probability : (double) Math.abs(probability) / size;
-
 		for (int i = 0; i < size; i++) {
 			if (random.nextDoubleIE() < probability) {
 				if ((int) Math.round(solution.getValue(i)) == 1) {

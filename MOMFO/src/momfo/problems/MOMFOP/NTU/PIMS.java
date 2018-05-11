@@ -2,14 +2,26 @@ package momfo.problems.MOMFOP.NTU;
 
 import java.io.IOException;
 
-import momfo.Indicator.IGDRef;
+import lib.experiments.CommandSetting;
+import momfo.Indicator.IGD.IGDRef;
 import momfo.core.Problem;
 import momfo.core.ProblemSet;
 import momfo.problems.MOMFOP.NTU.base.IO;
 import momfo.problems.MOMFOP.NTU.base.MMDTLZ;
 import momfo.problems.MOMFOP.NTU.base.MMZDT;
 
-public class PIMS {
+public class PIMS extends ProblemSet{
+
+
+	public PIMS(CommandSetting st) throws IOException {
+		IGDRef.clear();
+		ProblemSet ps1 = getT1();
+		ProblemSet ps2 = getT2();
+		ProblemSet problemSet = new ProblemSet(2);
+		problemSet.setProblemSetName("PIMS");
+		problemSet.setMaxDimensionOfObjective(2);
+		add(ps1.get(0)).add(ps2.get(0));
+	}
 
 	public static ProblemSet getProblem() throws IOException {
 		ProblemSet ps1 = getT1();
@@ -53,7 +65,7 @@ public class PIMS {
 		double[][] matrix = IO.readMatrixFromFile("Data/MData/M_PIMS_2.txt");
 		prob.getgFunction().setRotationMatrix(matrix);
 		prob.setHType("concave");
-		
+
 		((Problem)prob).setName("PIMS2");
 
 		problemSet.add(prob);

@@ -13,9 +13,9 @@ public class Solution {
 	ProblemSet problemSet_;
 
 	int multitaskID_;
-	
+
 	private final BuildInRandom random;
-	
+
 	public int getMultitaskID(){
 		return multitaskID_;
 	}
@@ -370,7 +370,7 @@ public class Solution {
 
 
 	}
-	
+
 	public BuildInRandom getRandomGenerator(){
 		return random;
 	}

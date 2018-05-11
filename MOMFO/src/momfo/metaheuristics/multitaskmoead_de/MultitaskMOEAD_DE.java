@@ -19,7 +19,7 @@
 //  You should have received a copy of the GNU Lesser General Public License
 //  along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-package momfo.metaheuristics.MultitaskMOEAD_DE;
+package momfo.metaheuristics.multitaskmoead_de;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,8 +30,8 @@ import experiments.SettingWriter;
 import lib.io.output.fileSubscription;
 import lib.math.Calculator;
 import lib.math.Permutation;
-import momfo.Indicator.IGD;
-import momfo.Indicator.IGDRef;
+import momfo.Indicator.IGD.IGD;
+import momfo.Indicator.IGD.IGDRef;
 import momfo.core.GA;
 import momfo.core.Operator;
 import momfo.core.Population;

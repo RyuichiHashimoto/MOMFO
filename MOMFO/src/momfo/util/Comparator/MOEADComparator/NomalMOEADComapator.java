@@ -1,7 +1,5 @@
 package momfo.util.Comparator.MOEADComparator;
 
-import java.util.HashMap;
-
 import lib.math.BuildInRandom;
 import momfo.core.Solution;
 import momfo.util.JMException;
@@ -20,9 +18,9 @@ public class NomalMOEADComapator extends MOEADComparator {
 		Solution solone = (Solution) one;
 		Solution soltwo = (Solution) two;
 
+
 		double scalar_one = ScalaringFunction_.execute(solone, weightedVector.get(), referencePoint.get());
 		double scalar_two = ScalaringFunction_.execute(soltwo, weightedVector.get(), referencePoint.get());
-
 
 		if (isMAX_ == (scalar_one > scalar_two)) {
 			return 1;

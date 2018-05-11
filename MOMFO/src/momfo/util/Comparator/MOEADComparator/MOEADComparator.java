@@ -1,7 +1,5 @@
 package momfo.util.Comparator.MOEADComparator;
 
-import java.util.HashMap;
-
 import lib.math.BuildInRandom;
 import momfo.util.JMException;
 import momfo.util.ReferencePoint;
@@ -15,6 +13,8 @@ public abstract class MOEADComparator extends Comparator {
 		super(ismax,random);
 		ScalaringFunction_ = d;
 	}
+	
+
 
 	protected ScalarzingFunction ScalaringFunction_;
 

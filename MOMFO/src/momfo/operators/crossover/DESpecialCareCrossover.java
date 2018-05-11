@@ -64,10 +64,8 @@ public class DESpecialCareCrossover extends Crossover {
 	}
 
 	@Override
-	public void crossover(Solution offspring1, Solution offspring2, Solution[] parent) throws JMException {
-		Solution[] off = doCrossover(parent[0],parent[1],parent[2]);
-		offspring1 = off[0];
-		offspring2 = null;
+	public Solution[] crossover(Solution[] parent) throws JMException {
+		return doCrossover(parent[0],parent[1],parent[2]);
 	}
 
 

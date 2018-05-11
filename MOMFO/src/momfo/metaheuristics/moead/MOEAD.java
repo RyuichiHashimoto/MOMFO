@@ -25,16 +25,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import experiments.SettingWriter;
-import lib.io.output.fileSubscription;
+import javax.naming.NameNotFoundException;
+
+import lib.experiments.CommandSetting;
+import lib.experiments.ParameterNames;
+import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.lang.NeedOverriden;
 import lib.math.Calculator;
 import lib.math.Permutation;
-import momfo.Indicator.IGD;
-import momfo.Indicator.IGDRef;
-import momfo.core.GA;
+import momfo.Indicator.IGD.IGD;
+import momfo.Indicator.IGD.IGDRef;
+import momfo.core.GeneticAlgorithm;
 import momfo.core.Operator;
 import momfo.core.Population;
-import momfo.core.Problem;
+import momfo.core.ProblemSet;
 import momfo.core.Solution;
 import momfo.util.JMException;
 import momfo.util.Neiborhood;
@@ -43,7 +47,7 @@ import momfo.util.Comparator.MOEADComparator.MOEADComparator;
 import momfo.util.Comparator.MOEADComparator.NomalMOEADComapator;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;
 import momfo.util.ScalarzingFunction.ScalarzingFunctionFactory;
-public class MOEAD extends GA {
+public class MOEAD extends GeneticAlgorithm{
 
 
 	/**
@@ -81,7 +85,6 @@ public class MOEAD extends GA {
 	int numberOfParents_;
 	boolean isNorm;
 	Solution[] indArray_;
-	String functionType_;
 	int evaluations_;
 
 	int maxGeneration_;
@@ -97,17 +100,6 @@ public class MOEAD extends GA {
 	int sizeOfNeiborhoodRepleaced_;
 	int sizeOfMatingNeiborhood_;
 
-	/**
-	 * Constructor
-	 *
-	 * @param problem
-	 *            Problem to solve
-	 */
-	public MOEAD(Problem problem) {
-		super(problem);
-	} // DMOEA
-
-
 	ScalarzingFunction ScalarzingFunction_;
 
 	String directoryname;
@@ -118,165 +110,11 @@ public class MOEAD extends GA {
 
 
 	public Population execute() throws JMException, ClassNotFoundException {
-
-		Setting();
-
-		setNeighborhood();
-
-
-		initPopulation();
-
-		initReferencePoint();
-
-
-		population_.printVariablesToFile(directoryname + "/InitialVAR/InitialVAR" + time + ".dat");
-		population_.printObjectivesToFile(directoryname +  "/InitialFUN/InitialFUN" + time + ".dat");
-		int counter = 0;
-		List<double[]> igdHistory = new ArrayList<double[]>();
-		double[] igd = new double[2];
-		igd[0] = counter;
-		igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber),random));
-		igdHistory.add(igd.clone());
-		int[] permutation = new int[populationSize_];
-		Permutation.randomPermutation(permutation,populationSize_,random);
-		Solution offSpring;
-		boolean cont = true;
-
-		int generation = 1;
-		population_.printObjectivesToFile(directoryname +  "/Animation/FUN" + generation + ".dat");
-
-		// STEP 2. Update
-		do {
-			generation++;
-			for (int i = 0; i < populationSize_; i++) {
-				int n = permutation[i]; // or int n = i;
-
-				// STEP 2.1. Mating selection
-				Vector<Integer> parentsNumber = new Vector<Integer>();
-
-				matingSelection(parentsNumber, n, numberOfParents_);
-
-				Solution[] parents = new Solution[numberOfParents_];
-
-				for(int k=0;k<numberOfParents_;k++){
-					parents[k] = population_.get(parentsNumber.get(k));
-				}
-
-				// Apply  crossover
-				offSpring = (Solution) crossover_.execute(parents);
-
-
-
-				mutation_.execute(offSpring);
-				problem_.repair(offSpring,null);
-
-				problem_.evaluate(offSpring);
-
-				evaluations_++;
-
-				updateReference(offSpring);
-
-
-				// STEP 2.5. Update of solutions
-				updateProblem(offSpring, n);
-
-				if (evaluations_ == maxEvaluations){
-					cont = false;
-					break;
-				}
-
-			}
-//			population_.printObjectivesToFile(directoryname +  "/Animation/FUN" + generation + ".dat");
-
-			igd[0] = ++counter;
-			igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber),random));
-			igdHistory.add(igd.clone());
-		} while (cont);
-		System.out.print(evaluations_ +"	");
-//		 NormalizationWithNadia();
-		//if (isNorm)Normalization();
-	//	if(outNormal_)population_.Normalization();
-		fileSubscription. printToFile(directoryname + "/IGDHistory/"+"IGD"+time+".dat",igdHistory);
-		setOutputParameter("IGD",igdHistory.get(igdHistory.size()-1)[1]);	
-		population_.printVariablesToFile(directoryname + "/FinalVAR/FinalVAR" + time + ".dat");
-		population_.printObjectivesToFile(directoryname +  "/FinalFUN/FinalFUN" + time + ".dat");
-		return population_;
-	}
-
-	public void subscriptZ(){
-		for(int i=0;i<problem_.getNumberOfObjectives();i++){
-			System.out.print(ReferencePoint_[i] +" ");
-		}
-		System.out.println(" ");
-	}
-
-	public double[]  getNadia(Population pop){
-		int size = pop.get(0).getNumberOfObjectives();
-		double[]  nadirPoint = new double[size];
-		Solution empty = pop.get(0);
-		for(int k=0;k<size;k++){
-			nadirPoint[k] = empty.getObjective(k);
-		}
-		for(int  i =1;i< pop.size();i++){
-			empty = pop.get(i);
-			for(int key =0 ; key < size;key++){
-				if(comparator.compare(nadirPoint[key],empty.getObjective(key) ) ){
-						nadirPoint[key] = empty.getObjective(key);
-					}
-			}
-		}
-		return nadirPoint;
-	};
-
-	public double[]  getIdeal(Population pop){
-		int size = pop.get(0).getNumberOfObjectives();
-		double[]  nadirPoint = new double[size];
-		Solution empty = pop.get(0);
-		for(int k=0;k<size;k++){
-			nadirPoint[k] = empty.getObjective(k);
-		}
-		for(int  i =1;i< pop.size();i++){
-			empty = pop.get(i);
-			for(int key =0 ; key < size;key++){
-				if(comparator.compare(empty.getObjective(key),nadirPoint[key])){
-						nadirPoint[key] = empty.getObjective(key);
-					}
-			}
-		}
-		return nadirPoint;
-	};
-
-	public void Normalization(){
-		double [] ideal = getIdeal(population_);
-
-		for(int i=0;i<population_.size();i++){
-			Solution sol = population_.get(i);
-			for(int k =0;k<sol.getNumberOfObjectives();k++){
-				double a = sol.getObjective(k);
-				a  = a - ideal[k];
-				sol.setObjective(k, a);
-			}
-		}
-		NormalizationWithNadia();
+		return null;
 
 	}
 
-	public void NormalizationWithNadia(){
-		double[] nadia = getNadia(population_);
 
-		for(int i=0;i<nadia.length;i++){
-			nadia[i] = ( Math.abs(nadia[i]) >   1.0E-14) ? nadia[i]: 1.0E-14;
-		}
-
-		for(int i = 0;i < population_.size();i++){
-			Solution sol = population_.get(i);
-			for(int key = 0;key< sol.getNumberOfObjectives(); key++){
-				double a = sol.getObjective(key);
-				a = a /( nadia[key] );
-				sol.setObjective(key, a);
-			}
-		}
-	}
 
 	public void setNeighborhood() throws JMException{
 
@@ -298,18 +136,6 @@ public class MOEAD extends GA {
 		neighborhood_ = a.getNeiborhood();
 		WeightedVector_       = a.getWeight();
 	}
-
-	public void subscript() {
-		for (int i = 0; i < populationSize_; i++) {
-			for (int j = 0; j < WeightedVector_[i].length; j++) {
-					System.out.print(WeightedVector_[i][j] + "	");
-			}
-			System.out.println("	");
-		}
-	}
-
-
-
 	public void initPopulation() throws JMException, ClassNotFoundException {
  		for (int i = 0; i < populationSize_; i++) {
 			Solution newSolution = new Solution(problem_,random);
@@ -317,9 +143,8 @@ public class MOEAD extends GA {
 			problem_.evaluate(newSolution);
 			evaluations_++;
 			population_.add((newSolution));
-		} // for
-	} // initPopulation
- // initPopulation
+		}
+	}
 
 	public void initReferencePoint() throws ClassNotFoundException, JMException{
 		Solution a = population_.get(0);
@@ -401,62 +226,163 @@ public class MOEAD extends GA {
 			k = neighborhood_[id][perm[i]];
 			comparator.setWeightedVector(WeightedVector_[k]);
 			comparator.setRefernecePoint(ReferencePoint_);
-
 			if (comparator.execute(indiv, population_.get(k)) == 1) {
 				population_.replace(k, (indiv));
+			} else {
 			}
+
 		}
 
 	} // updateProblem
 
-	private void Setting() throws JMException{
-		isNorm = false;
-		numberOfParents_= ((Integer) this.getInputParameter("numberOfParents")).intValue();
-		directoryname = ((String) this.getInputParameter("DirectoryName"));
-		ScalarzingFunctionName = (this.getInputParameter("ScalarzingFunctionName")).toString();
-		maxEvaluations = ((Integer) this.getInputParameter("maxEvaluations")).intValue();
-		numberOfDivision_    = ((Integer)this.getInputParameter("numberOfDivision"));
-		numberofObjectives_    = ((Integer)this.getInputParameter("numberOfObjectives"));
-		time = ((Integer) this.getInputParameter("times")).intValue();
 
-		ScalarzingFunction_ = ScalarzingFunctionFactory.getScalarzingFunctionOperator(ScalarzingFunctionName,(Double)this.getInputParameter("PBITheta"));
+	@NeedOverriden
+	public void initialize(int seed) throws ClassNotFoundException, JMException {
+		random.setSeed(seed);
 
-		functionType_ = ScalarzingFunction_.getFunctionName();
-		comparator = new NomalMOEADComapator(null,ScalarzingFunction_);
+
+		setNeighborhood();
+
+
+		initPopulation();
+
+		initReferencePoint();
+
+		population_.printVariablesToFile("initialVAR" + time + ".dat");
+		population_.printObjectivesToFile("InitialFUN" + time + ".dat");
+
+		permutation = new int[populationSize_];
+		Permutation.randomPermutation(permutation,populationSize_,random);
+
+
+		int counter = 0;
+
+		List<double[]> igdHistory = new ArrayList<double[]>();
+		double[] igd = new double[2];
+		igd[0] = counter;
+		igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber),random));
+		igdHistory.add(igd.clone());
+		int[] permutation = new int[populationSize_];
+
+	}
+
+
+	@Override
+	public void recombination() throws JMException {
+		Solution offSpring[];
+
+		for (int i = 0; i < populationSize_; i++) {
+			int n = permutation[i]; // or int n = i;
+
+			// STEP 2.1. Mating selection
+			Vector<Integer> parentsNumber = new Vector<Integer>();
+
+			matingSelection(parentsNumber, n, numberOfParents_);
+
+			Solution[] parents = new Solution[numberOfParents_];
+
+			for(int k=0;k<numberOfParents_;k++){
+				parents[k] = population_.get(parentsNumber.get(k));
+			}
+
+			offSpring =crossover.crossover(parents[0],parents[1]);
+
+
+
+			offSpring[0] = mutation.mutation(offSpring[0]);
+
+
+			problem_.repair(offSpring[0],null);
+			problem_.evaluate(offSpring[0]);
+
+			evaluations_++;
+
+			updateReference(offSpring[0]);
+
+
+			// STEP 2.5. Update of solutions
+			updateProblem(offSpring[0], n);
+
+			if(terminate()) {
+				break;
+			}
+		}
+//		population_.printObjectivesToFile(directoryname +  "/Animation/FUN" + generation + ".dat");
+		double igd = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber),random));
+		setOutputParameter("IGD", igd);
+	}
+
+	@Override
+	public void nextGeneration() throws JMException {
+		// TODO 自動生成されたメソッド・スタブ
+
+	}
+
+	@Override
+	public boolean terminate() {
+		return evaluations_ == maxEvaluations;
+	}
+
+	@Override
+	public int getEvaluations() {
+		return evaluations_;
+	}
+
+	@Override
+	public int getGeneration() {
+		return evaluations_/populationSize_;
+	}
+
+	@Override
+	public Population getPopulation() {
+		return population_;
+	}
+
+	protected int [] permutation;
+	@Override
+	protected void buildImpl(CommandSetting s) throws JMException, NameNotFoundException, notFoundException {
+		problem_ = ((ProblemSet) (setting.get(ParameterNames.PROBLEM_SET)))
+				.get(setting.get(ParameterNames.TASK_NUMBER));
+
+		ScalarzingFunctionName = s.get(ParameterNames.SCALAR_FUNCTION_NAME);
+		maxEvaluations = s.get(ParameterNames.N_OF_EVALUATIONS);
+
+		numberOfParents_ = s.get(ParameterNames.N_OF_PARENTS);
+
+		numberOfDivision_    = s.get(ParameterNames.OUTER_DIVISION_SIZE);
+		numberofObjectives_    = problem_.getNumberOfObjectives();
+
+		isMax    = s.get(ParameterNames.IS_MAX);
+
+		if(ScalarzingFunctionName.contains("PBI")) {
+			ScalarzingFunction_ = ScalarzingFunctionFactory.getScalarzingFunctionOperator(ScalarzingFunctionName,(Double)this.getInputParameter("PBITheta"));
+		} else {
+			ScalarzingFunction_ = ScalarzingFunctionFactory.getScalarzingFunctionOperator(ScalarzingFunctionName,-100);
+		}
+		comparator = new NomalMOEADComapator(isMax,random,ScalarzingFunction_);
+
 		evaluations_ = 0;
-		crossover_ = operators_.get("crossover");
-		mutation_ = operators_.get("mutation");
-		alpha = ((double)this.getInputParameter("alphar"));
-		sizeOfNeiborhoodRepleaced_ = ((Integer)this.getInputParameter("sizeOfNeiborhoodRepleaced_"));
-		sizeOfMatingNeiborhood_    = ((Integer)this.getInputParameter("sizeOfMatingNeiborhood_"));
-		InnerWeightVectorDivision_ = ((Integer)this.getInputParameter("InnerWeightDivision"));
+		alpha = s.get(ParameterNames.MOEAD_ALPHA);
+		sizeOfNeiborhoodRepleaced_ = s.get(ParameterNames.SIZE_OF_NEIBORHOOD_At_UPDATE);
+		sizeOfMatingNeiborhood_    = s.get(ParameterNames.SIZE_OF_NEIBORHOOD_At_MATING);
+		InnerWeightVectorDivision_ = s.get(ParameterNames.INNER_DIVISION_SIZE);
 		isInnerWeightVector_ = ((InnerWeightVectorDivision_ > 0));
+
 		populationSize_ = Calculator.conbination(numberofObjectives_-1 + numberOfDivision_ ,numberofObjectives_-1);
 
-	//	outNormal_ = ((boolean) this.getInputParameter("outputNormal"));
-
-		isMax    = ((boolean)this.getInputParameter("IsMax"));
-		isNorm = ((boolean)this.getInputParameter("IsNorm"));
-		comparator.setIs(isMax);
+		tasknumber =  s.get(ParameterNames.TASK_NUMBER);
 
 		if(isInnerWeightVector_){
 			populationSize_ += Calculator.conbination(numberofObjectives_-1 + InnerWeightVectorDivision_ ,numberofObjectives_-1);
 		}
 
+		isNorm = s.getAsBool(ParameterNames.IS_NORM);
+		comparator.set(isMax);
+
 		population_ = new Population(populationSize_);
 		indArray_ = new Solution[problem_.getNumberOfObjectives()];
 		ReferencePoint_ = new double[problem_.getNumberOfObjectives()];
-
-		SettingWriter.clear();
-		SettingWriter.merge(inputParameters_);
-		SettingWriter.add("alpha",alpha);
-		SettingWriter.merge(mutation_.getMap());
-		SettingWriter.add("Problemname",problem_.getName());
-		SettingWriter.merge(crossover_.getMap());
 		evaluations_ = 0;
-
-
-
 	}
 
 

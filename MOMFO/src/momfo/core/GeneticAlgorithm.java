@@ -31,15 +31,15 @@ public abstract  class GeneticAlgorithm implements Serializable {
 	protected BuildInRandom random;
 
 	protected Initializer initialization;
-	protected Crossover crossover;	
+	protected Crossover crossover;
 	protected Mutation mutation;
-	
+
 	protected Evaluation evaluation;
 	protected ParentsSelection parentsSelection;
 	protected CommandSetting setting;
-	
-	
-	
+
+
+
 	public ProblemSet getProblemSet(){
 		return problemSet_;
 	}
@@ -118,9 +118,9 @@ public abstract  class GeneticAlgorithm implements Serializable {
 	final public void build(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException, JMException, notFoundException {
 		setting = s;
 		random = (BuildInRandom)s.get(ParameterNames.RANDOM_GENERATOR);
-		
+
 		String genotypePack = "momfo.operators";
-		
+
 		initialization = Generics.cast(s.getAsInstanceByName(ParameterNames.INITIALIZATION, genotypePack));
 		s.put(ParameterNames.INITIALIZATION, initialization);
 		crossover = Generics.cast(s.getAsInstanceByName(ParameterNames.CROSSOVER, genotypePack));
@@ -128,10 +128,10 @@ public abstract  class GeneticAlgorithm implements Serializable {
 		mutation = Generics.cast(s.getAsInstanceByName(ParameterNames.MUTATION, genotypePack));
 		s.put(ParameterNames.MUTATION, mutation);
 		parentsSelection = Generics.cast(s.getAsInstanceByName(ParameterNames.ParentsSelection, genotypePack));;
-		s.put(ParameterNames.ParentsSelection, parentsSelection);		
+		s.put(ParameterNames.ParentsSelection, parentsSelection);
 		evaluation = Generics.cast(s.getAsInstanceByName(ParameterNames.EVALUATION, genotypePack));;
-		s.put(ParameterNames.EVALUATION, parentsSelection);		
-		
+		s.put(ParameterNames.EVALUATION, parentsSelection);
+
 		buildImpl(s);
 		initialization.build(s);
 		crossover.build(s);
@@ -140,7 +140,7 @@ public abstract  class GeneticAlgorithm implements Serializable {
 		evaluation.build(s);
 		//s.remove(GENOTYPE_PACKAGE);
 	}
-	
+
 	@NeedOverriden
 	public void initialize(int seed) throws ClassNotFoundException, JMException {
 		random.setSeed(seed);
@@ -156,11 +156,11 @@ public abstract  class GeneticAlgorithm implements Serializable {
 
 	abstract public int getGeneration();
 
-	
+
 	abstract public Population getPopulation();
-	
-	
-	abstract protected void buildImpl(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException, notFoundException;
+
+
+	abstract protected void buildImpl(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException, notFoundException, JMException;
 
 
 }

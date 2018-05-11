@@ -1,7 +1,5 @@
 package momfo.util.Comparator;
 
-import java.util.HashMap;
-
 import lib.math.BuildInRandom;
 import momfo.core.Solution;
 import momfo.util.Front;
@@ -218,9 +216,6 @@ public class DominationComparator extends Comparator{
 		}
 	}
 
-	public boolean which(){
-		return isMAX_;
-	}
 
 
 
@@ -248,11 +243,6 @@ public class DominationComparator extends Comparator{
 
 
 	}
-
-
-
-
-
 
 
 
