@@ -3,104 +3,81 @@ package momfo.util.Comparator;
 import java.io.Serializable;
 import java.util.HashMap;
 
+import javax.naming.NameNotFoundException;
+
+import Network.Buildable;
+import lib.experiments.CommandSetting;
+import lib.experiments.ParameterNames;
+import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.lang.NeedOverriden;
 import lib.math.BuildInRandom;
 import momfo.util.JMException;
 
-
 //isMAX is true if problem is max problem　
-public abstract class Comparator implements Serializable {
+public abstract class Comparator implements Serializable, Buildable {
 
-	public  boolean isMAX_;
+	protected boolean isMAX_;
 
-	protected HashMap<String , Object> parameters_;
+	protected BuildInRandom random;
 
-	final protected BuildInRandom random;
+	@NeedOverriden
+	public void build(CommandSetting st) throws NameNotFoundException, notFoundException {
+		random = st.get(ParameterNames.RANDOM_GENERATOR);
+		isMAX_ = st.getAsBool(ParameterNames.IS_MAX);
+	}
 
+	public double better(double a, double b) {
+		if (isMAX_) {
+			if (a > b) {
+				return a;
+			} else {
+				return b;
+			}
+		} else {
+			if (a > b) {
+				return b;
+			} else {
+				return a;
+			}
+		}
+	}
 
-	public void setIsMAX(){
+	public double worse(double a, double b) {
+		if (isMAX_) {
+			if (a > b) {
+				return b;
+			} else {
+				return a;
+			}
+		} else {
+			if (a > b) {
+				return a;
+			} else {
+				return b;
+			}
+		}
+	}
+
+	public void setMAX(){
 		isMAX_ = true;
 	}
-	public void setIsMIN(){
+
+	public void setMIN(){
 		isMAX_ = false;
 	}
 
-	public void setIs(boolean tet){
-		isMAX_ = tet;
+	public void set(boolean d){
+		isMAX_ = d;
+	}
+	
+	abstract public int execute(Object one, Object two) throws JMException;
+
+	public Comparator(boolean is, BuildInRandom random_) {
+		isMAX_ = is;
+		random = random_;
 	}
 
-	public boolean get(){
-		return isMAX_;
-	}
-
-	public boolean compare(double a, double b){
-		return (isMAX_ == (a > b));
-	}
-
-	public double better(double a,double b){
-		if (isMAX_){
-			if (a > b ){
-				return a;
-			} else {
-				return b;
-			}
-		} else {
-			if (a > b ){
-				return b;
-			} else {
-				return a;
-			}
-		}
-	}
-
-
-	public double worse(double a, double b){
-		if (isMAX_){
-			if (a > b ){
-				return b;
-			} else {
-				return a;
-			}
-		} else {
-			if (a > b ){
-				return a;
-			} else {
-				return b;
-			}
-		}
-	}
-	abstract public int execute(Object one, Object two)  throws JMException;
-
-
-	 public Comparator(HashMap<String , Object> parameters) throws JMException{
-
-		 if(!parameters.containsKey("RandomGenerator"))
-			 throw new JMException("not found RandomGenerator");
-		 
-		 if(! (parameters.get("RandomGenerator") instanceof BuildInRandom))
-			 throw new JMException("not found RandomGenerator");
-		 
-		 random = (BuildInRandom) parameters.get("RandomGenerator");
-		 
-		 parameters_ = parameters;
-	}
-	 public Comparator(boolean is,BuildInRandom random_) {
-		 isMAX_ = is;		 
-		 random = random_;
-	 }
-
-	  public void setInputParameter(String name, Object object) {
-		if (parameters_ == null) {
-			parameters_ = new HashMap<String, Object>();
-		}
-		parameters_.put(name, object);
-	}
-
-	public Object getInputParameter(String name) {
-		return parameters_.get(name);
-	}
-
-	String comparatorName_;
-
-
-	public String getComparatorName(){return comparatorName_;};
+	public String getName() {
+		return this.getClass().getName();
+	};
 }

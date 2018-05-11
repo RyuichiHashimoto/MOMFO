@@ -1,7 +1,6 @@
 package momfo.util.Comparator.MOEADComparator;
 
-import java.util.HashMap;
-
+import lib.math.BuildInRandom;
 import momfo.core.Solution;
 import momfo.util.JMException;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;
@@ -11,22 +10,8 @@ public class  ConstrainSumMOEADComparator extends MOEADComparator{
 
 	double parameter = 10;
 
-	public ConstrainSumMOEADComparator(HashMap<String, Object> parameters) throws JMException {
-		super(parameters);
-
-		// TODO 自動生成されたコンストラクター・スタブ
-	}
-
-	public ConstrainSumMOEADComparator(HashMap<String, Object> parameters,ScalarzingFunction d ) throws JMException{
-		super(parameters,d);
-
-		if(parameters != null)
-			if(parameters.containsKey("parameter")){
-				parameter = (double)parameters.get("parameter");
-			}
-	}
-	public ConstrainSumMOEADComparator(HashMap<String, Object> parameters,ScalarzingFunction d , double para) throws JMException{
-		super(parameters,d);
+	public ConstrainSumMOEADComparator(boolean ismax, BuildInRandom random,ScalarzingFunction d , double para) throws JMException{
+		super(ismax,random,d);
 		parameter = para;
 	}
 
@@ -63,9 +48,7 @@ public class  ConstrainSumMOEADComparator extends MOEADComparator{
 				return 0;
 			}
 		} else {
-			System.err.println("=============notion============");
-			System.err.println("in ConstrainSumMOEADComparator may has bug");
-			return 0;
+			throw new JMException("in ConstrainSumMOEADComparator may has bug");
 		}
 		return 0;
 	}

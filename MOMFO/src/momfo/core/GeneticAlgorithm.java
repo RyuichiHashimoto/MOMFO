@@ -12,9 +12,11 @@ import javax.naming.NamingException;
 import experiments.Generics;
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
+import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.lang.NeedOverriden;
 import lib.math.BuildInRandom;
 import momfo.operators.crossover.Crossover;
+import momfo.operators.evaluation.Evaluation;
 import momfo.operators.initializer.Initializer;
 import momfo.operators.mutation.Mutation;
 import momfo.operators.selection.ParentsSelection.ParentsSelection;
@@ -31,6 +33,8 @@ public abstract  class GeneticAlgorithm implements Serializable {
 	protected Initializer initialization;
 	protected Crossover crossover;	
 	protected Mutation mutation;
+	
+	protected Evaluation evaluation;
 	protected ParentsSelection parentsSelection;
 	protected CommandSetting setting;
 	
@@ -60,16 +64,6 @@ public abstract  class GeneticAlgorithm implements Serializable {
 
 	private Map<String, Object> outPutParameters_ = null;
 
-	public GeneticAlgorithm(Problem problem) {
-		problem_ = problem;
-		problemSet_ = null;
-	}
-
-	public GeneticAlgorithm(ProblemSet d) {
-		tasknumber = -1;
-		problem_ = null;
-		problemSet_ = d;
-	}
 	protected boolean isMAX_;
 
 
@@ -121,25 +115,29 @@ public abstract  class GeneticAlgorithm implements Serializable {
 		return problem_;
 	}
 
-	final public void build(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException, JMException {
+	final public void build(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException, JMException, notFoundException {
 		setting = s;
 		random = (BuildInRandom)s.get(ParameterNames.RANDOM_GENERATOR);
 		
-		String genotypePack = "momfo.operators.";
+		String genotypePack = "momfo.operators";
 		
 		initialization = Generics.cast(s.getAsInstanceByName(ParameterNames.INITIALIZATION, genotypePack));
+		s.put(ParameterNames.INITIALIZATION, initialization);
 		crossover = Generics.cast(s.getAsInstanceByName(ParameterNames.CROSSOVER, genotypePack));
 		s.put(ParameterNames.CROSSOVER, crossover);
 		mutation = Generics.cast(s.getAsInstanceByName(ParameterNames.MUTATION, genotypePack));
 		s.put(ParameterNames.MUTATION, mutation);
 		parentsSelection = Generics.cast(s.getAsInstanceByName(ParameterNames.ParentsSelection, genotypePack));;
+		s.put(ParameterNames.ParentsSelection, parentsSelection);		
+		evaluation = Generics.cast(s.getAsInstanceByName(ParameterNames.EVALUATION, genotypePack));;
+		s.put(ParameterNames.EVALUATION, parentsSelection);		
+		
 		buildImpl(s);
-
 		initialization.build(s);
 		crossover.build(s);
 		mutation.build(s);
 		parentsSelection.build(s);
-//		evaluation.build(s);
+		evaluation.build(s);
 		//s.remove(GENOTYPE_PACKAGE);
 	}
 	
@@ -162,7 +160,7 @@ public abstract  class GeneticAlgorithm implements Serializable {
 	abstract public Population getPopulation();
 	
 	
-	abstract protected void buildImpl(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException;
+	abstract protected void buildImpl(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException, notFoundException;
 
 
 }

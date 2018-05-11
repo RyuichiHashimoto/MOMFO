@@ -10,10 +10,6 @@ import momfo.util.POINT;
 
 public class DominationComparator extends Comparator{
 
-	public DominationComparator(HashMap<String, Object> parameters) throws JMException {
-		super(parameters);
-	}
-
 	public DominationComparator(boolean d,BuildInRandom random_){
 		super(d,random_);
 	}

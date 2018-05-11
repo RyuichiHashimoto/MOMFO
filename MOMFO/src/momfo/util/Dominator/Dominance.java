@@ -31,15 +31,15 @@ public abstract class Dominance {
 
 
 	public void setMAX(){
-		comparator.setIsMAX();
+		comparator.setMAX();
 	}
 
 	public void setMIN(){
-		comparator.setIsMIN();
+		comparator.setMIN();
 	}
 
 	public void set(boolean d){
-		comparator.setIs(d);
+		comparator.set(d);
 	}
 
 	public Comparator getComparator(){

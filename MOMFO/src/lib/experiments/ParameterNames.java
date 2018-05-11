@@ -5,12 +5,14 @@ public class ParameterNames {
 	public static final String NTRIALS = "nTrials";
 	public static final String RESULT = "result";
 	public static final String PROBLEM_SET = "problem_set";
+	public static final String PROBLEM = "problem";
 	public static final String GA = "ga";
 	public static final String INITIALIZATION = "initializationMethod";
 	public static final String ParentsSelection ="ParentsSelection";
 	public static final String POPULATION_SIZE ="populationSize";
 	public static final String IS_MAX ="IS_MAX";
 	public static final String TASK_NUMBER ="TASK_NUMBER";
+	public static final String N_OF_EVALUATIONS ="N_OF_EVALUATIONS";
 	
 	
 	
@@ -38,6 +40,8 @@ public class ParameterNames {
 
 
 
-	private static final double EPS = 1.0e-14;
+	public static final double EPS = 1.0e-14;
+	public static final int DEFAULT_SEED = 1995;
 
+	
 }

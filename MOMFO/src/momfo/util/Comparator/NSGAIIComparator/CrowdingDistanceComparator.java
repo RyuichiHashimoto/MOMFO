@@ -2,13 +2,16 @@ package momfo.util.Comparator.NSGAIIComparator;
 
 import java.util.HashMap;
 
+import lib.math.BuildInRandom;
 import momfo.core.Solution;
 import momfo.util.JMException;
 
 public class CrowdingDistanceComparator extends  NSGAIIComparator{
 
-	public CrowdingDistanceComparator(HashMap<String, Object> parameters) throws JMException {
-		super(parameters);
+
+	public CrowdingDistanceComparator(boolean d, BuildInRandom random_) {
+		super(d, random_);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override

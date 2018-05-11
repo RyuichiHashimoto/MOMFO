@@ -107,7 +107,7 @@ public abstract class Solver implements Runnable, Buildable {
 		}
 	}
 
-	abstract protected void buildImpl() throws NamingException, IOException, ReflectiveOperationException, JMException;
+	abstract protected void buildImpl() throws NamingException, IOException, ReflectiveOperationException, JMException, notFoundException;
 
 	@NeedOverriden
 	public void reset() {

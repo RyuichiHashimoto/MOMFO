@@ -15,14 +15,12 @@ public class PolynomialMutation extends Mutation {
 
 	@Override
 	@NeedParameters({ MUTATIONProbability, PMDisIndex, RANDOM_GENERATOR })
-	public void build(CommandSetting s) throws NameNotFoundException {
-		this.build(s);
+	public void build(CommandSetting s) throws NameNotFoundException, JMException {
+		super.build(s);
 
-		double mp = (Double) s.get(MUTATIONProbability);
-		if (mp < 0)
-			throw new IllegalArgumentException(MUTATIONProbability + " must be non-negative but was " + mp);
+		double mp = s.getAsDouble(MUTATIONProbability);
 
-		double mdisind = (Double) s.get(PMDisIndex);
+		double mdisind = s.getAsDouble(PMDisIndex);
 		if (mdisind < 0)
 			throw new IllegalArgumentException(PMDisIndex + " must be non-negative but was " + mdisind);
 

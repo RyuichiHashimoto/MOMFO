@@ -1,6 +1,7 @@
 package momfo.core;
 
 
+import static lib.experiments.ParameterNames.DEF_GA_PACKAGE;
 import static lib.experiments.ParameterNames.GA;
 import static lib.experiments.ParameterNames.NTRIALS;
 import static lib.experiments.ParameterNames.PROBLEM_SET;
@@ -8,9 +9,9 @@ import static lib.experiments.ParameterNames.RANDOM_GENERATOR;
 import static lib.experiments.ParameterNames.SEEDER;
 import static lib.experiments.ParameterNames.SEEDER_SEED;
 import static lib.experiments.ParameterNames.SEED_OFFSET;
-import static lib.experiments.ParameterNames.DEF_GA_PACKAGE;
-import static momfo.util.GAEvent.*;
-
+import static momfo.util.GAEvent.AFTER_GENERATION;
+import static momfo.util.GAEvent.AFTER_INTITIALIZATION;
+import static momfo.util.GAEvent.AFTER_TRIAL;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -19,10 +20,12 @@ import javax.naming.NamingException;
 
 import Network.Solver;
 import Network.GridComputing.asg.cliche.Command;
-import experiments.Setting;
+import lib.experiments.CommandSetting;
 import lib.experiments.FormatDate;
+import lib.experiments.ParameterNames;
 import lib.experiments.Seeder;
-import lib.math.MersenneTwisterFast;
+import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.math.BuildInRandom;
 import momfo.util.JMException;
 
 public class GAFramework extends Solver{
@@ -41,18 +44,25 @@ public class GAFramework extends Solver{
 	@Override
 //	@NeedParameters({NTRIALS, RESULT, SEEDER, SEEDER_SEED, INITIALIZATION,
 //		EVALUATION, RECOMBINATION, MUTATION})
-	protected void buildImpl() throws NamingException, IOException, ReflectiveOperationException, JMException {
+	protected void buildImpl() throws NamingException, IOException, ReflectiveOperationException, JMException, notFoundException {
 		if (!(setting.get(PROBLEM_SET) instanceof ProblemSet)) {
-			setting.put(PROBLEM_SET, setting.getToClass(PROBLEM_SET, "momfo.problems.MOMFOP.NTU").getDeclaredConstructor(Setting.class).newInstance(setting));
+			setting.putForce(PROBLEM_SET, setting.getToClass(PROBLEM_SET, "momfo.problems.MOMFOP.NTU").getDeclaredConstructor(CommandSetting.class).newInstance(setting));
 		}
 		// configurations for GA
 		nTrials = setting.getAsInt(NTRIALS);
 		seeder_ = (Seeder) setting.getAsInstance(SEEDER);
 		seeder_.setSeed(setting.getAsInt(SEEDER_SEED));
-		if (setting.containsKey(SEED_OFFSET)) seeder_.skip(setting.getAsInt(SEED_OFFSET));
-		setting.put(RANDOM_GENERATOR, new MersenneTwisterFast());
+		
+		try {
+			seeder_.skip(setting.getAsInt(SEED_OFFSET));			
+		} catch (NamingException e) {
+			
+		}
+//\\		
+		setting.put(RANDOM_GENERATOR, new BuildInRandom(ParameterNames.DEFAULT_SEED));
 		String ga = setting.getAsStr(GA);
-		if (!ga.contains(".")) setting.set(GA, DEF_GA_PACKAGE + ga.toLowerCase() +"."+ ga);
+		System.out.println(DEF_GA_PACKAGE + ga.toLowerCase() +"."+ ga);
+		if (!ga.contains(".")) setting.putForce(GA, DEF_GA_PACKAGE + ga.toLowerCase() +"."+ ga);
 		setting.set(GA, ga_ = setting.getAsInstance(GA));
 
 		// build

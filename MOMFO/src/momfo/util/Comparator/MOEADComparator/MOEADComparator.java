@@ -2,6 +2,7 @@ package momfo.util.Comparator.MOEADComparator;
 
 import java.util.HashMap;
 
+import lib.math.BuildInRandom;
 import momfo.util.JMException;
 import momfo.util.ReferencePoint;
 import momfo.util.WeightedVector;
@@ -10,17 +11,10 @@ import momfo.util.ScalarzingFunction.ScalarzingFunction;
 
 public abstract class MOEADComparator extends Comparator {
 
-	public MOEADComparator(HashMap<String, Object> parameters) throws JMException {
-		super(parameters);
-		// TODO 自動生成されたコンストラクター・スタブ
-	}
-
-	public MOEADComparator(HashMap<String, Object> parameters,ScalarzingFunction d ) throws JMException {
-		super(parameters);
+	public MOEADComparator(boolean ismax, BuildInRandom random, ScalarzingFunction d) throws JMException {
+		super(ismax,random);
 		ScalaringFunction_ = d;
 	}
-
-
 
 	protected ScalarzingFunction ScalaringFunction_;
 

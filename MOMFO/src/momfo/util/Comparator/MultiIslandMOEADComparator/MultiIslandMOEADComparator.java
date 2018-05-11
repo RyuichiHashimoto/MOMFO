@@ -2,6 +2,7 @@ package momfo.util.Comparator.MultiIslandMOEADComparator;
 
 import java.util.HashMap;
 
+import lib.math.BuildInRandom;
 import momfo.util.JMException;
 import momfo.util.ReferencePoint;
 import momfo.util.WeightedVector;
@@ -9,19 +10,12 @@ import momfo.util.Comparator.Comparator;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;
 
 public abstract class MultiIslandMOEADComparator extends Comparator {
-
-
-
-	public MultiIslandMOEADComparator(HashMap<String, Object> parameters) throws JMException {
-		super(parameters);
-		// TODO 自動生成されたコンストラクター・スタブ
+	
+	public MultiIslandMOEADComparator(boolean ismax, BuildInRandom random, ScalarzingFunction[] d ) throws JMException {
+		super(ismax,random);
+		ScalaringFunction_ = d;		
 	}
 
-	public MultiIslandMOEADComparator(HashMap<String, Object> parameters,ScalarzingFunction[] d ) throws JMException {
-		super(parameters);
-		ScalaringFunction_ = d;
-		NowScalaringFunction_ = null;
-	}
 
 	protected ScalarzingFunction[] ScalaringFunction_;
 

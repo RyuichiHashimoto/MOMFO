@@ -47,7 +47,9 @@ public class MOEADArchive extends SolutionArchive {
 
 		Population ret = new Population(populationSize);
 		ScalarzingFunction ScalarzingFunction_ = new TchebycheffForMin();
-		NomalMOEADComapator comparator = new NomalMOEADComapator(null, ScalarzingFunction_);
+//		NomalMOEADComapator comparator = new NomalMOEADComapator(null, ScalarzingFunction_);
+		NomalMOEADComapator comparator = null;
+		
 		comparator.setRefernecePoint(referencePoint);
 
 		for (int p = 0; p < populationSize; p++) {

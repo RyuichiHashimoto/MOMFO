@@ -5,6 +5,7 @@ import java.util.HashMap;
 import javax.naming.NameNotFoundException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.Exception.CommandSetting.notFoundException;
 import momfo.core.Population;
 import momfo.util.JMException;
 
@@ -26,7 +27,7 @@ public class RandomSelectionWithoutReplacement extends ParentsSelection {
 		return perm[0];
 	}
 	
-	public void build(CommandSetting st) throws NameNotFoundException, JMException {
+	public void build(CommandSetting st) throws NameNotFoundException, JMException, notFoundException {
 		super.build(st);
 	}
 	

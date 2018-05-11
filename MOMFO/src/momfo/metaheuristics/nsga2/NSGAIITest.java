@@ -15,6 +15,7 @@ import lib.experiments.Exception.CommandSetting.CannotConvertException;
 import lib.experiments.Exception.CommandSetting.notFoundException;
 import momfo.core.GAFramework;
 import momfo.util.JMException;
+import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorBinary;
 
 class NSGAIITest {
 
@@ -34,20 +35,25 @@ class NSGAIITest {
 		String geneticAlgorithmName = "NSGAII";
 		setting
 		.put(ParameterNames.GA, "NSGA2")
-		.put(ParameterNames.CROSSOVER, "SBXCrossover")
+		.put(ParameterNames.CROSSOVER, "momfo.operators.crossover.SBXCrossover")
 		.put(ParameterNames.CROSSOVERProbability, "0.9")
 		.put(ParameterNames.SBXDisIndex, "20")
-		.put(ParameterNames.MUTATION, "PolynomialMutation")
+		.put(ParameterNames.MUTATION, "momfo.operators.mutation.PolynomialMutation")
 		.put(ParameterNames.MUTATIONProbability, "-1")
 		.put(ParameterNames.PMDisIndex, "20")
+		.put(ParameterNames.SEEDER, "lib.experiments.SequenceSeeder")
+		.put(ParameterNames.INITIALIZATION, "momfo.operators.initializer.testInitializer")
+		.put(ParameterNames.ParentsSelection, "momfo.operators.selection.ParentsSelection.BinaryTournament")
+		.put(ParameterNames.EVALUATION, "momfo.operators.evaluation.NTUProblemEvaluation")
 		.put(ParameterNames.POPULATION_SIZE, "100")
 		.put(ParameterNames.PROBLEM_SET, (ProblemName[problemNumber]))
-		.put(ParameterNames.PROBLEM_SET, "14")
+		.put(ParameterNames.SEEDER_SEED, "14")
 		.put(ParameterNames.NTRIALS, 1)
-		.put(ParameterNames.EVALUATION, "100000")
+		.put(ParameterNames.N_OF_EVALUATIONS, "100000")
 		.put(ParameterNames.IS_MAX, false)
-		.put(ParameterNames.TASK_NUMBER, taskNumber);
-
+		.put(ParameterNames.TASK_NUMBER, taskNumber)
+		.put(ParameterNames.BinaryTounamentComparator,"momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorBinary")
+		.put("times",0);
 		
 		GAFramework solver = new GAFramework();
 		solver.build(setting);

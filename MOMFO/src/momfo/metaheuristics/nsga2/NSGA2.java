@@ -30,22 +30,18 @@ import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
-import lib.io.output.fileSubscription;
+import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.math.Permutation;
 import momfo.Indicator.IGD;
 import momfo.Indicator.IGDRef;
 import momfo.core.GeneticAlgorithm;
 import momfo.core.Operator;
 import momfo.core.Population;
-import momfo.core.Problem;
+import momfo.core.ProblemSet;
 import momfo.core.Solution;
-import momfo.operators.selection.ParentsSelection.BinaryTournament;
 import momfo.operators.selection.ParentsSelection.ParentsSelection;
 import momfo.util.JMException;
 import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparator;
-import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorBinary;
-import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorDominance;
-import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorNextGen;
 import momfo.util.Ranking.NDSRanking;
 
 
@@ -80,9 +76,8 @@ public class NSGA2 extends GeneticAlgorithm {
 
 	HashMap parameters;
 
-	public NSGA2(Problem problem) {
-		super(problem);
-	} // DMOEA
+	 // DMOEA
+
 	List<double[]> igdHistory;
 	private ParentsSelection selection_ ;//= new BinaryTournament();
 	private NSGAIIComparator comparator_binary;
@@ -142,32 +137,29 @@ public class NSGA2 extends GeneticAlgorithm {
 			  }
 		}
 	}
-
+	int time  = -1;
 	@Override
-	protected void buildImpl(CommandSetting setting) throws ReflectiveOperationException, NamingException, IOException {
+	protected void buildImpl(CommandSetting setting) throws ReflectiveOperationException, NamingException, IOException, notFoundException {
 		evaluations_  = 0;
-
-		maxEvaluations_ = ((Integer) this.getInputParameter("maxEvaluations")).intValue();
-		isMAX_    = ((boolean)this.getInputParameter("ismax"));
-		comparator_binary.setIs(isMAX_);
-		comparator_nextGen.setIs(isMAX_);
-		comparator_Dominance.setIs(isMAX_);
-		outNormal_ = false;
-		directoryname = ((String) this.getInputParameter("DirectoryName"));
+		maxEvaluations_ =setting.getAsInt(ParameterNames.N_OF_EVALUATIONS); 
+		isMAX_ =setting.getAsBool(ParameterNames.IS_MAX); 		
+//		comparator_binary = new NSGAIIComparatorBinary(parameters);
+		
+		problem_ = ((ProblemSet)(setting.get(ParameterNames.PROBLEM_SET))).get(setting.get(ParameterNames.TASK_NUMBER));
+		directoryname = "output";
 		generation=0;
 		populationSize_ = setting.getAsInt(ParameterNames.POPULATION_SIZE);
-		int time = ((Integer) this.getInputParameter("times")).intValue();
+		time = setting.getAsInt("times");
 	}
 
 	public void initialize(int seed) throws ClassNotFoundException, JMException {
 		super.initialize(seed);
 		
-		int time = ((Integer) this.getInputParameter("times")).intValue();
 
 		initPopulation();
 
-		population_.printVariablesToFile(directoryname + "/InitialVAR/InitialVAR" + time + ".dat");
-		population_.printObjectivesToFile(directoryname + "/InitialFUN/InitiaFUN" + time + ".dat");
+//		population_.printVariablesToFile(directoryname + "/InitialVAR/InitialVAR" + time + ".dat");
+//		population_.printObjectivesToFile(directoryname + "/InitialFUN/InitiaFUN" + time + ".dat");
 
 		merge_ = new Population(populationSize_*2);
 		igdHistory = new ArrayList<double[]>();
@@ -284,6 +276,10 @@ public class NSGA2 extends GeneticAlgorithm {
 	@Override
 	public Population getPopulation() {
 		return population_;
+	}
+	@Override
+	public Population execute() throws JMException, ClassNotFoundException {
+		return null;
 	}
 
 

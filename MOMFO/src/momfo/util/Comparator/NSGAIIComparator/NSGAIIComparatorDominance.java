@@ -2,6 +2,7 @@ package momfo.util.Comparator.NSGAIIComparator;
 
 import java.util.HashMap;
 
+import lib.math.BuildInRandom;
 import momfo.core.Solution;
 import momfo.util.JMException;
 
@@ -9,9 +10,10 @@ import momfo.util.JMException;
 
 public class NSGAIIComparatorDominance extends NSGAIIComparator {
 
-	public NSGAIIComparatorDominance(HashMap<String, Object> parameters) throws JMException {
-		super(parameters);
-		// TODO 自動生成されたコンストラクター・スタブ
+
+	public NSGAIIComparatorDominance(boolean d, BuildInRandom random_) {
+		super(d, random_);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override

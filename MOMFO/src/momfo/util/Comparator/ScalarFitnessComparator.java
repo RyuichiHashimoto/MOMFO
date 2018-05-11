@@ -8,10 +8,6 @@ import momfo.util.JMException;
 
 public class ScalarFitnessComparator extends Comparator{
 
-	public ScalarFitnessComparator(HashMap parameters) throws JMException {
-		super(parameters);
-		// TODO 自動生成されたコンストラクター・スタブ
-	}
 
 	public ScalarFitnessComparator(boolean b,BuildInRandom random) {
 		super(b,random);

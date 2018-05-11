@@ -43,8 +43,8 @@ public class SBXCrossover extends Crossover {
 	@NeedParameters({RANDOM_GENERATOR,SBXDisIndex,CROSSOVERProbability})
 	public void build(CommandSetting s) throws NameNotFoundException {  
 		super.build(s);
-		double disindex = (Double) s.get(SBXDisIndex);;
-		double cp = (Double) s.get(CROSSOVERProbability);
+		double disindex = s.getAsDouble(SBXDisIndex);;
+		double cp = s.getAsDouble(CROSSOVERProbability);
 		if (disindex < 0) throw new IllegalArgumentException("distIdxSBX must be non-negative but was "+ disindex);
 		if (cp < 0) throw new IllegalArgumentException("crosssover probability must be non-negative but was "+ cp);
 		crossoverProbability = cp;

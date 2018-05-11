@@ -2,22 +2,21 @@ package momfo.util.Comparator.MultiIslandMOEADComparator;
 
 import java.util.HashMap;
 
+import lib.math.BuildInRandom;
 import momfo.core.Solution;
 import momfo.util.JMException;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;
 
 public class  ConstrainMultiMOEADComparator extends  MultiIslandMOEADComparator{
 
-	public ConstrainMultiMOEADComparator(HashMap<String, Object> parameters) throws JMException {
-		super(parameters);
-		// TODO 自動生成されたコンストラクター・スタブ
+
+
+
+	public ConstrainMultiMOEADComparator(boolean ismax, BuildInRandom random, ScalarzingFunction[] d)
+			throws JMException {
+		super(ismax, random, d);
+		// TODO Auto-generated constructor stub
 	}
-
-	public ConstrainMultiMOEADComparator(HashMap<String, Object> parameters,ScalarzingFunction[] d ) throws JMException{
-		super(parameters,d);
-	}
-
-
 
 	@Override
 	public int execute(Object one, Object two) throws JMException {

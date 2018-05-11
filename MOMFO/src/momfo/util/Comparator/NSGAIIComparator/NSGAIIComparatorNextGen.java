@@ -2,14 +2,17 @@ package momfo.util.Comparator.NSGAIIComparator;
 
 import java.util.HashMap;
 
+import lib.math.BuildInRandom;
 import momfo.core.Solution;
 import momfo.util.JMException;
 
 public class NSGAIIComparatorNextGen extends NSGAIIComparator{
 
-	public NSGAIIComparatorNextGen(HashMap<String, Object> parameters) throws JMException {
-		super(parameters);
-		// TODO 自動生成されたコンストラクター・スタブ
+
+
+	public NSGAIIComparatorNextGen(boolean d, BuildInRandom random_) {
+		super(d, random_);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override

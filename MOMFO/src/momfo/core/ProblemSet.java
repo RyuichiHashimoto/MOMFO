@@ -3,6 +3,8 @@ package momfo.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import lib.experiments.CommandSetting;
+import lib.lang.NeedOverriden;
 import momfo.util.JMException;
 
 public class ProblemSet {
@@ -20,6 +22,13 @@ public class ProblemSet {
 
 	String ProblemName;
 
+	public ProblemSet(CommandSetting d){
+		problemsList_ = new ArrayList<Problem>();
+		accObjsList_ = new ArrayList<Integer>();
+	}
+		
+	
+	
 	public void setProblemSetName(String d){
 		ProblemName = d;
 	}

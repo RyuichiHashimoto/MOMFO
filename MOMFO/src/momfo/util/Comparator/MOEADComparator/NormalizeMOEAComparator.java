@@ -3,18 +3,18 @@ package momfo.util.Comparator.MOEADComparator;
 
 import java.util.HashMap;
 
+import lib.math.BuildInRandom;
 import momfo.core.Solution;
 import momfo.util.JMException;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;
 public class NormalizeMOEAComparator extends MOEADComparator {
 
-	public NormalizeMOEAComparator(HashMap<String, Object> parameters) throws JMException {
-		super(parameters);
-		// TODO 自動生成されたコンストラクター・スタブ
+	
+	public NormalizeMOEAComparator(boolean ismax, BuildInRandom random, ScalarzingFunction d) throws JMException {
+		super(ismax, random, d);
+		// TODO Auto-generated constructor stub
 	}
-	public NormalizeMOEAComparator(HashMap<String, Object> parameters,ScalarzingFunction set) throws JMException {
-		super(parameters,set);
-	}
+
 
 	double epsilon = 0;
 

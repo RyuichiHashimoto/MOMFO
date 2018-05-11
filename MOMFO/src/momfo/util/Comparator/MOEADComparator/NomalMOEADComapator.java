@@ -2,19 +2,17 @@ package momfo.util.Comparator.MOEADComparator;
 
 import java.util.HashMap;
 
+import lib.math.BuildInRandom;
 import momfo.core.Solution;
 import momfo.util.JMException;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;
 
 public class NomalMOEADComapator extends MOEADComparator {
 
-	public NomalMOEADComapator(HashMap<String, Object> parameters) throws JMException {
-		super(parameters);
-		// TODO 自動生成されたコンストラクター・スタブ
-	}
 
-	public NomalMOEADComapator(HashMap<String, Object> parameters, ScalarzingFunction set) throws JMException {
-		super(parameters, set);
+
+	public NomalMOEADComapator(boolean ismax, BuildInRandom random, ScalarzingFunction d) throws JMException {
+		super(ismax, random, d);
 	}
 
 	@Override
