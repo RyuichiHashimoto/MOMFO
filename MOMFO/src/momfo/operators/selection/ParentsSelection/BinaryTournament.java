@@ -1,7 +1,5 @@
 package momfo.operators.selection.ParentsSelection;
 
-import static lib.experiments.ParameterNames.PROBLEM_SET;
-
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
@@ -9,11 +7,10 @@ import lib.experiments.CommandSetting;
 import lib.experiments.NeedParameters;
 import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.notFoundException;
-import lib.math.BuildInRandom;
 import momfo.core.Population;
-import momfo.core.ProblemSet;
 import momfo.util.JMException;
 import momfo.util.Comparator.Comparator;
+import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorBinary;
 
 public class BinaryTournament extends ParentsSelection {
 
@@ -24,19 +21,12 @@ public class BinaryTournament extends ParentsSelection {
 		super.build(s);
 
 		try {
-			String genotypePack = s.get(ParameterNames.BinaryTounamentComparator);
 
-			comparator = (Comparator) s.getToClass(ParameterNames.BinaryTounamentComparator, genotypePack)
-					.getDeclaredConstructor(Boolean.class, BuildInRandom.class).newInstance(false,random);
+			comparator = new NSGAIIComparatorBinary(s.get(ParameterNames.IS_MAX),random);
 		} catch (NamingException e) {
 			comparator = null;
 			System.out.print(e.getMessage());
-		} catch (ReflectiveOperationException e) {
-			comparator = null;
-			System.out.println("elsdjfl;ajdf;lj");
-			System.out.print(e.getMessage());
-
-		}
+		} 
 		;
 
 	}
