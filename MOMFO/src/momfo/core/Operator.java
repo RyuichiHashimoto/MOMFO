@@ -21,12 +21,15 @@
 
 package momfo.core;
 
+import java.io.IOException;
 import java.io.Serializable;
 
 import javax.naming.NameNotFoundException;
+import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
-import lib.math.BuiltInRandom;
+import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.math.BuildInRandom;
 import momfo.util.JMException;
 
 /**
@@ -34,16 +37,6 @@ import momfo.util.JMException;
  */
 public abstract class Operator implements Serializable {
 
-	protected BuiltInRandom random;
-
-	public void setRandomGenerator(BuiltInRandom random_){
-		random = random_;
-	}
-
-	public String getName() {
-		return this.getClass().getCanonicalName();
-	}
-
-	abstract public void build(CommandSetting s) throws NameNotFoundException, JMException;
+	abstract public void build(CommandSetting s) throws NameNotFoundException, JMException, NamingException, ReflectiveOperationException, IOException, notFoundException;
 
 }

@@ -1,6 +1,6 @@
 package momfo.core;
 
-import lib.math.BuiltInRandom;
+import lib.math.BuildInRandom;
 import momfo.util.POINT;
 
 
@@ -14,7 +14,7 @@ public class Solution {
 
 	int multitaskID_;
 	
-	private final BuiltInRandom random;
+	private final BuildInRandom random;
 	
 	public int getMultitaskID(){
 		return multitaskID_;
@@ -204,7 +204,7 @@ public class Solution {
 		return 		numberOftasks;
 	}
 
-	public Solution(ProblemSet a, int numberOfTasks,BuiltInRandom random_){
+	public Solution(ProblemSet a, int numberOfTasks,BuildInRandom random_){
 		numberOfVariables_ = a.getMaxDimension();
 		problemSet_ = a;
 		problem_ = a.get(numberOfTasks);
@@ -250,7 +250,7 @@ public class Solution {
 		remake();
 	}
 
-	public Solution(Problem a,BuiltInRandom random_){
+	public Solution(Problem a,BuildInRandom random_){
 		problemSet_ = null;
 		problem_ = a;
 		numberOftasks =1;
@@ -320,7 +320,7 @@ public class Solution {
 		return totalConstrain_;
 	}
 
-	public Solution(POINT a,BuiltInRandom random_){
+	public Solution(POINT a,BuildInRandom random_){
 		random = random_;
 		rank_ = Integer.MAX_VALUE;
 		value_ = null;
@@ -371,7 +371,7 @@ public class Solution {
 
 	}
 	
-	public BuiltInRandom getRandomGenerator(){
+	public BuildInRandom getRandomGenerator(){
 		return random;
 	}
 

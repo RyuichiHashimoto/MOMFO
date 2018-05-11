@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 
-import lib.math.BuiltInRandom;
+import lib.math.BuildInRandom;
 import lib.math.Permutation;
 
 public class Neiborhood {
@@ -62,7 +62,7 @@ public class Neiborhood {
 
 	}
 
-	public  void setNeiborhood(int siz,BuiltInRandom random_) {
+	public  void setNeiborhood(int siz,BuildInRandom random_) {
 
 		int size = weight_.length;
 		neiborhood_ = new int[size][];
@@ -127,7 +127,7 @@ public class Neiborhood {
 		return counter;
 	}
 	public static void main(String[] args){
-		BuiltInRandom random = new BuiltInRandom(10);
+		BuildInRandom random = new BuildInRandom(10);
 		int list[] = new int[25];
 		double value[] = new double[25];
 		int ddd[] = new int[25];
@@ -182,7 +182,7 @@ public class Neiborhood {
 	}
 
 
-	static void  randamSortEach(int[] list,double[] value,BuiltInRandom random_){
+	static void  randamSortEach(int[] list,double[] value,BuildInRandom random_){
 		int[] empty;
 
 

@@ -2,6 +2,7 @@ package momfo.problems.MOMFOP.NTU;
 
 import java.io.IOException;
 
+import lib.experiments.CommandSetting;
 import lib.io.output.fileSubscription;
 import momfo.Indicator.IGDRef;
 import momfo.core.Problem;
@@ -11,8 +12,19 @@ import momfo.problems.MOMFOP.NTU.base.IO;
 import momfo.problems.MOMFOP.NTU.base.MMZDT;
 import momfo.util.JMException;
 
-public class PIHS {
+public class PIHS extends ProblemSet{
 
+	public PIHS(CommandSetting st) throws IOException {
+		ProblemSet ps1 = getT1();
+		ProblemSet ps2 = getT2();
+		ProblemSet problemSet = new ProblemSet(2);
+		problemSet.setProblemSetName("PIHS");
+		problemSet.setMaxDimensionOfObjective(2);
+		
+		add(ps1.get(0)).add(ps2.get(0));		
+	}
+	
+	
 	public static ProblemSet getProblemSet() throws IOException {
 		ProblemSet ps1 = getT1();
 		ProblemSet ps2 = getT2();

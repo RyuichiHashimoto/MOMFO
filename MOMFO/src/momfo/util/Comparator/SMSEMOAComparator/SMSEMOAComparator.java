@@ -2,15 +2,17 @@ package momfo.util.Comparator.SMSEMOAComparator;
 
 import java.util.HashMap;
 
+import lib.math.BuildInRandom;
 import momfo.core.Solution;
 import momfo.util.JMException;
 import momfo.util.Comparator.Comparator;
 
 public abstract class SMSEMOAComparator extends Comparator {
 
-	public SMSEMOAComparator(HashMap<String, Object> parameters) throws JMException {
-		super(parameters);
-		// TODO 自動生成されたコンストラクター・スタブ
+	
+
+	public SMSEMOAComparator(boolean is, BuildInRandom random_) {
+		super(is, random_);
 	}
 
 	public boolean isDominaning(Solution me, Solution you){

@@ -38,12 +38,12 @@ import momfo.util.JMException;
 public class BitFlipMutation extends Mutation {
 
 	@Override
-	@NeedParameters({MutationProbability,RANDOM_GENERATOR})
+	@NeedParameters({MUTATIONProbability,RANDOM_GENERATOR})
 	public void build(CommandSetting s) throws NameNotFoundException {
 		this.build(s);
 
-		double mp = (Double) s.get(MutationProbability);
-		if(mp < 0) throw new IllegalArgumentException(MutationProbability + " must be non-negative but was "+ mp);
+		double mp = (Double) s.get(MUTATIONProbability);
+		if(mp < 0) throw new IllegalArgumentException(MUTATIONProbability + " must be non-negative but was "+ mp);
 
 		mutationProbability = mp;
 	}

@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import lib.math.BuiltInRandom;
+import lib.math.BuildInRandom;
 
 
 public class IO {
@@ -42,7 +42,7 @@ public class IO {
 	
 	
 	
-	public static double[][] getRandomRotationMatrix(int m, int n, double low, double up,BuiltInRandom random) {
+	public static double[][] getRandomRotationMatrix(int m, int n, double low, double up,BuildInRandom random) {
 		assert false;
 		
 		double matrix[][] = new double[m][n];

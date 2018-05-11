@@ -2,15 +2,16 @@ package momfo.util.Comparator.NSGAIIComparator;
 
 import java.util.HashMap;
 
+import lib.math.BuildInRandom;
 import momfo.core.Solution;
 import momfo.util.JMException;
 import momfo.util.Comparator.DominationComparator;
 
 public abstract class NSGAIIComparator extends DominationComparator {
 
-	public NSGAIIComparator(HashMap<String, Object> parameters) throws JMException {
-		super(parameters);
-		// TODO 自動生成されたコンストラクター・スタブ
+
+	public NSGAIIComparator(boolean d, BuildInRandom random_) {
+		super(d, random_);
 	}
 
 	public int isDominaning(Solution me, Solution you){

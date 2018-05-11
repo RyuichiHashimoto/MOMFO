@@ -2,14 +2,16 @@ package momfo.util.Comparator.SMSEMOAComparator;
 
 import java.util.HashMap;
 
+import lib.math.BuildInRandom;
 import momfo.core.Solution;
 import momfo.util.JMException;
 
 public class SMSEMOASelectionComparator extends SMSEMOAComparator {
 
-	public SMSEMOASelectionComparator(HashMap<String, Object> parameters) throws JMException {
-		super(parameters);
-		// TODO 自動生成されたコンストラクター・スタブ
+
+	public SMSEMOASelectionComparator(boolean is, BuildInRandom random_) {
+		super(is, random_);
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override

@@ -2,7 +2,7 @@ package momfo.metaheuristics.Island.EnvironmentalSelection;
 
 import java.util.HashMap;
 
-import lib.math.BuiltInRandom;
+import lib.math.BuildInRandom;
 import momfo.core.Population;
 import momfo.util.JMException;
 
@@ -14,11 +14,11 @@ public abstract class EnvironmentalSelection {
 
 	protected boolean isMax_;
 
-	protected final BuiltInRandom random;
+	protected final BuildInRandom random;
 
 	abstract public Population getNextPopulation(Population pop) throws JMException;
 
-	public EnvironmentalSelection(int popSize,boolean isMax,HashMap<String, Object> parameter_,BuiltInRandom random_){
+	public EnvironmentalSelection(int popSize,boolean isMax,HashMap<String, Object> parameter_,BuildInRandom random_){
 		populationSize = popSize;
 		parameter = parameter_;
 		random = random_;

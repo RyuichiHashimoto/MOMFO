@@ -1,6 +1,6 @@
 package momfo.Indicator.Hypervolume;
 
-import lib.math.BuiltInRandom;
+import lib.math.BuildInRandom;
 import momfo.Indicator.Indicator;
 import momfo.util.Front;
 import momfo.util.POINT;
@@ -16,16 +16,16 @@ public abstract class HypervolumeCalculator extends Indicator {
 	final protected  DominationComparator Dominator;
 
 
-	public HypervolumeCalculator(BuiltInRandom random){
+	public HypervolumeCalculator(BuildInRandom random){
 		Dominator = new DominationComparator(false,random);
 	}
 
-	public HypervolumeCalculator(double[] ReferencePoint,BuiltInRandom random){
+	public HypervolumeCalculator(double[] ReferencePoint,BuildInRandom random){
 		Dominator = new DominationComparator(false,random);
 		referencePoint_ = new ReferencePoint(ReferencePoint);
 	}
 
-	public HypervolumeCalculator(ReferencePoint ReferencePoint,BuiltInRandom random) {
+	public HypervolumeCalculator(ReferencePoint ReferencePoint,BuildInRandom random) {
 		Dominator = new DominationComparator(false,random);
 		referencePoint_ = new ReferencePoint(ReferencePoint);
 	}

@@ -3,21 +3,17 @@ package momfo.util.Comparator.MultiIslandMOEADComparator;
 
 import java.util.HashMap;
 
+import lib.math.BuildInRandom;
 import momfo.core.Solution;
 import momfo.util.JMException;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;
 public class NomalMultiIslandMOEAD extends MultiIslandMOEADComparator {
 
-	public NomalMultiIslandMOEAD(HashMap<String, Object> parameters) throws JMException {
-		super(parameters);
-		// TODO 自動生成されたコンストラクター・スタブ
+
+	public NomalMultiIslandMOEAD(boolean ismax, BuildInRandom random, ScalarzingFunction[] d) throws JMException {
+		super(ismax, random, d);
+		// TODO Auto-generated constructor stub
 	}
-	public NomalMultiIslandMOEAD(HashMap<String, Object> parameters,ScalarzingFunction[] set) throws JMException {
-		super(parameters);
-	}
-
-
-
 
 	@Override
 	public int execute(Object one, Object two) throws JMException {

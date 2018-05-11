@@ -4,21 +4,20 @@ import javax.naming.NameNotFoundException;
 
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
-import lib.math.BuiltInRandom;
+import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.math.BuildInRandom;
 import	momfo.core.Operator;
-import momfo.core.Solution;
+import momfo.core.Population;
 import momfo.util.JMException;
 
 
 public abstract class Selection extends Operator{
 
-	protected BuiltInRandom random;
+	protected BuildInRandom random;
+	
+	public abstract int selection(Population pop) throws JMException;
 
-	protected double mutationProbability;
-
-	public abstract void mutation(Solution offspring,Solution parent) throws JMException;
-
-	public void build(CommandSetting setting) throws NameNotFoundException, JMException {
-		random = (BuiltInRandom)setting.get(ParameterNames.RANDOM_GENERATOR);
+	public void build(CommandSetting setting) throws NameNotFoundException, JMException, notFoundException {
+		random = (BuildInRandom)setting.get(ParameterNames.RANDOM_GENERATOR);
 	}
 }

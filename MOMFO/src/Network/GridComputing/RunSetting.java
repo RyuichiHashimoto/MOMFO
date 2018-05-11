@@ -9,6 +9,7 @@ import Network.Solver;
 import lib.experiments.CommandSetting;
 import lib.experiments.Exception.CommandSetting.CannotConvertException;
 import lib.experiments.Exception.CommandSetting.notFoundException;
+import momfo.util.JMException;
 
 public class RunSetting {
 	public static final String OUTPUT_DIR = "dir";
@@ -47,7 +48,7 @@ public class RunSetting {
 	}
 
 
-	public static Solver buildSolver(CommandSetting s) throws notFoundException, IllegalArgumentException, CannotConvertException, NamingException, IOException, ReflectiveOperationException  {
+	public static Solver buildSolver(CommandSetting s) throws notFoundException, IllegalArgumentException, CannotConvertException, NamingException, IOException, ReflectiveOperationException, JMException  {
 		// make directory for output
 		StreamProvider sp;
 		if (s.containKey(OUTPUT_DIR)) {
