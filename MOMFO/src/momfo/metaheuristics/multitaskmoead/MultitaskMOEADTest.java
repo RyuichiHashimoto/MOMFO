@@ -43,47 +43,50 @@ class MultitaskMOEADTest {
 		.put(ParameterNames.MUTATION, "momfo.operators.mutation.PolynomialMutation")
 		.put(ParameterNames.MUTATIONProbability, "-1")
 		.put(ParameterNames.PMDisIndex, "20")
-		.put(ParameterNames.SCALAR_FUNCTION_NAME,"TchebycheffFormin")
-		.put(ParameterNames.INNER_DIVISION_SIZE, 0 )
-		.put(ParameterNames.OUTER_DIVISION_SIZE,( ( problemNumber== 8 ||problemNumber== 7) && (taskNumber == 0) )  ? 13:99)
-		.put(ParameterNames.MOEAD_ALPHA,1.0)
-		.put(ParameterNames.SIZE_OF_NEIBORHOOD_At_UPDATE,20)
-		.put(ParameterNames.IS_NORM,false)
-		.put(ParameterNames.SIZE_OF_NEIBORHOOD_At_MATING,20)
+		.put(ParameterNames.INNER_DIVISION_SIZE, "0,0" )
+		.put(ParameterNames.OUTER_DIVISION_SIZE, (problemNumber== 8 ||problemNumber== 7)  ? "13,99" :"99,99")
+		.put(ParameterNames.MOEAD_ALPHA,"1.0,1.0")
+		.put(ParameterNames.SCALAR_FUNCTION,"momfo.util.ScalarzingFunction.TchebycheffForMin,momfo.util.ScalarzingFunction.TchebycheffForMin")
+		.put(ParameterNames.MOEAD_COMPARATOR,"momfo.util.Comparator.MOEADComparator.NomalMOEADComapator,momfo.util.Comparator.MOEADComparator.NomalMOEADComapator")
+		.put(ParameterNames.SIZE_OF_NEIBORHOOD_At_UPDATE,"20,20")
+		.put(ParameterNames.IS_NORM,"false,false")
+		.put(ParameterNames.SIZE_OF_NEIBORHOOD_At_MATING,"20,20")
 		.put(ParameterNames.SEEDER, "lib.experiments.SequenceSeeder")
 		.put(ParameterNames.INITIALIZATION, "momfo.operators.initializer.testInitializer")
-		.put(ParameterNames.ParentsSelection, "momfo.operators.selection.ParentsSelection.BinaryTournament")
+		.put(ParameterNames.PBI_PARAMETER, "5.0,5.0")
+		.put(ParameterNames.ParentsSelection, "momfo.operators.selection.ParentsSelection.RandomSelectionWithoutReplacement")
 		.put(ParameterNames.EVALUATION, "momfo.operators.evaluation.NTUProblemEvaluation")
-		.put(ParameterNames.POPULATION_SIZE, "100")
+		.put(ParameterNames.POPULATION_SIZE, "100,100")
 		.put(ParameterNames.PROBLEM_SET, (ProblemName[problemNumber]))
 		.put(ParameterNames.SEEDER_SEED, "1")
 		.put(ParameterNames.NTRIALS, 1)
-		.put(ParameterNames.N_OF_EVALUATIONS, 100000)
-		.put(ParameterNames.N_OF_PARENTS, 2)
-		.put(ParameterNames.IS_MAX, false)
+		.put(ParameterNames.N_OF_EVALUATIONS, "100000,100000")
+		.put(ParameterNames.RMP, 0.1)
+		.put(ParameterNames.N_OF_PARENTS, "2,2")
+		.put(ParameterNames.IS_MAX, "false,false")
 		.put(ParameterNames.TASK_NUMBER, taskNumber)
 		.put("times",0);
 		System.out.println(ProblemName[problemNumber]+ ": Task" + (taskNumber+1));
 		GAFramework solver = new GAFramework();
+
+
 		solver.build(setting);
 		solver.runOnce();
 
 
-		double IGD = (double) solver.getGA().getOutputParameter("IGD");
-		if (taskNumber == 0) {
-			if (!(IGD == IGDValues_Task1[problemNumber]))
-				fail("IGD Value of Task 1 is wrong " + "corrct anser is " + IGDValues_Task1[problemNumber] + " but my answer is" + IGD);
-			else
-				System.out.println("success");
-		} else if(taskNumber == 1){
-			if (!(IGD == IGDValues_Task2[problemNumber]))
-				fail("IGD Value of Task 2 is wrong " + "corrct anser is " + IGDValues_Task2[problemNumber] + " but my answer is" + IGD);
-		}
+		double[] IGD = (double[]) solver.getGA().getOutputParameter("IGD");
+			if (!(IGD[0] == IGDValues_Task1[0]))
+				fail("IGD Value of Task 1 is wrong " + "corrct anser is " + IGDValues_Task1[problemNumber] + " but my answer is" + IGD[0]);
+			else if (!(IGD[1] == IGDValues_Task2[1]))
+				fail("IGD Value of Task 2 is wrong " + "corrct anser is " + IGDValues_Task2[problemNumber] + " but my answer is" + IGD[1]);
+			else 
+				System.out.println("SUCCCESS");
+		
 	}
 
 	public void eachTest(int problemNumber) throws JMException, notFoundException, IllegalArgumentException, CannotConvertException, NamingException, IOException, ReflectiveOperationException {
 		eachTestTask(problemNumber,0);
-		eachTestTask(problemNumber,1);
+	//	eachTestTask(problemNumber,1);
 	}
 
 	public void Separate() throws JMException, ClassNotFoundException, NameNotFoundException {

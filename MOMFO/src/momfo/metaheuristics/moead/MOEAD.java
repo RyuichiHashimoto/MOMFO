@@ -25,12 +25,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-import javax.naming.NameNotFoundException;
+import javax.naming.NamingException;
 
+import experiments.Generics;
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.notFoundException;
-import lib.lang.NeedOverriden;
 import lib.math.Calculator;
 import lib.math.Permutation;
 import momfo.Indicator.IGD.IGD;
@@ -44,9 +44,7 @@ import momfo.util.JMException;
 import momfo.util.Neiborhood;
 import momfo.util.WeightedVector;
 import momfo.util.Comparator.MOEADComparator.MOEADComparator;
-import momfo.util.Comparator.MOEADComparator.NomalMOEADComapator;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;
-import momfo.util.ScalarzingFunction.ScalarzingFunctionFactory;
 public class MOEAD extends GeneticAlgorithm{
 
 
@@ -236,10 +234,8 @@ public class MOEAD extends GeneticAlgorithm{
 	} // updateProblem
 
 
-	@NeedOverriden
 	public void initialize(int seed) throws ClassNotFoundException, JMException {
-		random.setSeed(seed);
-
+		super.initialize(seed);
 
 		setNeighborhood();
 
@@ -282,7 +278,7 @@ public class MOEAD extends GeneticAlgorithm{
 			Solution[] parents = new Solution[numberOfParents_];
 
 			for(int k=0;k<numberOfParents_;k++){
-				parents[k] = population_.get(parentsNumber.get(k));
+				 parents[k] = population_.get(parentsNumber.get(k));
 			}
 
 			offSpring =crossover.crossover(parents[0],parents[1]);
@@ -340,11 +336,12 @@ public class MOEAD extends GeneticAlgorithm{
 
 	protected int [] permutation;
 	@Override
-	protected void buildImpl(CommandSetting s) throws JMException, NameNotFoundException, notFoundException {
+	protected void buildImpl(CommandSetting s) throws JMException, notFoundException, NamingException, ReflectiveOperationException {
+
 		problem_ = ((ProblemSet) (setting.get(ParameterNames.PROBLEM_SET)))
 				.get(setting.get(ParameterNames.TASK_NUMBER));
 
-		ScalarzingFunctionName = s.get(ParameterNames.SCALAR_FUNCTION_NAME);
+		ScalarzingFunctionName = s.get(ParameterNames.SCALAR_FUNCTION);
 		maxEvaluations = s.get(ParameterNames.N_OF_EVALUATIONS);
 
 		numberOfParents_ = s.get(ParameterNames.N_OF_PARENTS);
@@ -354,13 +351,17 @@ public class MOEAD extends GeneticAlgorithm{
 
 		isMax    = s.get(ParameterNames.IS_MAX);
 
-		if(ScalarzingFunctionName.contains("PBI")) {
-			ScalarzingFunction_ = ScalarzingFunctionFactory.getScalarzingFunctionOperator(ScalarzingFunctionName,(Double)this.getInputParameter("PBITheta"));
-		} else {
-			ScalarzingFunction_ = ScalarzingFunctionFactory.getScalarzingFunctionOperator(ScalarzingFunctionName,-100);
-		}
-		comparator = new NomalMOEADComapator(isMax,random,ScalarzingFunction_);
-
+		
+		
+		ScalarzingFunction_ = Generics.cast(s.getAsInstanceByName(ParameterNames.SCALAR_FUNCTION, ""));;
+		s.putForce(ParameterNames.SCALAR_FUNCTION, ScalarzingFunction_);
+		comparator =Generics.cast(s.getAsInstanceByName(ParameterNames.MOEAD_COMPARATOR, ""));; 
+			
+		
+		ScalarzingFunction_.build(s);
+		comparator.build(s);
+		
+		
 		evaluations_ = 0;
 		alpha = s.get(ParameterNames.MOEAD_ALPHA);
 		sizeOfNeiborhoodRepleaced_ = s.get(ParameterNames.SIZE_OF_NEIBORHOOD_At_UPDATE);

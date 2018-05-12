@@ -4,6 +4,9 @@ import momfo.util.JMException;
 
 public class Tchebycheff  extends ScalarzingFunction{
 
+	
+	
+	
 	public double execute(double[] ind,double[] weight,double[] referencePoint) throws JMException{
 		double max=-1;
 		double fnvue;

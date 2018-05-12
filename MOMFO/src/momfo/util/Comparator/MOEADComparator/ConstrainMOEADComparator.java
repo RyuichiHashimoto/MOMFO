@@ -1,7 +1,5 @@
 package momfo.util.Comparator.MOEADComparator;
 
-import java.util.HashMap;
-
 import lib.math.BuildInRandom;
 import momfo.core.Solution;
 import momfo.util.JMException;
@@ -9,7 +7,9 @@ import momfo.util.ScalarzingFunction.ScalarzingFunction;
 
 public class  ConstrainMOEADComparator extends MOEADComparator{
 
-
+	public ConstrainMOEADComparator(){
+		super();
+	}
 
 
 	public ConstrainMOEADComparator(boolean ismax, BuildInRandom random, ScalarzingFunction d) throws JMException {

@@ -23,15 +23,13 @@ package momfo.metaheuristics.multitaskmoead;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Vector;
 
 import javax.naming.NamingException;
 
-import experiments.SettingWriter;
-import lib.directory.DirectoryMaker;
 import lib.experiments.CommandSetting;
+import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.io.output.fileSubscription;
 import lib.math.Calculator;
@@ -41,57 +39,41 @@ import momfo.Indicator.IGD.IGDRef;
 import momfo.core.GeneticAlgorithm;
 import momfo.core.Operator;
 import momfo.core.Population;
-import momfo.core.Problem;
-import momfo.core.ProblemSet;
 import momfo.core.Solution;
 import momfo.util.JMException;
 import momfo.util.Neiborhood;
 import momfo.util.WeightedVector;
 import momfo.util.Comparator.MOEADComparator.MOEADComparator;
-import momfo.util.Comparator.MOEADComparator.NomalMOEADComapator;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;
-import momfo.util.ScalarzingFunction.ScalarzingFunctionFactory;
 
 public class MultitaskMOEAD extends GeneticAlgorithm {
 
-	public MultitaskMOEAD(ProblemSet d) {
-		super(d);
-		// TODO 自動生成されたコンストラクター・スタブ
-	}
+	private int[] permutation;
 
-	/**
-	 * Stores the population size
-	 */
 	private MOEADComparator[] comparator;
 
-	private double alpha = 1.0;
+	private double[] alpha;
 
-	/**
-	 * Stores the population size
-	 */
 	private int[] populationSize_;
-	/**
-	 * Stores the population
-	 */
+
 	private Population[] population_;
-	/**
-	 * Z vector (ideal point)
-	 */
+
 	double[][] ReferencePoint_;
-	/**
-	 * Lambda vectors
-	 */
-	// Vector<Vector<Double>> lambda_ ;
+
 	static double[][][] WeightedVector_;
 
 	private int[] numberofObjectives_;
+
 	private int[] numberOfDivision_;
 
 	static int[][][] neighborhood_;
 
 	int[] numberOfParents_;
+
 	boolean[] isNorm;
+
 	Solution[][] indArray_;
+
 	String[] functionType_;
 
 	Solution[][] nonDominatedSolution;
@@ -119,9 +101,11 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 	 * @param problem
 	 *            Problem to solve
 	 */
-	public MultitaskMOEAD(Problem problem) {
-		super(problem);
-	} // DMOEA
+
+	int[] updataTime;
+	int[] updateOptunityTime;
+
+	public boolean[] cont;
 
 	ScalarzingFunction[] ScalarzingFunction_;
 
@@ -192,7 +176,7 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		int[] permutation = new int[totalPopulationSize_];
 		Permutation.randomPermutation(permutation, totalPopulationSize_, random);
 
-		Solution offSpring;
+		Solution offSpring = null;
 
 		// STEP 2. Update
 		do {
@@ -234,9 +218,9 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 					parentsNumber = null;
 					TaskNumber_List = null;
 					// Apply  crossover
-					offSpring = (Solution) crossover_.execute(parents);
+//					offSpring = (Solution) crossover_.execute(parents);
 
-					mutation_.execute(offSpring);
+//					mutation_.execute(offSpring);
 
 					problemSet_.get(tasks).repair(offSpring, null);
 
@@ -453,7 +437,7 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 	void updateReference(Solution individual, int task) {
 		for (int n = 0; n < problemSet_.get(task).getNumberOfObjectives(); n++) {
 			if (comparator[task].compare(individual.getObjective(n), indArray_[task][n].getObjective(n))) {
-				ReferencePoint_[task][n] = alpha * individual.getObjective(n);
+				ReferencePoint_[task][n] = alpha[task]* individual.getObjective(n);
 				indArray_[task][n] = individual;
 			}
 		}
@@ -469,7 +453,6 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 
 		// generate teh random permutation.
 		Permutation.randomPermutation(perm, size, random);
-
 		for (int i = 0; i < size; i++) {
 			int k;
 			k = neighborhood_[Tasks_id][id][perm[i]];
@@ -484,8 +467,76 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		return Updatetimes;
 	} // updateProblem
 
-	private void Setting() throws JMException {
 
+	public void initialize(int seed) throws ClassNotFoundException, JMException {
+		super.initialize(seed);
+
+		population_ = new Population[numberOfTasks];
+		evaluations_ = new int[numberOfTasks];
+		ReferencePoint_ = new double[numberOfTasks][];
+		indArray_ = new Solution[numberOfTasks][];
+		cont = new boolean [numberOfTasks];
+		for (int t = 0; t < numberOfTasks; t++) {
+			evaluations_[t] = 0;
+			population_[t] = new Population(populationSize_[t]);
+			indArray_[t] = new Solution[problemSet_.get(t).getNumberOfObjectives()];
+			ReferencePoint_[t] = new double[problemSet_.get(t).getNumberOfObjectives()];
+			cont[t] = false;
+		}
+
+
+		setNeighborhood();
+
+		initPopulation();
+
+		initReferencePoint();
+		double[] igd = new double[2];
+		double[] Replacing = new double[2];
+		updataTime = new int[problemSet_.countProblem()];
+		updateOptunityTime = new int[problemSet_.countProblem()];
+
+		List<List<double[]>> igdHistory = new ArrayList<List<double[]>>();
+		List<List<double[]>> replacingRate = new ArrayList<List<double[]>>();
+
+		int counter = 0;
+		boolean[] cont = new boolean[numberOfTasks];
+
+		ParentsSelectioncounter = new int[numberOfTasks];
+		for (int t = 0; t < ParentsSelectioncounter.length; t++) {
+			ParentsSelectioncounter[t] = 10;
+		}
+
+		for (int t = 0; t < problemSet_.countProblem(); t++) {
+			List<double[]> d = new ArrayList<double[]>();
+			boolean[] calc = new boolean[population_[t].size()]; //IGD計算をする個体の選出するための配列
+			//SkillFactorの照合
+			for (int p = 0; p < population_[t].size(); p++) {
+				calc[p] = true;
+			}
+			//IGD計算
+			igd[0] = counter;
+			igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_[t].getAllObjectives(), calc,
+					IGDRef.getNormalizeRefs(t), IGDRef.getMaxValue(t), IGDRef.getMinValue(t), random));
+			replacingRate.add(new ArrayList<double[]>(d));
+
+			d.add(igd.clone());
+			igdHistory.add(new ArrayList<double[]>(d));
+			cont[t] = false;
+		}
+		int totalPopulationSize_ = 0;
+		;
+		for (int t = 0; t < numberOfTasks; t++) {
+			totalPopulationSize_ += populationSize_[t];
+		}
+
+		permutation = new int[totalPopulationSize_];
+		Permutation.randomPermutation(permutation, totalPopulationSize_, random);
+	}
+
+
+
+	private void Setting() throws JMException {
+/*
 		//		isNorm = false;
 		numberOfTasks = problemSet_.countProblem();
 		numberOfParents_ = new int[numberOfTasks];
@@ -571,24 +622,97 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		SettingWriter.merge(mutation_.getMap());
 		SettingWriter.add("Problemname", problemSet_.getProblemName());
 		SettingWriter.merge(crossover_.getMap());
-
+*/
 	}
 
 	@Override
 	public void recombination() throws JMException {
-		// TODO 自動生成されたメソッド・スタブ
+		Solution offspring;
+		// STEP 2. Update
 
+		int count = 0;
+		for (int t = 0; t < problemSet_.countProblem(); t++) {
+			updataTime[t] = 0;
+			updateOptunityTime[t] = 0;
+		}
+
+		for (int t = 0; t < problemSet_.countProblem(); t++) {
+
+			for (int i = 0; i < populationSize_[t]; i++) {
+				int n = permutation[count++];
+				//1つ目の要素はタスク番号, 2つ目の要素は個体番号，
+				int[] temp = getSolutionID(n, populationSize_);
+
+				// or int n = i;
+				int tasks = temp[0];
+				n = temp[1];
+				// STEP 2.1. Mating selection
+				if (cont[tasks]) {
+					continue;
+				}
+
+				Vector<Integer> parentsNumber = new Vector<Integer>();
+				Vector<Integer> TaskNumber_List = new Vector<Integer>();
+
+				//他タスクを解く個体を選択したかどうか
+				boolean selectOtherTasksFlag = matingSelection(parentsNumber, TaskNumber_List, tasks, n,
+						numberOfParents_[tasks]);
+
+				Solution[] parents = new Solution[numberOfParents_[tasks]];
+
+				for (int k = 0; k < numberOfParents_[tasks]; k++) {
+					parents[k] = population_[TaskNumber_List.get(k)].get(parentsNumber.get(k));
+				}
+
+				parentsNumber = null;
+				TaskNumber_List = null;
+				// Apply  crossover
+				offspring = crossover.crossover(parents)[0];
+
+				offspring = mutation.mutation(offspring);
+
+				problemSet_.get(tasks).repair(offspring, null);
+
+				problemSet_.get(tasks).evaluate(offspring);
+
+				evaluations_[tasks]++;
+
+				updateReference(offspring, tasks);
+
+				int updatetime = updateProblem(offspring, tasks, n);
+				if (selectOtherTasksFlag) {
+					updataTime[tasks] = updatetime;
+					updateOptunityTime[tasks] += sizeOfNeiborhoodRepleaced_[tasks];
+				}
+				// STEP 2.5. Update of solutions
+				if (evaluations_[tasks] == maxEvaluations[tasks]) {
+					cont[tasks] = true;
+				}
+			}
+		}
+		double[] igd = new double[numberOfTasks];
+		for(int i  = 0; i < numberOfTasks;i++) {
+			population_[i].printObjectivesToFile("output"+(i+1) +".dat");
+			igd[i] =  (IGD.CalcNormalizeIGD_To_NonDominated(population_[i].getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber),random));
+		}
+//		System.out.println(evaluations_[0] + "	" + evaluations_[1] );
+
+		setOutputParameter("IGD", igd);
 	}
 
 	@Override
 	public void nextGeneration() throws JMException {
-		// TODO 自動生成されたメソッド・スタブ
-
+		//
 	}
 
 	@Override
 	public boolean terminate() {
-		return false;
+		for(int i = 0; i < cont.length;i++) {
+			if(!cont[i])
+				return false;
+		}
+
+		return true;
 	}
 
 	@Override
@@ -597,12 +721,12 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		for (int t = 0; t < population_.length; t++) {
 			evaluation += evaluations_[t];
 		}
-		
+
 		return evaluation;
 	}
 
 	/*
-	 *  this method does not return the exact 
+	 *  this method does not return the exact
 	 *  number of generations in some case especially when
 	 *  the number of solutions assigned to each island is different.
 	 */
@@ -615,7 +739,7 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 			size += population_[t].size();
 			evaluation += evaluations_[t];
 		}
-		
+
 		return evaluation/size;
 	}
 
@@ -636,8 +760,69 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 	@Override
 	protected void buildImpl(CommandSetting s)
 			throws ReflectiveOperationException, NamingException, IOException, notFoundException, JMException {
-		// TODO 自動生成されたメソッド・スタブ
 
+		problemSet_  = s.get(ParameterNames.PROBLEM_SET);
+		numberOfTasks = problemSet_.countProblem();
+		isMax = s.getAsBArray(ParameterNames.IS_MAX);
+		isNorm = s.getAsBArray(ParameterNames.IS_NORM);
+
+		InnerWeightVectorDivision_  = s.getAsNArray(ParameterNames.INNER_DIVISION_SIZE);
+		numberOfParents_ = s.getAsNArray(ParameterNames.N_OF_PARENTS);
+		numberOfDivision_ = s.getAsNArray(ParameterNames.OUTER_DIVISION_SIZE);
+		numberofObjectives_ = problemSet_.getNumberOfObjectives();
+		alpha = s.getAsDArray(ParameterNames.MOEAD_ALPHA);
+		sizeOfNeiborhoodRepleaced_ = s.getAsNArray(ParameterNames.SIZE_OF_NEIBORHOOD_At_UPDATE);
+		sizeOfMatingNeiborhood_ = s.getAsNArray(ParameterNames.SIZE_OF_NEIBORHOOD_At_MATING);
+		maxEvaluations = s.getAsNArray(ParameterNames.N_OF_EVALUATIONS);;
+		rmp = s.get(ParameterNames.RMP);
+
+		Object[] sss = s.getAsInstanceArray(ParameterNames.SCALAR_FUNCTION);
+		Object[] ccc = s.getAsInstanceArray(ParameterNames.MOEAD_COMPARATOR);
+
+		ScalarzingFunction_ = new ScalarzingFunction[numberOfTasks];
+		comparator = new MOEADComparator[numberOfTasks];
+
+		for (int i = 0;i < sss.length;i++) {
+			ScalarzingFunction_[i] = (ScalarzingFunction) sss[i];
+			comparator[i] = (MOEADComparator) ccc[i];
+		}
+
+
+//		ScalarzingFunction_ = (ScalarzingFunction[]) s.getAsInstanceArray(ParameterNames.SCALAR_FUNCTION);
+		s.putForce(ParameterNames.SCALAR_FUNCTION, ScalarzingFunction_);
+		s.putForce(ParameterNames.MOEAD_COMPARATOR, comparator);
+		s.getAsNArray(ParameterNames.N_OF_EVALUATIONS);
+
+
+
+		neighborhood_ = new int[problemSet_.countProblem()][][];
+		WeightedVector_ = new double[problemSet_.countProblem()][][];
+
+		population_ = new Population[numberOfTasks];
+		evaluations_ = new int[numberOfTasks];
+		ReferencePoint_ = new double[numberOfTasks][];
+		indArray_ = new Solution[numberOfTasks][];
+		populationSize_ = new int[numberOfTasks];
+		isInnerWeightVector_ = new boolean[numberOfTasks];
+		for (int t = 0; t < numberOfTasks; t++) {
+			s.putForce(ParameterNames.SCALAR_FUNCTION, ScalarzingFunction_[t]);
+			s.putForce(ParameterNames.MOEAD_COMPARATOR, comparator[t]);
+			s.put(ParameterNames.TEMP_TASK_NUMBER, t );
+			ScalarzingFunction_[t].build(s);;
+			comparator[t].build(s);
+
+			populationSize_[t] = Calculator.conbination(numberofObjectives_[t] - 1 + numberOfDivision_[t],
+					numberofObjectives_[t] - 1);
+			isInnerWeightVector_[t] = problemSet_.get(t).getNumberOfObjectives() >= 5;
+			if (problemSet_.get(t).getNumberOfObjectives() >= 5) {
+				populationSize_[t] += Calculator.conbination(numberofObjectives_[t] - 1 + InnerWeightVectorDivision_[t],
+						numberofObjectives_[t] - 1);
+			}
+
+		}
+		s.put(ParameterNames.TEMP_TASK_NUMBER, Integer.MIN_VALUE );
+		s.putForce(ParameterNames.SCALAR_FUNCTION, ScalarzingFunction_);
+		s.putForce(ParameterNames.MOEAD_COMPARATOR, comparator);
 	}
 
 } // MOEAD

@@ -1,5 +1,11 @@
 package momfo.util.Comparator.MOEADComparator;
 
+import javax.naming.NameNotFoundException;
+
+import lib.experiments.CommandSetting;
+import lib.experiments.ParameterNames;
+import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.lang.NeedOverriden;
 import lib.math.BuildInRandom;
 import momfo.util.JMException;
 import momfo.util.ReferencePoint;
@@ -13,8 +19,14 @@ public abstract class MOEADComparator extends Comparator {
 		super(ismax,random);
 		ScalaringFunction_ = d;
 	}
-	
-
+	public MOEADComparator(){
+		super();
+	}
+	@NeedOverriden
+	public void build(CommandSetting st) throws NameNotFoundException, notFoundException {
+		super.build(st);
+		ScalaringFunction_ = st.get(ParameterNames.SCALAR_FUNCTION);
+	}
 
 	protected ScalarzingFunction ScalaringFunction_;
 

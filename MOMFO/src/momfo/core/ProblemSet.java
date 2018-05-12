@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lib.experiments.CommandSetting;
-import lib.lang.NeedOverriden;
 import momfo.util.JMException;
 
 public class ProblemSet {
@@ -26,9 +25,10 @@ public class ProblemSet {
 		problemsList_ = new ArrayList<Problem>();
 		accObjsList_ = new ArrayList<Integer>();
 	}
-		
-	
-	
+
+
+
+
 	public void setProblemSetName(String d){
 		ProblemName = d;
 	}
@@ -126,6 +126,12 @@ public class ProblemSet {
 		return numberOfMAXCcnstrain;
 	}
 
-
+	public int[] getNumberOfObjectives() {
+		int[] ret = new int[problemsList_.size()];
+		for(int t =0;t<problemsList_.size();t++) {
+			ret[t] = problemsList_.get(t).getNumberOfObjectives();
+		}
+		return ret;
+	}
 
 }

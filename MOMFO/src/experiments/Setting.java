@@ -86,6 +86,8 @@ public class Setting{
 		return this;
 	}
 
+	
+	
 	public String getAsStr(String key) throws NameNotFoundException {
 		return get(key).toString();
 	}

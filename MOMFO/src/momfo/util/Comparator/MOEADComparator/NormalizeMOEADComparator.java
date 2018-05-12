@@ -1,20 +1,20 @@
 package momfo.util.Comparator.MOEADComparator;
 
 
-import java.util.HashMap;
-
 import lib.math.BuildInRandom;
 import momfo.core.Solution;
 import momfo.util.JMException;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;
-public class NormalizeMOEAComparator extends MOEADComparator {
+public class NormalizeMOEADComparator extends MOEADComparator {
 
 	
-	public NormalizeMOEAComparator(boolean ismax, BuildInRandom random, ScalarzingFunction d) throws JMException {
-		super(ismax, random, d);
-		// TODO Auto-generated constructor stub
+	public NormalizeMOEADComparator() {
+		super();
 	}
-
+	
+	public NormalizeMOEADComparator(boolean ismax, BuildInRandom random, ScalarzingFunction d) throws JMException {
+		super(ismax, random, d);
+	}
 
 	double epsilon = 0;
 

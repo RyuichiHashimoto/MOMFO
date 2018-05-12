@@ -16,6 +16,7 @@ import lib.directory.DirectoryMaker;
 import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.io.FileConstants;
 import lib.lang.Generics;
+import lib.util.ArrayUtility;
 
 public class CommandSetting extends AbstractMap<String,Object> implements Serializable {
 
@@ -76,7 +77,7 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 	public CommandSetting put(String key, Object value) {
 		if (!parameter.containsKey(key))
 			parameter.put(key, value);
-		
+
 		return this;
 	}
 
@@ -89,7 +90,7 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 			System.err.println("\u001b[1;33;mWarning\u001b[m: " + key + " is already set. Overwritten by " + value);
 		}
 	}
-	
+
 	/**
 	 * If the key is not found, throws an exception instead of returning null.
 	 * @param key
@@ -104,7 +105,7 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 	public boolean getAsBool(String key) throws NameNotFoundException, notFoundException {
 		return Boolean.parseBoolean(getAsStr(key));
 	}
-	
+
 	public boolean getAsBool(String key, boolean def) {
 		if (containsKey(key)) {
 			Object val;
@@ -122,7 +123,7 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 			return def;
 		}
 	}
-	
+
 
 	/**
 	 * Returns the value associated by the specified key as int.
@@ -290,6 +291,49 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 		}
 	}
 
+
+	public Object[] getAsInstanceArray(String key) throws NameNotFoundException, ReflectiveOperationException, notFoundException {
+		return getAsInstanceArray(key, ArrayUtility.DEFAULT_DELIMITER);
+	}
+
+	public Object[] getAsInstanceArray(String key, String delimiter) throws NameNotFoundException, ReflectiveOperationException, notFoundException {
+		String[] classNames = getAsSArray(key, delimiter);
+		Object[] retval = new Object[classNames.length];
+		for (int i = 0; i < retval.length; i++) {
+			retval[i] = Class.forName(classNames[i]).newInstance();
+		}
+		return retval;
+	}
+
+	public double[] getAsDArray(String key) throws NameNotFoundException {
+		return getAsDArray(key, ArrayUtility.DEFAULT_DELIMITER);
+	}
+
+	public double[] getAsDArray(String key, String delimiter) throws NameNotFoundException {
+		return ArrayUtility.fromCSVdouble((String) get(key), delimiter);
+	}
+
+	public boolean[] getAsBArray(String key) throws NameNotFoundException {
+		return getAsBArray(key, ArrayUtility.DEFAULT_DELIMITER);
+	}
+
+	public boolean [] getAsBArray(String key, String delimiter) throws NameNotFoundException {
+		return ArrayUtility.fromCSVboolean((String) get(key), delimiter);
+	}
+
+	public int[] getAsNArray(String key) throws NameNotFoundException {
+		return ArrayUtility.fromCSVint((String) get(key), ArrayUtility.DEFAULT_DELIMITER);
+	}
+
+	public int[] getAsNArray(String key, String delimiter) throws NameNotFoundException {
+		return ArrayUtility.fromCSVint((String) get(key), delimiter);
+	}
+
+
+	public String[] getAsSArray(String key) throws NameNotFoundException, notFoundException {
+		return getAsSArray(key, ArrayUtility.DEFAULT_DELIMITER);
+	}
+
 	public <T> T getAsInstanceByName(String key, String defaultPackage, String defaultValue) throws ReflectiveOperationException {
 
 		if (!containsKey(key)) set(key, defaultValue);
@@ -307,7 +351,13 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 		if (!className.contains(".")) set(key, defaultPackage + className);
 		return getAsInstance(key);
 	}
-	
+
+
+	/*
+	 * This method is nealy the put(String, Object) method.
+	 * The only difference is that this is allowed to overwrite save.
+	 */
+
 	public void putForce(String key, Object value) {
 		parameter.put(key, value);
 	}
@@ -367,7 +417,7 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 		}
 	}
 
-	
+
 	public void subscriptHash() {
 		System.out.println("------------------start------------------");
 
@@ -412,7 +462,7 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 		return this;
 	}
 
-	
+
 	public static void main(String[] args) throws NumberFormatException, notFoundException, NameNotFoundException {
 		CommandSetting commandSetting = new CommandSetting();
 		commandSetting.put("A", "B");

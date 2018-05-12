@@ -1,15 +1,24 @@
 package momfo.util.ScalarzingFunction;
 
+import javax.naming.NameNotFoundException;
+
+import lib.experiments.CommandSetting;
+import lib.experiments.ParameterNames;
 import momfo.util.JMException;
 
 public class PBIForMin extends ScalarzingFunction {
 
 	double theta;
 
-	public PBIForMin(double a){
-		theta = a;
+	public PBIForMin(){
 	}
 
+	public void build(CommandSetting setting) throws NameNotFoundException  {
+		if(setting.getAsStr(ParameterNames.PBI_PARAMETER).contains(ParameterNames.SETTING_FILE_DEMILITER))
+			theta = setting.getAsDArray(ParameterNames.PBI_PARAMETER)[setting.getAsInt(ParameterNames.TEMP_TASK_NUMBER)];
+		else
+			theta = setting.get(ParameterNames.PBI_PARAMETER);
+	}
 
 	public double execute(double[] ind ,double[] weigh,double[] referencePoint) throws JMException{
 		assert ind.length == weigh.length : "the dimension of Solution is "  + ind.length + "  the size of weightedVector is " + weigh.length;

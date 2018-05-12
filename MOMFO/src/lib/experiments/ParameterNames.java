@@ -15,7 +15,7 @@ public class ParameterNames {
 	public static final String TASK_NUMBER ="TASK_NUMBER";
 	public static final String N_OF_EVALUATIONS ="N_OF_EVALUATIONS";
 	public static final String N_OF_PARENTS = "N_OF_PARENTS";
-
+	public static final String DIRECTORY_NAME = "DirectoryNames";
 
 	public static final String EVALUATION = "evaluation";
 	public static final String CROSSOVER = "crossoverMethod";
@@ -30,6 +30,7 @@ public class ParameterNames {
 	public static final String DEF_GA_PACKAGE = "momfo.metaheuristics.";
 	public static final String CROSSOVERProbability = "crossoverProbability";
 	public static final String MUTATIONProbability = "mutationProbability";
+	public static final String PBI_PARAMETER = "PBI_Parameter";
 
 
 
@@ -40,10 +41,13 @@ public class ParameterNames {
 	public static final String  OUTER_DIVISION_SIZE = "OUTER_DIVISION_SIZE";
 	public static final String  INNER_DIVISION_SIZE = "INNER_DIVISION_SIZE";
 	public static final String  MOEAD_ALPHA = "MOEAD_ALPHA";
-	public static final String SCALAR_FUNCTION_NAME ="ScalarFunctionName";
+	public static final String  MOEAD_COMPARATOR = "MOEAD_Comparator";
+	public static final String SCALAR_FUNCTION ="ScalarFunction";
 
-
-
+	/*
+	 *  This string variable indicates the index of the tasks that is drawing attention now
+	 */
+	public static final String TEMP_TASK_NUMBER ="TEMP_TASK_NUMBER";
 
 	public static final String DE_CR = "DE_CR";
 	public static final String DE_F = "F";
@@ -51,11 +55,13 @@ public class ParameterNames {
 	public static final String DE_CR_LOWER = "DE_LOWER_CR";
 	public static final String DE_F_UPPER = "DE_UPPER_P";
 	public static final String DE_F_LOWER = "DE_LOWER_P";
+	public static final String RMP = "RMP";
 
 
 
 	public static final double EPS = 1.0e-14;
 	public static final int DEFAULT_SEED = 1995;
+	public static final String SETTING_FILE_DEMILITER = ",";
 
 
 }

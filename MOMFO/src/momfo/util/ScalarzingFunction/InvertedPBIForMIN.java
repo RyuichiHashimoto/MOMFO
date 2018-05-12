@@ -1,15 +1,22 @@
 package momfo.util.ScalarzingFunction;
 
+import javax.naming.NameNotFoundException;
+
+import lib.experiments.CommandSetting;
+import lib.experiments.ParameterNames;
 import momfo.util.JMException;
 
 public class InvertedPBIForMIN extends ScalarzingFunction {
 
 	double theta;
 
-	public InvertedPBIForMIN(double a){
-		theta = 5;
+	public InvertedPBIForMIN(){
+		
 	}
 
+	public void build(CommandSetting setting) throws NameNotFoundException  {
+		theta = setting.get(ParameterNames.PBI_PARAMETER);
+	}
 
 	public double execute(double[] indd ,double[] weigh,double[] referencePoint) throws JMException{
 		double dt = 0,dn;

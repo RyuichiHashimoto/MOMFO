@@ -1,15 +1,27 @@
 package momfo.util.ScalarzingFunction;
 
+import javax.naming.NameNotFoundException;
+
+import lib.experiments.CommandSetting;
+import lib.experiments.ParameterNames;
 import momfo.util.JMException;
 
 public class PBI extends ScalarzingFunction {
 
-	double theta;
 
-	public PBI(double a){
-		theta = a;
+
+
+	double theta = -1000;
+
+	public PBI(){
 	}
 
+	public void build(CommandSetting setting) throws NameNotFoundException  {
+		if(setting.getAsStr(ParameterNames.PBI_PARAMETER).contains(ParameterNames.SETTING_FILE_DEMILITER))
+			theta = setting.getAsDArray(ParameterNames.PBI_PARAMETER)[setting.getAsInt(ParameterNames.TEMP_TASK_NUMBER)];
+		else
+			theta = setting.get(ParameterNames.PBI_PARAMETER);
+	}
 
 	public double execute(double[] ind ,double[] weigh,double[] referencePoint) throws JMException{
 		double dt,dn;
@@ -38,10 +50,5 @@ public class PBI extends ScalarzingFunction {
 
 		return -1*(sum);
 	};
-
-
-	public String getFunctionName() {
-		return "PBI(5)";
-	}
 
 }

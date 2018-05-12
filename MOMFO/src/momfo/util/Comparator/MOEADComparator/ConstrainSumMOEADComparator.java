@@ -7,17 +7,18 @@ import momfo.util.ScalarzingFunction.ScalarzingFunction;
 
 public class  ConstrainSumMOEADComparator extends MOEADComparator{
 
-
-	double parameter = 10;
+	public ConstrainSumMOEADComparator(){
+		super();
+	}
 
 	public ConstrainSumMOEADComparator(boolean ismax, BuildInRandom random,ScalarzingFunction d , double para) throws JMException{
 		super(ismax,random,d);
-		parameter = para;
+
 	}
 
 
 	@Override
-	public int execute(Object one, Object two) throws JMException { 
+	public int execute(Object one, Object two) throws JMException {
 		Solution one_sol = (Solution)one;
 		Solution two_sol = (Solution)two;
 		assert one_sol.getNumberOfConstraint() == two_sol.getNumberOfConstraint() : "one Sslution has " + one_sol.getNumberOfConstraint() + " and the other has "  + two_sol.getNumberOfConstraint();

@@ -36,6 +36,7 @@ class MOEADTest {
 		CommandSetting setting = new CommandSetting();
 		System.out.println(IGDRef.CountTask());
 
+
 		setting
 		.put(ParameterNames.GA, "MOEAD")
 		.put(ParameterNames.CROSSOVER, "momfo.operators.crossover.SBXCrossover")
@@ -44,7 +45,8 @@ class MOEADTest {
 		.put(ParameterNames.MUTATION, "momfo.operators.mutation.PolynomialMutation")
 		.put(ParameterNames.MUTATIONProbability, "-1")
 		.put(ParameterNames.PMDisIndex, "20")
-		.put(ParameterNames.SCALAR_FUNCTION_NAME,"TchebycheffFormin")
+		.put(ParameterNames.SCALAR_FUNCTION,"momfo.util.ScalarzingFunction.TchebycheffForMin")
+		.put(ParameterNames.MOEAD_COMPARATOR,"momfo.util.Comparator.MOEADComparator.NomalMOEADComapator")
 		.put(ParameterNames.INNER_DIVISION_SIZE, 0 )
 		.put(ParameterNames.OUTER_DIVISION_SIZE,( ( problemNumber== 8 ||problemNumber== 7) && (taskNumber == 0) )  ? 13:99)
 		.put(ParameterNames.MOEAD_ALPHA,1.0)
