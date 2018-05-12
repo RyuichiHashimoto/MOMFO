@@ -262,7 +262,7 @@ public class MOEAD extends GeneticAlgorithm{
 
 	}
 
-
+                                           
 	@Override
 	public void recombination() throws JMException {
 		Solution offSpring[];

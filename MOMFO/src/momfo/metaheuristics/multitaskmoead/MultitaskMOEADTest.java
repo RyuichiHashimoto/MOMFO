@@ -23,7 +23,7 @@ class MultitaskMOEADTest {
 
 	@Test
 	public void test() throws JMException, notFoundException, IllegalArgumentException, CannotConvertException, NamingException, IOException, ReflectiveOperationException {
-		for (int i = 0; i < 9; i++) {
+		for (int i = 1; i < 9; i++) {
 			eachTest(i);
 		}
 	}
@@ -64,9 +64,9 @@ class MultitaskMOEADTest {
 		.put(ParameterNames.RMP, 0.1)
 		.put(ParameterNames.N_OF_PARENTS, "2,2")
 		.put(ParameterNames.IS_MAX, "false,false")
-		.put(ParameterNames.TASK_NUMBER, taskNumber)
+//		.put(ParameterNames.TASK_NUMBER, taskNumber)
 		.put("times",0);
-		System.out.println(ProblemName[problemNumber]+ ": Task" + (taskNumber+1));
+		System.out.println(ProblemName[problemNumber]+ "");
 		GAFramework solver = new GAFramework();
 
 
@@ -75,10 +75,10 @@ class MultitaskMOEADTest {
 
 
 		double[] IGD = (double[]) solver.getGA().getOutputParameter("IGD");
-			if (!(IGD[0] == IGDValues_Task1[0]))
-				fail("IGD Value of Task 1 is wrong " + "corrct anser is " + IGDValues_Task1[problemNumber] + " but my answer is" + IGD[0]);
-			else if (!(IGD[1] == IGDValues_Task2[1]))
-				fail("IGD Value of Task 2 is wrong " + "corrct anser is " + IGDValues_Task2[problemNumber] + " but my answer is" + IGD[1]);
+			if (!(IGD[0] == IGDValues_Task1[taskNumber]))
+				fail("IGD Value of Task 1 is wrong " + "corrct anser is " + IGDValues_Task1[taskNumber] + " but my answer is" + IGD[0]);
+			else if (!(IGD[1] == IGDValues_Task2[taskNumber]))
+				fail("IGD Value of Task 2 is wrong " + "corrct anser is " + IGDValues_Task2[taskNumber] + " but my answer is" + IGD[1]);
 			else 
 				System.out.println("SUCCCESS");
 		

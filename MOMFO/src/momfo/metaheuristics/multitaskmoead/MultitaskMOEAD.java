@@ -324,13 +324,6 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		return true;
 	}
 
-	public void subscriptZ() {
-		for (int i = 0; i < problem_.getNumberOfObjectives(); i++) {
-			System.out.print(ReferencePoint_[i] + " ");
-		}
-		System.out.println(" ");
-	}
-
 	public void setNeighborhood() throws JMException {
 
 		for (int t = 0; t < problemSet_.countProblem(); t++) {
@@ -484,12 +477,12 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 			cont[t] = false;
 		}
 
-
 		setNeighborhood();
 
 		initPopulation();
 
 		initReferencePoint();
+
 		double[] igd = new double[2];
 		double[] Replacing = new double[2];
 		updataTime = new int[problemSet_.countProblem()];
@@ -522,9 +515,10 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 			d.add(igd.clone());
 			igdHistory.add(new ArrayList<double[]>(d));
 			cont[t] = false;
+			population_[t].printObjectivesToFile("output_"+ (t+1)+".dat");
 		}
 		int totalPopulationSize_ = 0;
-		;
+
 		for (int t = 0; t < numberOfTasks; t++) {
 			totalPopulationSize_ += populationSize_[t];
 		}
@@ -680,11 +674,12 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 				updateReference(offspring, tasks);
 
 				int updatetime = updateProblem(offspring, tasks, n);
+		
 				if (selectOtherTasksFlag) {
 					updataTime[tasks] = updatetime;
 					updateOptunityTime[tasks] += sizeOfNeiborhoodRepleaced_[tasks];
 				}
-				// STEP 2.5. Update of solutions
+				
 				if (evaluations_[tasks] == maxEvaluations[tasks]) {
 					cont[tasks] = true;
 				}
@@ -692,10 +687,10 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		}
 		double[] igd = new double[numberOfTasks];
 		for(int i  = 0; i < numberOfTasks;i++) {
-			population_[i].printObjectivesToFile("output"+(i+1) +".dat");
-			igd[i] =  (IGD.CalcNormalizeIGD_To_NonDominated(population_[i].getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber),random));
+//			population_[i].printObjectivesToFile("output"+(i+1) +".dat");
+			igd[i] =  (IGD.CalcNormalizeIGD_To_NonDominated(population_[i].getAllObjectives(), IGDRef.getNormalizeRefs(i),IGDRef.getMaxValue(i),IGDRef.getMinValue(i),random));
 		}
-//		System.out.println(evaluations_[0] + "	" + evaluations_[1] );
+
 
 		setOutputParameter("IGD", igd);
 	}
