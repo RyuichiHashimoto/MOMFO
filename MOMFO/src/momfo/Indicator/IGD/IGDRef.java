@@ -7,67 +7,62 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.naming.NameNotFoundException;
+
 public class IGDRef {
 
-	private static List<double[][]> Refs = new ArrayList<double[][]>();
 
-	private static int TaskCounter;
+	double[][] ref;
+	
+	private int taskCounter;
 
-	private static List<String>  RefDataFileName = new ArrayList<String>();
+	private String  refDataFileName;
+	private double[] maxValue;
+	private double[] minValue;
+	private double[][] NormalizeRefs;
 
-	private static List<double[]> maxValue = new ArrayList<double []>();
-	private static List<double[]> minValue= new ArrayList<double []>();
-	private static List<double[][]> NormalizeRefs = new ArrayList<double[][]>();
-
-
-	public static void clear(){
-		Refs.clear();
-		RefDataFileName.clear();
-		NormalizeRefs.clear();
-		maxValue.clear();
-		minValue.clear();
-
-		TaskCounter = 0;
+	public void build(String filePath) throws NameNotFoundException, FileNotFoundException, IOException{
+		refDataFileName = filePath;
+		AddRefFiles(filePath);
 	}
 
-	public static double[][] getRefs(int key){
-		return Refs.get(key);
-	}
-	public static double[][] getNormalizeRefs(int key){
-		return NormalizeRefs.get(key);
-	}
-	public static double[] getMaxValue(int key){
-		return maxValue.get(key);
-	}
-	public static double[] getMinValue(int key){
-		return minValue.get(key);
+	public IGDRef(String path) throws NameNotFoundException, FileNotFoundException, IOException {
+		build(path);
 	}
 
-
-	public static int CountTask(){
-		return TaskCounter;
-	};
-
-	public static void AddRefFiles(String filename) throws FileNotFoundException, IOException{
-		RefDataFileName.add(filename);
-		double[][] ref = FileReading(filename,"	");
-		Refs.add(ref.clone());
-		addMaxAndMin(ref.clone());
-		addNormalizeRef(ref,maxValue.get(maxValue.size()-1),minValue.get(minValue.size()-1));
-		TaskCounter++;
+	public double[][] getRefs(){
+		return ref;
 	}
-	public static void addNormalizeRef(double[][] ref,double[] max,double[] min){
+	public double[][] getNormalizeRefs(){
+		return NormalizeRefs;
+	}
+	public double[] getMaxValue(){
+		return maxValue;
+	}
+	public double[] getMinValue(){
+		return minValue;
+	}
+
+	public void AddRefFiles(String filename) throws FileNotFoundException, IOException{
+		refDataFileName = (filename);
+		double[][] ref_ = FileReading(filename,"	");
+		ref = ref_.clone();
+		setMaxAndMin(ref.clone());
+		setNormalizeRef(ref,maxValue,minValue);
+	}
+	
+	public void setNormalizeRef(double[][] ref,double[] max,double[] min){
 		double[][] ret = new double[ref.length][ref[0].length];
 		for(int i=0;i<ref.length;i++){
 			for(int j=0;j<ref[i].length;j++){
 				ret[i][j] = (ref[i][j] - min[j])/(max[j]-min[j]);
 			}
 		}
-		NormalizeRefs.add(ret.clone());
+		NormalizeRefs = ret.clone();
 	}
 
 
-	public static void addMaxAndMin(double[][] refs){
+	public void setMaxAndMin(double[][] refs){
 		int numberOfObjective = refs[0].length;
 
 		double[] max = new double[numberOfObjective];
@@ -83,11 +78,11 @@ public class IGDRef {
 				min[o] = Double.min(min[o], refs[r][o]);
 			}
 		}
-		 maxValue.add(max.clone());
-		 minValue.add(min.clone());
+		 maxValue = max.clone();
+		 minValue = min.clone();
 	}
 
-	public static double[][] FileReading(String name,String DEMILITER) throws FileNotFoundException, IOException {
+	public double[][] FileReading(String name,String DEMILITER) throws FileNotFoundException, IOException {
 		double[][] ret = new double[0][0];
 
 		try(BufferedReader br = new BufferedReader(new FileReader(name))){
@@ -133,18 +128,10 @@ public class IGDRef {
 	}
 
 	public static void main(String[] argv) throws FileNotFoundException, IOException{
-		AddRefFiles("Data/PF/concave.pf");
-		AddRefFiles("Data/PF/sphere.pf");
-
-		for(int p=0;p<Refs.size();p++){
-			double[][] ref = Refs.get(p);
-			for(int r = 0; r < ref.length;r++){
-				for(int o = 0; o < ref[r].length;o++){
-						System.out.print(ref[r][o]+"	");
-				}
-				System.out.println();
-			}
-		}
+	
+		
+		
+		
 
 		System.out.println("end");
 

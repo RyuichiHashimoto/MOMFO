@@ -1,15 +1,22 @@
 package momfo.util.Comparator.NSGAIIComparator;
 
-import java.util.HashMap;
+import javax.naming.NameNotFoundException;
 
+import lib.experiments.CommandSetting;
+import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.math.BuildInRandom;
 import momfo.core.Solution;
-import momfo.util.JMException;
 import momfo.util.Comparator.DominationComparator;
 
 public abstract class NSGAIIComparator extends DominationComparator {
 
-
+	public NSGAIIComparator(){
+		super();
+	}
+	public void build(CommandSetting st) throws NameNotFoundException, notFoundException {
+		super.build(st);
+	}
+	
 	public NSGAIIComparator(boolean d, BuildInRandom random_) {
 		super(d, random_);
 	}

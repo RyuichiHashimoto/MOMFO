@@ -13,7 +13,6 @@ import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.CannotConvertException;
 import lib.experiments.Exception.CommandSetting.notFoundException;
-import momfo.Indicator.IGD.IGDRef;
 import momfo.core.GAFramework;
 import momfo.util.JMException;
 
@@ -31,7 +30,7 @@ class NSGAIITest {
 	public void eachTestTask(int problemNumber, int taskNumber)
 			throws JMException, notFoundException, IllegalArgumentException, CannotConvertException, NamingException, IOException, ReflectiveOperationException {
 		CommandSetting setting = new CommandSetting();
-		System.out.println(IGDRef.CountTask());
+//		System.out.println(IGDRef.CountTask());
 
 		setting
 		.put(ParameterNames.GA, "NSGA2")
@@ -45,14 +44,14 @@ class NSGAIITest {
 		.put(ParameterNames.INITIALIZATION, "momfo.operators.initializer.testInitializer")
 		.put(ParameterNames.ParentsSelection, "momfo.operators.selection.ParentsSelection.BinaryTournament")
 		.put(ParameterNames.EVALUATION, "momfo.operators.evaluation.NTUProblemEvaluation")
-		.put(ParameterNames.POPULATION_SIZE, "100")
+		.put(ParameterNames.POPULATION_SIZE, 100)
 		.put(ParameterNames.PROBLEM_SET, (ProblemName[problemNumber]))
 		.put(ParameterNames.SEEDER_SEED, "14")
 		.put(ParameterNames.NTRIALS, 1)
+		.put(ParameterNames.NSGAIIComparator, "momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorWithRandom")
 		.put(ParameterNames.N_OF_EVALUATIONS, 100000)
 		.put(ParameterNames.IS_MAX, false)
 		.put(ParameterNames.TASK_NUMBER, taskNumber)
-		.put(ParameterNames.BinaryTounamentComparator,"momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorBinary")
 		.put("times",0);
 		System.out.println("");
 		GAFramework solver = new GAFramework();
@@ -61,15 +60,15 @@ class NSGAIITest {
 
 //		double[] obj = (double[]) algorithm.getAlgorithm().getOutputParameter("FinalFUN");
 //		double[] val = (double[]) algorithm.getAlgorithm().getOutputParameter("FinalVAR");
-		double IGD = (double) solver.getGA().getOutputParameter("IGD");
+		double IGD = (double) solver.getGA().getOutputParameter("IGDCalclator");
 		if (taskNumber == 0) {
 			if (!(IGD == IGDValues_Task1[problemNumber]))
-				fail("IGD Value of Task 1 is wrong " + "corrct anser is " + IGDValues_Task1[problemNumber] + " but my answer is" + IGD);
+				fail("IGDCalclator Value of Task 1 is wrong " + "corrct anser is " + IGDValues_Task1[problemNumber] + " but my answer is" + IGD);
 			else
 				System.out.println("success");
 		} else if(taskNumber == 1){
 			if (!(IGD == IGDValues_Task2[problemNumber]))
-				fail("IGD Value of Task 2 is wrong " + "corrct anser is " + IGDValues_Task2[problemNumber] + " but my answer is" + IGD);
+				fail("IGDCalclator Value of Task 2 is wrong " + "corrct anser is " + IGDValues_Task2[problemNumber] + " but my answer is" + IGD);
 		}
 	}
 

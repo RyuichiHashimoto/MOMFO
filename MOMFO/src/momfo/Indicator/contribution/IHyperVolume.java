@@ -1,12 +1,10 @@
 package momfo.Indicator.contribution;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import momfo.Indicator.Indicator;
 import momfo.Indicator.Hypervolume.WFGHV;
-import momfo.core.Population;
 import momfo.core.Solution;
 import momfo.util.Front;
 import momfo.util.JMException;
@@ -35,6 +33,7 @@ public class IHyperVolume  extends Indicator{
 
 	public static Comparator comparator_ = new DominationComparator(false, null);
 
+	private static boolean isMAXproblem_;
 
 	public static void  setMIN(){
 		isMAXproblem_ =false;
@@ -260,12 +259,7 @@ public class IHyperVolume  extends Indicator{
 
 		return null;
 	}
-	@Override
-	public Object execute(Population ind, HashMap<String, Object> d) throws JMException {
 
-
-		return null;
-	}
 	@Override
 	public String getIndicatorName() {
 		return "IHyperVolume";

@@ -17,6 +17,13 @@ public class ParameterNames {
 	public static final String N_OF_PARENTS = "N_OF_PARENTS";
 	public static final String DIRECTORY_NAME = "DirectoryNames";
 
+	public static final String ENVIRONMENTALSELECTION = "EnveirmentalSelection";
+
+	public static final String EVO_EVALUATOR = "EVO_EVALUATOR";
+	public static final String FIN_EVALUATOR = "FIN_EVALUATOR";
+	public static final String EVALUATEE = "FIN_EVALUATEE";
+
+
 	public static final String EVALUATION = "evaluation";
 	public static final String CROSSOVER = "crossoverMethod";
 	public static final String MUTATION = "mutationMethod";
@@ -32,6 +39,7 @@ public class ParameterNames {
 	public static final String MUTATIONProbability = "mutationProbability";
 	public static final String PBI_PARAMETER = "PBI_Parameter";
 
+	public static final String NSGAIIComparator = "NSGAII";
 
 
 //	Parameter set MOEAD and its extensions.
@@ -62,6 +70,11 @@ public class ParameterNames {
 	public static final double EPS = 1.0e-14;
 	public static final int DEFAULT_SEED = 1995;
 	public static final String SETTING_FILE_DEMILITER = ",";
+
+
+	public static final String IGD_REF_FILES = "IGD_FILES";
+	public static final String IGD_POWER = "IGD_POWER";
+	public static final String IGD_CALCLATOR = "IGD_Calclator";
 
 
 }

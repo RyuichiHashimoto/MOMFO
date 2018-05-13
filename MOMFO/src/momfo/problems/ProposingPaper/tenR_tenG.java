@@ -2,8 +2,6 @@ package momfo.problems.ProposingPaper;
 
 import java.io.IOException;
 
-import momfo.Indicator.IGD.IGDRef;
-import momfo.core.Problem;
 import momfo.core.ProblemSet;
 import momfo.problems.MOMFOP.NTU.base.IO;
 import momfo.problems.MOMFOP.NTU.base.MMZDT;
@@ -12,7 +10,6 @@ import momfo.problems.MOMFOP.NTU.base.MMZDT;
 public class tenR_tenG {
 
 	public static ProblemSet getProblem() throws IOException {
-		IGDRef.clear();
 		ProblemSet ps1 = getT1();
 		ProblemSet ps2 = getT2();
 		ProblemSet problemSet = new ProblemSet(2);
@@ -23,7 +20,6 @@ public class tenR_tenG {
 		return problemSet;
 	}
 	public static ProblemSet getProblem(int time) throws IOException {
-		IGDRef.clear();
 		ProblemSet ps1 = getT1(time);
 		ProblemSet ps2 = getT2(time);
 		ProblemSet problemSet = new ProblemSet(2);
@@ -38,9 +34,9 @@ public class tenR_tenG {
 		ProblemSet problemSet = new ProblemSet(1);
 
 		MMZDT prob = new MMZDT("rastrigin",10, 1,  -5,5);
-		IGDRef.AddRefFiles("Data\\PF\\convex.pf");
+//		IGDRef.AddRefFiles("Data\\PF\\convex.pf");
 
-		((Problem)prob).setName("CIHS1");
+//		((Problem)prob).setName("CIHS1");
 	//	double[][] matrix = IO.readMatrixFromFile("Data/MData/M_NIMS_2.txt");
 //		prob.getgFunction().setRotationMatrix(matrix);
 		problemSet.add(prob);
@@ -53,9 +49,9 @@ public class tenR_tenG {
 		ProblemSet problemSet = new ProblemSet(1);
 
 		MMZDT prob = new MMZDT("rastrigin",10, 1,  -5,5);
-		IGDRef.AddRefFiles("Data\\PF\\convex.pf");
+//		IGDRef.AddRefFiles("Data\\PF\\convex.pf");
 
-		((Problem)prob).setName("CIHS1");
+//		((Problem)prob).setName("CIHS1");
 		double[][] matrix = IO.readMatrixFromFile("Data/MData/10R10G/Task1/roration"+time + ".dat");
 		prob.getgFunction().setRotationMatrix(matrix);
 		problemSet.add(prob);
@@ -64,13 +60,12 @@ public class tenR_tenG {
 	}
 	public static ProblemSet getT2(int time) throws IOException {
 		ProblemSet problemSet = new ProblemSet(1);
+		problemSet.get(0).setIGDRefFile("Data/PF/convex.pf");
 
-		IGDRef.AddRefFiles("Data\\PF\\convex.pf");
 		MMZDT prob = new MMZDT("griewank",10, 1,  -512,512);
 		double[][] matrix = IO.readMatrixFromFile("Data/MData/10R10G/Task2/roration"+time + ".dat");
 		prob.getgFunction().setRotationMatrix(matrix);
 		prob.setHType("convex");
-		((Problem)prob).setName("CIHS2");
 
 		problemSet.add(prob);
 		return problemSet;
@@ -79,11 +74,11 @@ public class tenR_tenG {
 
 	public static ProblemSet getT2() throws IOException {
 		ProblemSet problemSet = new ProblemSet(1);
+		problemSet.get(0).setIGDRefFile("Data/PF/convex.pf");
 
-		IGDRef.AddRefFiles("Data\\PF\\convex.pf");
+//		IGDRef.AddRefFiles();
 		MMZDT prob = new MMZDT("griewank",10, 1,  -512,512);
 		prob.setHType("convex");
-		((Problem)prob).setName("CIHS2");
 
 		problemSet.add(prob);
 		return problemSet;

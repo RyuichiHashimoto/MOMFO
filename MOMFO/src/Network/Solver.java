@@ -1,10 +1,7 @@
 package Network;
 
-import static Network.CommonSolverEvent.AFTER_RUN;
-import static Network.CommonSolverEvent.BEFORE_RUN;
-import static Network.CommonSolverEvent.EXCEPTION_RISE;
-import static Network.GridComputing.RunSetting.RESULT;
-import static Network.GridComputing.RunSetting.RESULT_DELIMITER;
+import static Network.CommonSolverEvent.*;
+import static Network.GridComputing.RunSetting.*;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -114,7 +111,7 @@ public abstract class Solver implements Runnable, Buildable {
 		thrown_ = null;
 	}
 
-	abstract protected void solve() throws IOException, ClassNotFoundException, JMException;
+	abstract protected void solve() throws IOException, ClassNotFoundException, JMException, NameNotFoundException;
 
 	/**
 	 * The same as {@link #run()} except for this method can throw exceptions.

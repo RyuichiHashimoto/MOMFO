@@ -1,20 +1,28 @@
 package momfo.Indicator;
 
-import java.util.HashMap;
+import javax.naming.NameNotFoundException;
 
+import Network.Buildable;
+import lib.experiments.CommandSetting;
+import lib.experiments.ParameterNames;
 import lib.math.BuildInRandom;
-import momfo.core.Population;
-import momfo.util.JMException;
 
-public abstract class Indicator {
+public abstract class Indicator implements Buildable{
 
-	BuildInRandom random;
+	protected BuildInRandom random;
 
+	protected boolean isMAXproblem_;
+
+	public void build(CommandSetting st) throws NameNotFoundException {
+		random = st.get(ParameterNames.RANDOM_GENERATOR);
+		isMAXproblem_ = st.get(ParameterNames.IS_MAX);
+	}
+	
 	public void setRandom(BuildInRandom  random_){
 		random = random_;
 	}
 
-	protected static boolean isMAXproblem_;
+	
 
 	public void setMAXProblem(){
 		isMAXproblem_ = true;
@@ -24,7 +32,8 @@ public abstract class Indicator {
 		isMAXproblem_ = false;
 	}
 
-	abstract public Object execute(Population ind, HashMap<String,Object> d) throws JMException;
 
-	abstract public String getIndicatorName();
+	public String getIndicatorName() {
+		return this.getClass().getName(); 
+	};
 }

@@ -8,6 +8,8 @@ import java.util.HashMap;
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
+import lib.lang.Generics;
+
 
 public class Setting{
 
@@ -86,8 +88,8 @@ public class Setting{
 		return this;
 	}
 
-	
-	
+
+
 	public String getAsStr(String key) throws NameNotFoundException {
 		return get(key).toString();
 	}

@@ -32,7 +32,7 @@ import lib.experiments.CommandSetting;
 import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.io.output.fileSubscription;
 import lib.math.Permutation;
-import momfo.Indicator.IGD.IGD;
+import momfo.Indicator.IGD.IGDCalclator;
 import momfo.Indicator.IGD.IGDRef;
 import momfo.core.GeneticAlgorithm;
 import momfo.core.Operator;
@@ -153,10 +153,10 @@ public class MOMFEA extends GeneticAlgorithm {
 				calc[p] = (population_.get(p).getSkillFactor() == t);
 			}
 			//IGD計算
-//			igd[1] = (IGD.CalcIGD(population_.getAllObjectives(), calc,IGDRef.getRefs(t)));
-//			igd[1] = (IGD.CalcNormalizeIGD(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber)));
+//			igd[1] = (IGDCalclator.CalcIGD(population_.getAllObjectives(), calc,IGDRef.getRefs(t)));
+//			igd[1] = (IGDCalclator.CalcNormalizeIGD(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber)));
 			igd[0] = counter;
-			igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(),calc, IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t),random));
+			igd[1] = (IGDCalclator.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(),calc, IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t),random));
 			d.add(igd.clone());
 			igdHistory.add(new ArrayList<double []>(d));
 		}
@@ -176,8 +176,8 @@ public class MOMFEA extends GeneticAlgorithm {
 					calc[p] = (population_.get(p).getSkillFactor() == t);
 				}
 				igd[0] = counter;
-//				igd[1] = (IGD.CalcIGD(population_.getAllObjectives(), calc,IGDRef.getRefs(t)));
-				igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(),calc,IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t),random));
+//				igd[1] = (IGDCalclator.CalcIGD(population_.getAllObjectives(), calc,IGDRef.getRefs(t)));
+				igd[1] = (IGDCalclator.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(),calc,IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t),random));
 				igdHistory.get(t).add(igd.clone());
 			}
 		} while (evaluations_ < maxEvaluations_ );
@@ -188,7 +188,7 @@ public class MOMFEA extends GeneticAlgorithm {
 
 			population_.printObjectivesToFileWithSkillFactor(directoryname.replace("Task1","Task"+String.valueOf(t+1)) + "/FinalFUN/FinalFUN" + time + ".dat",t);
 
-			fileSubscription. printToFile(directoryname.replace("Task1","Task"+String.valueOf(t+1)) + "/IGDHistory/"+"IGD"+time+".dat",igdHistory.get(t));
+			fileSubscription. printToFile(directoryname.replace("Task1","Task"+String.valueOf(t+1)) + "/IGDHistory/"+"IGDCalclator"+time+".dat",igdHistory.get(t));
 		}//population_.printVariablesToFile("result/config/FinalVAR" + time + ".dat");
 		return null;
 	}

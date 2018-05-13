@@ -10,7 +10,7 @@ import lib.experiments.Exception.CommandSetting.notFoundException;
 import momfo.core.Population;
 import momfo.util.JMException;
 import momfo.util.Comparator.Comparator;
-import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorBinary;
+import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorWithRandom;
 
 public class BinaryTournament extends ParentsSelection {
 
@@ -22,7 +22,7 @@ public class BinaryTournament extends ParentsSelection {
 
 		try {
 
-			comparator = new NSGAIIComparatorBinary(s.get(ParameterNames.IS_MAX),random);
+			comparator = new NSGAIIComparatorWithRandom(s.get(ParameterNames.IS_MAX),random);
 		} catch (NamingException e) {
 			comparator = null;
 			System.out.print(e.getMessage());

@@ -28,7 +28,7 @@ import java.util.List;
 
 import lib.io.output.fileSubscription;
 import lib.math.Permutation;
-import momfo.Indicator.IGD.IGD;
+import momfo.Indicator.IGD.IGDCalclator;
 import momfo.Indicator.IGD.IGDRef;
 import momfo.core.GA;
 import momfo.core.Operator;
@@ -164,12 +164,12 @@ public class CMOMFEA extends GA {
 				calc[p] = (population_.get(p).getSkillFactor() == t);
 			}
 			//IGD計算
-			igd[1] = (IGD.CalcIGD(population_.getAllObjectives(), calc,IGDRef.getRefs(t)));
-//			igd[1] = (IGD.CalcNormalizeIGD(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber)));
+			igd[1] = (IGDCalclator.CalcIGD(population_.getAllObjectives(), calc,IGDRef.getRefs(t)));
+//			igd[1] = (IGDCalclator.CalcNormalizeIGD(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber)));
 
 
 			igd[0] = counter;
-	//		igd[1] = (IGD.CalcNormalizeIGD(population_.getAllObjectives(),calc, IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t)));
+	//		igd[1] = (IGDCalclator.CalcNormalizeIGD(population_.getAllObjectives(),calc, IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t)));
 			d.add(igd.clone());
 			igdHistory.add(new ArrayList<double []>(d));
 		}
@@ -191,8 +191,8 @@ public class CMOMFEA extends GA {
 				}
 
 				igd[0] = counter;
-				igd[1] = (IGD.CalcIGD(population_.getAllObjectives(), calc,IGDRef.getRefs(t)));
-//				igd[1] = (IGD.CalcNormalizeIGD(population_.getAllObjectives(),calc,IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t)));
+				igd[1] = (IGDCalclator.CalcIGD(population_.getAllObjectives(), calc,IGDRef.getRefs(t)));
+//				igd[1] = (IGDCalclator.CalcNormalizeIGD(population_.getAllObjectives(),calc,IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t)));
 				igdHistory.get(t).add(igd.clone());
 			}
 
@@ -201,7 +201,7 @@ public class CMOMFEA extends GA {
 		for(int t = 0 ; t < problemSet_.countProblem();t++){
 			population_.printVariablesToFileWithSkillFactor(directoryname.replace("Task1","Task"+String.valueOf(t+1)) + "/FinalVAR/FinalVAR" + time + ".dat",t);
 			population_.printObjectivesToFileWithSkillFactor(directoryname.replace("Task1","Task"+String.valueOf(t+1)) + "/FinalFUN/FinalFUN" + time + ".dat",t);
-			fileSubscription. printToFile(directoryname.replace("Task1","Task"+String.valueOf(t+1)) + "/IGDHistory/"+"IGD"+time+".dat",igdHistory.get(t));
+			fileSubscription. printToFile(directoryname.replace("Task1","Task"+String.valueOf(t+1)) + "/IGDHistory/"+"IGDCalclator"+time+".dat",igdHistory.get(t));
 		}//population_.printVariablesToFile("result/config/FinalVAR" + time + ".dat");
 		return null;
 	}

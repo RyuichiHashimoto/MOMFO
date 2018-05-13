@@ -14,7 +14,6 @@ import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.CannotConvertException;
 import lib.experiments.Exception.CommandSetting.notFoundException;
-import momfo.Indicator.IGD.IGDRef;
 import momfo.core.GAFramework;
 import momfo.util.JMException;
 
@@ -34,7 +33,6 @@ class MOEADTest {
 	public void eachTestTask(int problemNumber, int taskNumber)
 			throws JMException, notFoundException, IllegalArgumentException, CannotConvertException, NamingException, IOException, ReflectiveOperationException {
 		CommandSetting setting = new CommandSetting();
-		System.out.println(IGDRef.CountTask());
 
 
 		setting
@@ -74,15 +72,15 @@ class MOEADTest {
 //		double[] obj = (double[]) algorithm.getAlgorithm().getOutputParameter("FinalFUN");
 //		double[] val = (double[]) algorithm.getAlgorithm().getOutputParameter("FinalVAR");
 
-		double IGD = (double) solver.getGA().getOutputParameter("IGD");
+		double IGD = (double) solver.getGA().getOutputParameter("IGDCalclator");
 		if (taskNumber == 0) {
 			if (!(IGD == IGDValues_Task1[problemNumber]))
-				fail("IGD Value of Task 1 is wrong " + "corrct anser is " + IGDValues_Task1[problemNumber] + " but my answer is" + IGD);
+				fail("IGDCalclator Value of Task 1 is wrong " + "corrct anser is " + IGDValues_Task1[problemNumber] + " but my answer is" + IGD);
 			else
 				System.out.println("success");
 		} else if(taskNumber == 1){
 			if (!(IGD == IGDValues_Task2[problemNumber]))
-				fail("IGD Value of Task 2 is wrong " + "corrct anser is " + IGDValues_Task2[problemNumber] + " but my answer is" + IGD);
+				fail("IGDCalclator Value of Task 2 is wrong " + "corrct anser is " + IGDValues_Task2[problemNumber] + " but my answer is" + IGD);
 		}
 	}
 

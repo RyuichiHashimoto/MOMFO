@@ -52,7 +52,7 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 	}
 
 	public String[] getAsSArray(String key, String delimiter, String[] def) throws notFoundException {
-		if (containKey(key)) {
+		if (containsKey(key)) {
 			try {
 				return getAsSArray(key, delimiter);
 			} catch (NameNotFoundException e) {
@@ -365,8 +365,7 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 	public CommandSetting clone() {
 		return new CommandSetting(this);
 	}
-
-	public boolean containKey(String key) {
+	public boolean containsKe(String key) {
 		return this.parameter.containsKey(key);
 	}
 
@@ -479,8 +478,22 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 
 	@Override
 	public Set<Entry<String, Object>> entrySet() {
-		// TODO Auto-generated method stub
-		return null;
+		return parameter.entrySet();
 	}
+	public String toString(){
+		String ret = "";
+
+		for( String key : parameter.keySet()){
+			try {
+				ret += key + FileConstants.FILE_DEMILITER + getAsStr(key) + FileConstants.NEWLINE_DEMILITER;
+			} catch (NameNotFoundException e) {
+				ret += key + FileConstants.FILE_DEMILITER + "???" + FileConstants.NEWLINE_DEMILITER;				
+			}
+		}
+		
+		
+		return ret;
+	}
+
 
 }

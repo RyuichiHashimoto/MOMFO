@@ -6,7 +6,7 @@ import momfo.util.POINT;
 
 // Solution type  is　1 mean  that Solution Type is digit　
 // Solution Type is 2 mean that Solution Type is Real
-public class Solution {
+public class Solution implements Cloneable{
 
 	Problem problem_;
 
@@ -239,7 +239,7 @@ public class Solution {
 		for(int t = 0; t< numberOfObjectives_;t++){
 			objective_[t] = Double.MAX_VALUE;
 		}
-
+		
 		for(int i = 0;i<numberOfVariables_;i++){
 			upperlimit_[i] = 1.0;//a.getUpperlimit_(i);
 			lowerlimit_[i] = 0.0;//a.getLowerlimit_(i);
@@ -345,6 +345,10 @@ public class Solution {
 
 
 	}
+	public Solution clone() {
+		return new Solution(this);
+	}
+	
 	public Solution(POINT a){
 		random = null;
 		rank_ = Integer.MAX_VALUE;

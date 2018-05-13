@@ -3,8 +3,6 @@ package momfo.problems.MOMFOP.NTU;
 import java.io.IOException;
 
 import lib.experiments.CommandSetting;
-import momfo.Indicator.IGD.IGDRef;
-import momfo.core.Problem;
 import momfo.core.ProblemSet;
 import momfo.problems.MOMFOP.NTU.base.IO;
 import momfo.problems.MOMFOP.NTU.base.MMDTLZ;
@@ -14,7 +12,6 @@ public class NIMS extends ProblemSet{
 
 
 	public NIMS(CommandSetting st) throws IOException {
-		IGDRef.clear();
 		ProblemSet ps1 = getT1();
 		ProblemSet ps2 = getT2();
 		ProblemSet problemSet = new ProblemSet(2);
@@ -39,9 +36,9 @@ public class NIMS extends ProblemSet{
 		ProblemSet problemSet = new ProblemSet(1);
 
 		MMDTLZ prob = new MMDTLZ("rosenbrock",3, 20, 1, -20,20);
+		problemSet.get(0).setIGDRefFile("Data/PF/sphere.pf");
 
-		((Problem)prob).setName("NIMS1");
-		IGDRef.AddRefFiles("Data/PF/sphere.pf");
+
 		problemSet.add(prob);
 		return problemSet;
 	}
@@ -50,12 +47,12 @@ public class NIMS extends ProblemSet{
 		ProblemSet problemSet = new ProblemSet(1);
 
 		MMZDT prob = new MMZDT("sphere",20, 2,  -20,20);
+		problemSet.get(0).setIGDRefFile("Data/PF/concave.pf");
+
 		prob.setHType("concave");
-		IGDRef.AddRefFiles("Data/PF/concave.pf");
 		double[][] matrix = IO.readMatrixFromFile("Data/MData/M_NIMS_2.txt");
 		prob.getgFunction().setRotationMatrix(matrix);
 
-		((Problem)prob).setName("NIMS2");
 
 
 		problemSet.add(prob);

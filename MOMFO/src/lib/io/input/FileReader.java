@@ -1,12 +1,11 @@
 package lib.io.input;
 
-import java.io.BufferedReader; 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
 
 import lib.io.FileConstants;
 
@@ -86,7 +85,7 @@ public class FileReader {
 		return null;
 	}
 
-	public static double[][] FileReading(String name,String DEMILITER) throws FileNotFoundException, IOException {
+	public static double[][] FileReadingAdDMat(String name,String DEMILITER) throws FileNotFoundException, IOException {
 		double[][] ret = new double[0][0];
 		try(BufferedReader br = new BufferedReader(new java.io.FileReader(name))){
 			String objStr = br.readLine();

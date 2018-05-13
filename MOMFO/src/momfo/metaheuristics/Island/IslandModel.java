@@ -4,26 +4,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lib.io.output.fileSubscription;
-import momfo.Indicator.IGD.IGD;
+import momfo.Indicator.IGD.IGDCalclator;
 import momfo.Indicator.IGD.IGDRef;
-import momfo.core.GA;
+import momfo.core.GeneticAlgorithm;
 import momfo.core.Operator;
 import momfo.core.Population;
-import momfo.core.ProblemSet;
 import momfo.core.Solution;
-import momfo.metaheuristics.Island.EnvironmentalSelection.EnvironmentalSelection;
-import momfo.metaheuristics.Island.EnvironmentalSelection.NSGAIISelection;
 import momfo.operators.selection.ParentsSelection.BinaryTournament;
 import momfo.operators.selection.ParentsSelection.ParentsSelection;
+import momfo.operators.selection.environmentalselection.EnvironmentalSelection;
+import momfo.operators.selection.environmentalselection.LabSpecifiedNSGAIISelection;
 import momfo.util.JMException;
-import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorBinary;
+import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorWithRandom;
 
-public class IslandModel extends GA {
-	public IslandModel(ProblemSet problem) {
-		super(problem);
-		// TODO 自動生成されたコンストラクター・スタブ
+public class IslandModel extends GeneticAlgorithm {
+
+	public IslandModel() {
+		super();
+		isMultitask = true;		
 	}
-
+	
 	private int[] populationSize;
 
 	private Population[] population;
@@ -90,7 +90,7 @@ public class IslandModel extends GA {
 		} while(check());
 
 		for(int t=0;t < problemSet_.countProblem();t++){
-			fileSubscription. printToFile(directoryName.replace("Task1", "Task"+String.valueOf(t+1)) + "/IGDHistory/"+"IGD"+time+".dat",igdHistory.get(t));
+			fileSubscription. printToFile(directoryName.replace("Task1", "Task"+String.valueOf(t+1)) + "/IGDHistory/"+"IGDCalclator"+time+".dat",igdHistory.get(t));
 			population[t].printVariablesToFile(directoryName.replace("Task1", "Task"+String.valueOf(t+1))  + "/FinalVAR/FinalVAR" + time + ".dat");
 			population[t].printObjectivesToFile(directoryName.replace("Task1", "Task"+String.valueOf(t+1))  +  "/FinalFUN/FinalFUN" + time + ".dat");
 		}
@@ -107,7 +107,7 @@ public class IslandModel extends GA {
 
 	private void CalclateIGD(int taskNumber,int generation){
 		igd[0] = generation;
-		igd[1] = (IGD.CalcNormalizeIGD(population[taskNumber].getAllObjectives(), IGDRef.getNormalizeRefs(taskNumber),IGDRef.getMaxValue(taskNumber),IGDRef.getMinValue(taskNumber)));
+		igd[1] = (IGDCalclator.CalcNormalizeIGD(population[taskNumber].getAllObjectives(), IGDRef.getNormalizeRefs(taskNumber),IGDRef.getMaxValue(taskNumber),IGDRef.getMinValue(taskNumber)));
 		igdHistory.get(taskNumber).add(igd.clone());
 	}
 
@@ -210,15 +210,14 @@ public class IslandModel extends GA {
 			populationSize[t] = ((Integer) this.getInputParameter("populationSize" + String.valueOf(t+1))).intValue();
 			maxEvaluations[t] = ((Integer) this.getInputParameter("maxEvaluation" + String.valueOf(t+1))).intValue();
 			evaluations[t] = 0;
-			parantsSelection[t] = new BinaryTournament(null,new NSGAIIComparatorBinary(null));
+			parantsSelection[t] = new BinaryTournament(null,new NSGAIIComparatorWithRandom(null));
 
 
 			isMax[t] = ((boolean)this.getInputParameter("IsMax"+String.valueOf(t+1)));
-			environmentalSelection[t] = new NSGAIISelection(populationSize[t],isMax[t],null,random);
+			environmentalSelection[t] = new LabSpecifiedNSGAIISelection(populationSize[t],isMax[t],null,random);
 
 		}
 		generation = 1;
 		rmp = ((double)this.getInputParameter("rmp"));
-
 	}
 }

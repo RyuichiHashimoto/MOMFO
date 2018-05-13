@@ -3,8 +3,6 @@ package momfo.problems.MOMFOP.NTU;
 import java.io.IOException;
 
 import lib.experiments.CommandSetting;
-import momfo.Indicator.IGD.IGDRef;
-import momfo.core.Problem;
 import momfo.core.ProblemSet;
 import momfo.problems.MOMFOP.NTU.base.IO;
 import momfo.problems.MOMFOP.NTU.base.MMDTLZ;
@@ -13,7 +11,6 @@ import momfo.problems.MOMFOP.NTU.base.MMDTLZ;
 public class PILS extends ProblemSet{
 
 	public PILS(CommandSetting st) throws IOException {
-		IGDRef.clear();
 		ProblemSet ps1 = getT1();
 		ProblemSet ps2 = getT2();
 		ProblemSet problemSet = new ProblemSet(2);
@@ -39,9 +36,7 @@ public class PILS extends ProblemSet{
 		ProblemSet problemSet = new ProblemSet(1);
 
 		MMDTLZ prob = new MMDTLZ("griewank",2, 50, 1, -50,50);
-
-		((Problem)prob).setName("PILS1");
-		IGDRef.AddRefFiles("Data/PF/circle.pf");
+		problemSet.get(0).setIGDRefFile("Data/PF/circle.pf");
 		problemSet.add(prob);
 		return problemSet;
 	}
@@ -50,11 +45,11 @@ public class PILS extends ProblemSet{
 		ProblemSet problemSet = new ProblemSet(1);
 
 		MMDTLZ prob = new MMDTLZ("ackley",2, 50, 1, -100,100);
-		IGDRef.AddRefFiles("Data/PF/circle.pf");
+		problemSet.get(0).setIGDRefFile("Data/PF/circle.pf");
+
 		double[] shiftValues= IO.readShiftValuesFromFile("Data/ShiftData/S_PILS_2.txt");
 		prob.getgFunction().setShiftMatrix(shiftValues);
 
-		((Problem)prob).setName("PILS2");
 
 		problemSet.add(prob);
 		return problemSet;

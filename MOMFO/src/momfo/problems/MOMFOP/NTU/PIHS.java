@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import lib.experiments.CommandSetting;
 import lib.io.output.fileSubscription;
-import momfo.Indicator.IGD.IGDRef;
-import momfo.core.Problem;
 import momfo.core.ProblemSet;
 import momfo.core.Solution;
 import momfo.problems.MOMFOP.NTU.base.IO;
@@ -15,17 +13,16 @@ import momfo.util.JMException;
 public class PIHS extends ProblemSet{
 
 	public PIHS(CommandSetting st) throws IOException {
-		IGDRef.clear();
 		ProblemSet ps1 = getT1();
 		ProblemSet ps2 = getT2();
 		ProblemSet problemSet = new ProblemSet(2);
 		problemSet.setProblemSetName("PIHS");
 		problemSet.setMaxDimensionOfObjective(2);
-		
-		add(ps1.get(0)).add(ps2.get(0));		
+
+		add(ps1.get(0)).add(ps2.get(0));
 	}
-	
-	
+
+
 	public static ProblemSet getProblemSet() throws IOException {
 		ProblemSet ps1 = getT1();
 		ProblemSet ps2 = getT2();
@@ -43,22 +40,22 @@ public class PIHS extends ProblemSet{
 
 		MMZDT prob = new MMZDT("sphere",50, 1,  -100,100);
 		prob.setHType("convex");
-		((Problem)prob).setName("PIHS1");
-		IGDRef.AddRefFiles("Data/PF/convex.pf");
+		problemSet.get(0).setIGDRefFile("Data/PF/convex.pf");
+
 		problemSet.add(prob);
 		return problemSet;
 	}
 
 	public static ProblemSet getT2() throws IOException {
 		ProblemSet problemSet = new ProblemSet(1);
-		IGDRef.AddRefFiles("Data/PF/convex.pf");
+//		IGDRef.AddRefFiles("Data/PF/convex.pf");
 		MMZDT prob = new MMZDT("rastrigin",50, 1,  -100,100);
 		prob.setHType("convex");
+		problemSet.get(0).setIGDRefFile("Data/ShiftData/S_PIHS_2.txt");
 
 		double[] shiftValues = IO.readShiftValuesFromFile("Data/ShiftData/S_PIHS_2.txt");
 		prob.getgFunction().setShiftMatrix(shiftValues);
 
-		((Problem)prob).setName("PIHS2");
 
 		problemSet.add(prob);
 		return problemSet;
@@ -81,8 +78,8 @@ public class PIHS extends ProblemSet{
 		}
 		System.out.println(sol.getObjective(0)+"	"+ sol.getObjective(1));
 		fileSubscription.printToFile("do.dat", obj);
-		
-		
+
+
 
 	}
 

@@ -7,16 +7,17 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
-import experiments.Generics;
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.lang.Generics;
 import lib.lang.NeedOverriden;
 import lib.math.BuildInRandom;
 import momfo.operators.crossover.Crossover;
-import momfo.operators.evaluation.Evaluation;
+import momfo.operators.evaluator.Evaluator;
 import momfo.operators.initializer.Initializer;
 import momfo.operators.mutation.Mutation;
 import momfo.operators.selection.ParentsSelection.ParentsSelection;
@@ -24,6 +25,15 @@ import momfo.util.JMException;
 
 
 public abstract  class GeneticAlgorithm implements Serializable {
+
+	public static String name = "";
+
+	protected Population population_;
+
+	protected Population[] populationArray;
+
+	protected boolean isMultitask;
+
 	protected Problem problem_;
 
 	protected ProblemSet problemSet_;
@@ -34,10 +44,15 @@ public abstract  class GeneticAlgorithm implements Serializable {
 	protected Crossover crossover;
 	protected Mutation mutation;
 
-	protected Evaluation evaluation;
+	protected Evaluator[] evoEvaluator;
+	protected Evaluator[] finEvaluator;
+
 	protected ParentsSelection parentsSelection;
 	protected CommandSetting setting;
 
+	public GeneticAlgorithm() {
+
+	}
 
 
 	public ProblemSet getProblemSet(){
@@ -53,6 +68,11 @@ public abstract  class GeneticAlgorithm implements Serializable {
 	}
 
 	protected int tasknumber;
+
+	public boolean isMultitask() {
+		return isMultitask;
+	}
+
 	public void setTaskNumber(int d){
 		tasknumber = d;
 	}
@@ -68,7 +88,6 @@ public abstract  class GeneticAlgorithm implements Serializable {
 
 
 	public Map<String,Object> getAllmap(){
-
 		return inputParameters_;
 	}
 
@@ -129,16 +148,28 @@ public abstract  class GeneticAlgorithm implements Serializable {
 		s.put(ParameterNames.MUTATION, mutation);
 		parentsSelection = Generics.cast(s.getAsInstanceByName(ParameterNames.ParentsSelection, genotypePack));;
 		s.put(ParameterNames.ParentsSelection, parentsSelection);
-		evaluation = Generics.cast(s.getAsInstanceByName(ParameterNames.EVALUATION, genotypePack));;
-		s.put(ParameterNames.EVALUATION, parentsSelection);
+		finEvaluator = Generics.cast(s.getAsInstanceByName(ParameterNames.FIN_EVALUATOR, genotypePack));;
+		s.put(ParameterNames.FIN_EVALUATOR, finEvaluator);
+		evoEvaluator = Generics.cast(s.getAsInstanceByName(ParameterNames.EVO_EVALUATOR, genotypePack));;
+		s.put(ParameterNames.EVO_EVALUATOR, evoEvaluator );
 
 		buildImpl(s);
 		initialization.build(s);
 		crossover.build(s);
 		mutation.build(s);
 		parentsSelection.build(s);
-		evaluation.build(s);
-		//s.remove(GENOTYPE_PACKAGE);
+
+
+		for(int t = 0;t < finEvaluator.length;t++){
+			s.putForce(ParameterNames.TEMP_TASK_NUMBER, t);
+			finEvaluator[t].build(s);
+		}
+
+		for(int t = 0;t < evoEvaluator.length;t++) {
+			s.putForce(ParameterNames.TEMP_TASK_NUMBER, t);
+			evoEvaluator[t].build(s);
+		}
+		s.putForce(ParameterNames.TEMP_TASK_NUMBER, -10000);
 	}
 
 	@NeedOverriden
@@ -148,7 +179,19 @@ public abstract  class GeneticAlgorithm implements Serializable {
 
 	abstract public void recombination() throws JMException;
 
-	abstract public void nextGeneration() throws JMException;
+	abstract public void nextGeneration() throws JMException, NameNotFoundException;
+
+	public void finEvaluation() {
+		for(int t = 0;t < finEvaluator.length;t++) {
+			finEvaluator[t].evaluate();;
+		}
+	};
+
+	public void evoEvaluation(){
+		for(int t = 0;t < evoEvaluator.length;t++) {
+			evoEvaluator[t].evaluate();;
+		}
+	};
 
 	abstract public boolean terminate();
 

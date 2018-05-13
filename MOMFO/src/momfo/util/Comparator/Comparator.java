@@ -18,8 +18,8 @@ public abstract class Comparator implements Serializable, Buildable {
 	protected boolean isMAX_;
 
 	protected BuildInRandom random;
-
-
+	
+	
 	public Comparator(){
 
 	}
@@ -28,8 +28,6 @@ public abstract class Comparator implements Serializable, Buildable {
 	public void build(CommandSetting st) throws NameNotFoundException, notFoundException {
 		random = st.get(ParameterNames.RANDOM_GENERATOR);
 		isMAX_ = st.getAsBool(ParameterNames.IS_MAX);
-
-
 	}
 
 	public double better(double a, double b) {

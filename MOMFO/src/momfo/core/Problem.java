@@ -14,6 +14,15 @@ public abstract class Problem {
 
 	public abstract double[] decode(Solution d) ;
 
+	protected String IGDRef;
+
+	public String getIGDRefFile() {
+		return IGDRef;
+	}
+
+	public void setIGDRefFile(String name){
+		IGDRef = name;
+	}
 
 
 	protected int numberOfConstraint_;
@@ -27,12 +36,8 @@ public abstract class Problem {
 	protected double[] lowerLimit_;
 
 	public String getName(){
-		return problemName_;
+		return this.getClass().getName();
 	}
-	public void setName(String pname){
-		problemName_ = pname;
-	}
-
 
 	public int getNumberOfConstrain(){
 		return numberOfConstraint_;

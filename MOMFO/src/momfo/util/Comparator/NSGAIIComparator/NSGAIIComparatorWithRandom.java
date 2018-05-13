@@ -1,16 +1,25 @@
 package momfo.util.Comparator.NSGAIIComparator;
 
-import java.util.HashMap;
+import javax.naming.NameNotFoundException;
 
+import lib.experiments.CommandSetting;
+import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.math.BuildInRandom;
 import momfo.core.Solution;
 import momfo.util.JMException;
 
 @SuppressWarnings("serial")
-public class NSGAIIComparatorBinary extends NSGAIIComparator{
+public class NSGAIIComparatorWithRandom extends NSGAIIComparator{
 
+	public NSGAIIComparatorWithRandom() {
+		super();
+	}
 	
-	public NSGAIIComparatorBinary(boolean d, BuildInRandom random_) {
+	public void build(CommandSetting st) throws NameNotFoundException, notFoundException {
+		super.build(st);
+	}
+	
+	public NSGAIIComparatorWithRandom(boolean d, BuildInRandom random_) {
 		super(d, random_);
 	}
 

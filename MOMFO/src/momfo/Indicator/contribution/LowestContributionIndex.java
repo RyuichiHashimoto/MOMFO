@@ -1,11 +1,7 @@
 package momfo.Indicator.contribution;
 
-import java.util.HashMap;
-
 import momfo.Indicator.Indicator;
-import momfo.core.Population;
 import momfo.util.Front;
-import momfo.util.JMException;
 import momfo.util.ReferencePoint;
 
 public class LowestContributionIndex extends Indicator{
@@ -19,8 +15,8 @@ public class LowestContributionIndex extends Indicator{
 
 
 
-	@Override
-	public Object execute(Population ind, HashMap<String, Object> d) throws JMException {
+//	@Override
+/*	public Object execute(Population ind, HashMap<String, Object> d) throws JMException {
 		assert ind.size() > 0  : "execute(Population , HashMap) in LowestContibutionIndex  class :: the population size is 0";
 		assert ind.get(0).getNumberOfObjectives()  > 0: "execute(Population , HashMap) in LowestContibutionIndex  class ::  the top Solution of Population hava no Objective Value";
 		assert d.containsKey("ReferencePoint") : "execute(Population , HashMap) in (LowestContibutionIndex)  class ::  the HashMap have not the ReferencePoint key" ;
@@ -34,7 +30,7 @@ public class LowestContributionIndex extends Indicator{
 
 		return Calc(fr, ref,isMAXproblem_);
 	}
-
+*/
 	@Override
 	public String getIndicatorName() {
 		return "LowestContributionIndex";

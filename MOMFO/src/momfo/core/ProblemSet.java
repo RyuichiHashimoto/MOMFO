@@ -3,7 +3,6 @@ package momfo.core;
 import java.util.ArrayList;
 import java.util.List;
 
-import lib.experiments.CommandSetting;
 import momfo.util.JMException;
 
 public class ProblemSet {
@@ -21,14 +20,13 @@ public class ProblemSet {
 
 	String ProblemName;
 
-	public ProblemSet(CommandSetting d){
-		problemsList_ = new ArrayList<Problem>();
-		accObjsList_ = new ArrayList<Integer>();
+	public int[] getNumberOfObjectives() {
+		int[] ret = new int[problemsList_.size()];
+		for(int i = 0; i < ret.length;i++) ret[i] = problemsList_.get(i).getNumberOfObjectives();
+		return ret;
 	}
-
-
-
-
+	
+	
 	public void setProblemSetName(String d){
 		ProblemName = d;
 	}
@@ -60,9 +58,11 @@ public class ProblemSet {
 		if(problem.getNumberOfVariables() > maxDim_){
 			maxDim_ = problem.getNumberOfVariables();
 		}
+		
 		return this;
 	} // add
 
+	
 	public Problem get(int i) {
 		return problemsList_.get(i);
 	} // get
@@ -126,12 +126,6 @@ public class ProblemSet {
 		return numberOfMAXCcnstrain;
 	}
 
-	public int[] getNumberOfObjectives() {
-		int[] ret = new int[problemsList_.size()];
-		for(int t =0;t<problemsList_.size();t++) {
-			ret[t] = problemsList_.get(t).getNumberOfObjectives();
-		}
-		return ret;
-	}
+
 
 }

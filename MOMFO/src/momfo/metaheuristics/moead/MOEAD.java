@@ -27,13 +27,13 @@ import java.util.Vector;
 
 import javax.naming.NamingException;
 
-import experiments.Generics;
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.lang.Generics;
 import lib.math.Calculator;
 import lib.math.Permutation;
-import momfo.Indicator.IGD.IGD;
+import momfo.Indicator.IGD.IGDCalclator;
 import momfo.Indicator.IGD.IGDRef;
 import momfo.core.GeneticAlgorithm;
 import momfo.core.Operator;
@@ -46,6 +46,10 @@ import momfo.util.WeightedVector;
 import momfo.util.Comparator.MOEADComparator.MOEADComparator;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;
 public class MOEAD extends GeneticAlgorithm{
+	public MOEAD() {
+		super();
+		isMultitask = false;
+	}
 
 
 	/**
@@ -60,10 +64,6 @@ public class MOEAD extends GeneticAlgorithm{
 	 * Stores the population size
 	 */
 	private int populationSize_;
-	/**
-	 * Stores the population
-	 */
-	private Population population_;
 	/**
 	 * Z vector (ideal point)
 	 */
@@ -256,13 +256,13 @@ public class MOEAD extends GeneticAlgorithm{
 		List<double[]> igdHistory = new ArrayList<double[]>();
 		double[] igd = new double[2];
 		igd[0] = counter;
-		igd[1] = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber),random));
+		igd[1] = (IGDCalclator.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber),random));
 		igdHistory.add(igd.clone());
 		int[] permutation = new int[populationSize_];
 
 	}
 
-                                           
+
 	@Override
 	public void recombination() throws JMException {
 		Solution offSpring[];
@@ -304,8 +304,8 @@ public class MOEAD extends GeneticAlgorithm{
 			}
 		}
 //		population_.printObjectivesToFile(directoryname +  "/Animation/FUN" + generation + ".dat");
-		double igd = (IGD.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber),random));
-		setOutputParameter("IGD", igd);
+		double igd = (IGDCalclator.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber),random));
+		setOutputParameter("IGDCalclator", igd);
 	}
 
 	@Override
@@ -351,17 +351,17 @@ public class MOEAD extends GeneticAlgorithm{
 
 		isMax    = s.get(ParameterNames.IS_MAX);
 
-		
-		
+
+
 		ScalarzingFunction_ = Generics.cast(s.getAsInstanceByName(ParameterNames.SCALAR_FUNCTION, ""));;
 		s.putForce(ParameterNames.SCALAR_FUNCTION, ScalarzingFunction_);
-		comparator =Generics.cast(s.getAsInstanceByName(ParameterNames.MOEAD_COMPARATOR, ""));; 
-			
-		
+		comparator =Generics.cast(s.getAsInstanceByName(ParameterNames.MOEAD_COMPARATOR, ""));;
+
+
 		ScalarzingFunction_.build(s);
 		comparator.build(s);
-		
-		
+
+
 		evaluations_ = 0;
 		alpha = s.get(ParameterNames.MOEAD_ALPHA);
 		sizeOfNeiborhoodRepleaced_ = s.get(ParameterNames.SIZE_OF_NEIBORHOOD_At_UPDATE);

@@ -3,18 +3,13 @@ package momfo.problems.MOMFOP.NTU;
 
 import java.io.IOException;
 
-import momfo.Indicator.IGD.IGDRef;
+import javax.naming.NamingException;
+
+import lib.experiments.CommandSetting;
+import lib.lang.Generics;
+import lib.math.BuildInRandom;
 import momfo.core.ProblemSet;
 import momfo.core.Solution;
-import momfo.problems.MOMFOP.Many_NTU.ManyCIHS;
-import momfo.problems.MOMFOP.Many_NTU.ManyCILS;
-import momfo.problems.MOMFOP.Many_NTU.ManyCIMS;
-import momfo.problems.MOMFOP.Many_NTU.ManyNIHS;
-import momfo.problems.MOMFOP.Many_NTU.ManyNILS;
-import momfo.problems.MOMFOP.Many_NTU.ManyNIMS;
-import momfo.problems.MOMFOP.Many_NTU.ManyPIHS;
-import momfo.problems.MOMFOP.Many_NTU.ManyPILS;
-import momfo.problems.MOMFOP.Many_NTU.ManyPIMS;
 import momfo.problems.ProposingPaper.tenRC_tenA;
 import momfo.problems.ProposingPaper.tenR_tenG;
 import momfo.util.JMException;
@@ -31,7 +26,6 @@ public class ProblemSetFactory{
 	 * @throws IOException
 	 */
 	public static ProblemSet getProblemSet(String name) throws JMException, IOException {
-		IGDRef.clear();
 		if (name.equalsIgnoreCase("CIHS"))
 			return CIHS.getProblem();
 		else if (name.equalsIgnoreCase("CIMS")){
@@ -50,34 +44,10 @@ public class ProblemSetFactory{
 			return NIMS.getProblemSet();
 		}else if (name.equalsIgnoreCase("NILS")){
 			return NILS.getProblem();
-		}else if (name.equalsIgnoreCase("CIHS3")){
-			return CIHS3.getProblem();
-		}else if (name.equalsIgnoreCase("PIHS3")){
-			return PIHS3.getProblem();
-		}else if (name.equalsIgnoreCase("NIHS3")){
-			return NIHS3.getProblem();
 		}else if (name.equalsIgnoreCase("10R10G")){
 			return tenR_tenG.getProblem();
 		}else if (name.equalsIgnoreCase("10A10R")){
 			return tenRC_tenA.getProblem();
-		}else if (name.equalsIgnoreCase("ManyCIHS"))
-			return ManyCIHS.getProblem();
-		else if (name.equalsIgnoreCase("ManyCIMS")){
-			return ManyCIMS.getProblem();
-		}else if (name.equalsIgnoreCase("ManyCILS")){
-			return ManyCILS.getProblem();
-		}else if (name.equalsIgnoreCase("ManyPIHS")){
-			return ManyPIHS.getProblemSet();
-		}else if (name.equalsIgnoreCase("ManyPIMS")){
-			return ManyPIMS.getProblem();
-		}else if (name.equalsIgnoreCase("ManyPILS")){
-			return ManyPILS.getProblem();
-		}else if (name.equalsIgnoreCase("ManyNIHS")){
-			return ManyNIHS.getProblem();
-		}else if (name.equalsIgnoreCase("ManyNIMS")){
-			return ManyNIMS.getProblemSet();
-		}else if (name.equalsIgnoreCase("ManyNILS")){
-			return ManyNILS.getProblem();
 		}
   else {
 			Class cls = java.lang.String.class;
@@ -155,32 +125,36 @@ public class ProblemSetFactory{
 	}
 
 
-	public static void main(String[] args) throws JMException, IOException{
-//		String[] problemNameSet = {"CIHS","CIMS","CILS","PIHS","PIMS","PILS","NIHS","NIMS","NILS"};
+	public static void main(String[] args) throws JMException, IOException, NamingException, ReflectiveOperationException{
+		String[] problemNameSet = {"CIHS","CIMS","CILS","PIHS","PIMS","PILS","NIHS","NIMS","NILS"};
 
-		String[] problemNameSet = {"CIHS3","PIHS3","NIHS3"};
-//		String[] problemNameSet = {"PIHS3","NIHS3"};
-
+		BuildInRandom random = new BuildInRandom(3);
+		CommandSetting setting = new CommandSetting();
 		for(int p = 0; p < problemNameSet.length;p++){
-
 			String problemName = problemNameSet[p] ;
-			ProblemSet problemSet = getProblemSet(problemName);
+			ProblemSet problemSet = null;
+			setting.putForce("Problem", "momfo.problems.MOMFOP.NTU." +problemName);
 
-			Solution sol = new Solution(problemSet,0,null);
+			problemSet = (ProblemSet)Generics.getToClass("momfo.problems.MOMFOP.NTU." +problemName, "momfo.problems.MOMFOP.NTU.").getDeclaredConstructor(CommandSetting.class).newInstance(setting);
+//			System.out.println(problemSet.getProblemName());
+			Solution sol = new Solution(problemSet,0,random);
 			for(int val = 0 ; val < sol.getNumberOfVariables();val++){
 				sol.setValue(val, 0.3);
 			}
 			problemSet.get(0).evaluate(sol);
 
-			System.out.print(problemName + "	Task1	");
-			for(int o = 0;o < problemSet.get(0).getNumberOfObjectives();o++){
-				System.out.print(sol.getObjective(o)+"	");
+//			System.out.print(problemName + "	Task1	");
+			/*for(int o = 0;o < problemSet.get(0).getNumberOfObjectives();o++){
+				System.out.print("a["+(o)+"]="+sol.getObjective(o)+";");
 			}
-
 			System.out.println();
-			System.out.print(problemName + "	Task2	");
+			System.out.print("put(\""+problemName+"\",a.clone());");
+			System.out.println();
+			*/
+//			System.out.println();
+//			System.out.print(problemName + "	Task2	");
 
-			sol = new Solution(problemSet,1,null);
+			sol = new Solution(problemSet.get(1),random);
 
 			for(int val = 0 ; val < sol.getNumberOfVariables();val++){
 				sol.setValue(val, 0.3);
@@ -188,25 +162,12 @@ public class ProblemSetFactory{
 
 			problemSet.get(1).evaluate(sol);
 
-			for(int o = 0;o <problemSet.get(1).getNumberOfObjectives() ;o++){
-				System.out.print(sol.getObjective(o)+"	");
+			for(int o = 0;o < problemSet.get(1).getNumberOfObjectives();o++){
+				System.out.print("b["+(o)+"]="+sol.getObjective(o)+";");
 			}
 			System.out.println();
-			System.out.print(problemName + "	Task3	");
-
-			sol = new Solution(problemSet,2,null);
-
-			for(int val = 0 ; val < sol.getNumberOfVariables();val++){
-				sol.setValue(val, 0.3);
-			}
-
-			problemSet.get(2).evaluate(sol);
-
-			for(int o = 0;o <problemSet.get(1).getNumberOfObjectives() ;o++){
-				System.out.print(sol.getObjective(o)+"	");
-			}
+			System.out.print("put(\""+problemName+"\",b.clone());");
 			System.out.println();
-
 		}
 	}
 }

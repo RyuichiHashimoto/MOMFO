@@ -29,7 +29,6 @@ import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
 import lib.experiments.Exception.CommandSetting.notFoundException;
-import lib.math.BuildInRandom;
 import momfo.util.JMException;
 
 /**
@@ -39,4 +38,8 @@ public abstract class Operator implements Serializable {
 
 	abstract public void build(CommandSetting s) throws NameNotFoundException, JMException, NamingException, ReflectiveOperationException, IOException, notFoundException;
 
+	
+	public final String getName() {
+		return this.getClass().getName();
+	}
 }

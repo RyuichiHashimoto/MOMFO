@@ -26,8 +26,6 @@ public class NSGAIIObjectiveComparator_error extends Comparator{
 		Solution me = (Solution)one;
 		Solution you = (Solution)two;
 
-
-
 		if((isMAX_) ==  me.getObjective(objective) > you.getObjective(objective)){
 			return 1;
 		}else if((isMAX_) == me.getObjective(objective) < you.getObjective(objective))	 {

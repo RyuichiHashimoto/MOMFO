@@ -7,6 +7,7 @@ import static momfo.util.GAEvent.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
 import Network.Solver;
@@ -52,7 +53,7 @@ public class GAFramework extends Solver{
 //\\
 		setting.put(RANDOM_GENERATOR, new BuildInRandom(ParameterNames.DEFAULT_SEED));
 		String ga = setting.getAsStr(GA);
-		System.out.println(DEF_GA_PACKAGE + ga.toLowerCase() +"."+ ga);
+//		System.out.println(DEF_GA_PACKAGE + ga.toLowerCase() +"."+ ga);
 		if (!ga.contains(".")) setting.putForce(GA, DEF_GA_PACKAGE + ga.toLowerCase() +"."+ ga);
 		setting.set(GA, ga_ = setting.getAsInstance(GA));
 
@@ -66,7 +67,7 @@ public class GAFramework extends Solver{
 
 
 	@Override
-	public void solve() throws IOException, ClassNotFoundException, JMException {
+	public void solve() throws IOException, ClassNotFoundException, JMException, NameNotFoundException {
 		startTime_ = System.currentTimeMillis();
 		System.gc();  // clear heap before running
 
@@ -75,7 +76,7 @@ public class GAFramework extends Solver{
 		}
 	}
 
-	public void runOnce() throws IOException, ClassNotFoundException, JMException {
+	public void runOnce() throws IOException, ClassNotFoundException, JMException, NameNotFoundException {
 		// TODO: record seed value
 		int seed = seeder_.nextSeed();
 		ga_.initialize(seed);
@@ -83,9 +84,10 @@ public class GAFramework extends Solver{
 		while (!ga_.terminate()) {
 			ga_.recombination();
 			ga_.nextGeneration();
+			ga_.evoEvaluation();
 			notifyEvent(AFTER_GENERATION);
 		}
-
+		ga_.finEvaluation();
 		notifyEvent(AFTER_TRIAL);
 
 	}

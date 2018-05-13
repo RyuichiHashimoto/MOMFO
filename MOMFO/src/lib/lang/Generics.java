@@ -4,6 +4,8 @@ import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 
+import javax.naming.NameNotFoundException;
+
 
 public class Generics {
 	@SuppressWarnings("unchecked")
@@ -53,6 +55,32 @@ public class Generics {
 			return Arrays.toString((float[]) o);
 		} else {
 			return o.toString();
+		}
+	}
+
+
+	public static Class<?> getToClass(Object value, String defaultPkg) throws NameNotFoundException, ClassNotFoundException {
+		return getToClass(value, Thread.currentThread().getContextClassLoader(), defaultPkg);
+	}
+
+	public static Class<?> getToClass(Object value, ClassLoader cl, String defaultPkg) throws NameNotFoundException, ClassNotFoundException {
+		if (value instanceof Class) {
+			return (Class<?>) value;
+		}
+		String fqcn = value.toString();
+		if (fqcn.startsWith("class ")) {
+			// "class " is added by Class#toString
+			fqcn = fqcn.substring("class ".length());
+		}
+		try {
+			return (cl == null) ? Class.forName(fqcn) : cl.loadClass(fqcn);
+		} catch(ClassNotFoundException e) {
+			if (defaultPkg != null) {
+				fqcn = defaultPkg + "." + fqcn;
+				return (cl == null) ? Class.forName(fqcn) : cl.loadClass(fqcn);
+			} else {
+				throw e;
+			}
 		}
 	}
 

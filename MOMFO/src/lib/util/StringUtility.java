@@ -1,12 +1,10 @@
 package lib.util;
 
 
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+
+import lib.io.FileConstants;
 
 public class StringUtility {
 	private StringUtility() {}
@@ -39,6 +37,59 @@ public class StringUtility {
 		sb.append(obj[obj.length - 1]);
 		return sb.toString();
 	}
+
+
+
+	public static String toCSV(double[][] matrix, String separator){
+		String ret= "";
+
+		for(int i = 0;i<matrix.length;i++) {
+			for(int j = 0;j<matrix[i].length-1;j++) {
+				ret = ret + matrix[i][j]+ separator;
+			}
+			ret = ret + matrix[i][matrix[i].length-1] + FileConstants.NEWLINE_DEMILITER;
+		}
+		return ret;
+	}
+
+	public static String toCSV(double[][] matrix){
+		return toCSV(matrix,FileConstants.FILE_DEMILITER);
+	}
+
+	public static String toCSV(int[][] matrix){
+		return toCSV(matrix,FileConstants.FILE_DEMILITER);
+	}
+
+	public static String toCSV(int[][] matrix, String separator){
+		String ret= "";
+
+		for(int i = 0;i<matrix.length;i++) {
+			for(int j = 0;j<matrix[i].length-1;j++) {
+				ret = ret + matrix[i][j]+ separator;
+			}
+			ret = ret + matrix[i][matrix[i].length-1] + FileConstants.NEWLINE_DEMILITER;
+		}
+		return ret;
+	}
+
+	public static String toCSV(List<ArrayList<Double>> matrix){
+		return toCSV(matrix,FileConstants.FILE_DEMILITER);
+	}
+
+	public static String toCSV(List<ArrayList<Double>> matrix,String separator){
+		String ret= "";
+
+		for(int i = 0;i<matrix.size();i++) {
+			for(int j = 0;j<matrix.get(i).size()-1;j++) {
+				ret = ret + matrix.get(i).get(j)+ separator;
+			}
+			ret = ret +matrix.get(i).get(matrix.get(i).size()-1) + FileConstants.NEWLINE_DEMILITER;
+		}
+		return ret;
+
+	}
+
+
 /*
 	public static void assertEqualString(String str, Path path) throws IOException {
 		List<String> file = Files.readAllLines(path, Charset.defaultCharset());
