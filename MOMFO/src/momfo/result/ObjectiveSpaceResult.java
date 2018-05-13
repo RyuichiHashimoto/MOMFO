@@ -2,12 +2,15 @@ package momfo.result;
 
 import java.io.IOException;
 
-import mo.solutionset.Solutionset;
+import lib.io.FileConstants;
 
 public class ObjectiveSpaceResult extends PopulationResult {
 	@Override
 	public void afterTrial() throws IOException {
-		writer.write(Solutionset.toText(solver.getPopulation().getUniqueNonDominated(), isMaximize));
-		writer.write("\n");
+		
+		if(!solver.getGA().isMultitask()) {
+			writer.write(solver.getGA().getPopulation().objectiveToStr());
+			writer.write(FileConstants.NEWLINE_DEMILITER);
+		}
 	}
 }

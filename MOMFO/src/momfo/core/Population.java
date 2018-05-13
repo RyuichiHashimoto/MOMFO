@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import lib.io.FileConstants;
 import lib.math.Permutation;
 import momfo.util.JMException;
 import momfo.util.Sort;
@@ -395,6 +396,34 @@ public class Population {
 		}
 	}
 
+	public String objectiveToStr(){
+		String ret = "";
+		
+		int NumberOfObjectives = population_[0].getNumberOfObjectives();
+		for(int i = 0 ;i < populationSize;i++){
+			for (int j = 0; j < NumberOfObjectives-1; j++){
+					ret += (population_[i].getObjective(j) + FileConstants.FILE_DEMILITER);					
+			}
+			ret += (population_[i].getObjective(NumberOfObjectives-1)+FileConstants.NEWLINE_DEMILITER);
+		}
+		return ret;
+	}
+	
+
+	public String variableToStr(){
+		String ret = "";
+		
+		int NumberOfVariables = population_[0].getNumberOfVariables();
+		for(int i = 0 ;i < populationSize;i++){
+			for (int j = 0; j < NumberOfVariables-1; j++){
+					ret += (population_[i].getObjective(j) + FileConstants.FILE_DEMILITER);					
+			}
+			ret += (population_[i].getObjective(NumberOfVariables-1)+FileConstants.NEWLINE_DEMILITER);
+		}
+		return ret;
+	}
+
+	
 	public void printFeasibleObjectivesToFile(String path) {
 		try {
 			FileOutputStream fos = new FileOutputStream(path);
@@ -491,9 +520,6 @@ public class Population {
 	}
 
 	public void ScalarFitnessSort() {
-
-
-
 		try {
 			Sort.QuickSort(population_, new ScalarFitnessComparator(true,null), 0, populationSize - 1);;
 		} catch (JMException e) {

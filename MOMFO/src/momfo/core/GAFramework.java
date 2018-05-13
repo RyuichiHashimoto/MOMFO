@@ -50,17 +50,12 @@ public class GAFramework extends Solver{
 		} catch (NamingException e) {
 
 		}
-//\\
 		setting.put(RANDOM_GENERATOR, new BuildInRandom(ParameterNames.DEFAULT_SEED));
 		String ga = setting.getAsStr(GA);
-//		System.out.println(DEF_GA_PACKAGE + ga.toLowerCase() +"."+ ga);
+
 		if (!ga.contains(".")) setting.putForce(GA, DEF_GA_PACKAGE + ga.toLowerCase() +"."+ ga);
 		setting.set(GA, ga_ = setting.getAsInstance(GA));
 
-		// build
-		/* NeedChecked: Do not use rand here because the seed of rand is set
-		 * in the initialize() method;
-		 */
 		ga_.build(setting);
 
 	}
@@ -89,7 +84,7 @@ public class GAFramework extends Solver{
 		}
 		ga_.finEvaluation();
 		notifyEvent(AFTER_TRIAL);
-		
+
 	}
 
 	@Command

@@ -15,8 +15,8 @@ public class NIMS extends ProblemSet{
 		ProblemSet ps1 = getT1();
 		ProblemSet ps2 = getT2();
 		ProblemSet problemSet = new ProblemSet(2);
-		problemSet.setProblemSetName("NIMS");
-		problemSet.setMaxDimensionOfObjective(2);
+		this.setProblemSetName("NIMS");
+		this.setMaxDimensionOfObjective(3);
 		add(ps1.get(0)).add(ps2.get(0));
 	}
 
@@ -36,7 +36,7 @@ public class NIMS extends ProblemSet{
 		ProblemSet problemSet = new ProblemSet(1);
 
 		MMDTLZ prob = new MMDTLZ("rosenbrock",3, 20, 1, -20,20);
-		problemSet.get(0).setIGDRefFile("Data/PF/sphere.pf");
+		prob.setIGDRefFile("Data/PF/sphere.pf");
 
 
 		problemSet.add(prob);
@@ -47,7 +47,7 @@ public class NIMS extends ProblemSet{
 		ProblemSet problemSet = new ProblemSet(1);
 
 		MMZDT prob = new MMZDT("sphere",20, 2,  -20,20);
-		problemSet.get(0).setIGDRefFile("Data/PF/concave.pf");
+		prob.setIGDRefFile("Data/PF/concave.pf");
 
 		prob.setHType("concave");
 		double[][] matrix = IO.readMatrixFromFile("Data/MData/M_NIMS_2.txt");

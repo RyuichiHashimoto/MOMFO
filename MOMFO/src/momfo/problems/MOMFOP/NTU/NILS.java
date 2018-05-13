@@ -33,7 +33,7 @@ public class NILS extends ProblemSet{
 	public static ProblemSet getT1() throws IOException {
 		ProblemSet problemSet = new ProblemSet(1);
 		MMDTLZ prob = new MMDTLZ("griewank",3, 25, 1, -50,50);
-		problemSet.get(0).setIGDRefFile("Data/PF/sphere.pf");
+		prob.setIGDRefFile("Data/PF/sphere.pf");
 
 		double shiftValues[] = IO.readShiftValuesFromFile("Data/ShiftData/S_NILS_1.txt");
 		prob.getgFunction().setShiftMatrix(shiftValues);
@@ -44,9 +44,10 @@ public class NILS extends ProblemSet{
 
 	public static ProblemSet getT2() throws IOException {
 		ProblemSet problemSet = new ProblemSet(1);
-		problemSet.get(0).setIGDRefFile("Data/PF/concave.pf");
 
 		MMZDT prob = new MMZDT("ackley",50, 2,  -100,100);
+		prob.setIGDRefFile("Data/PF/concave.pf");
+
 		prob.setHType("concave");
 
 		problemSet.add(prob);

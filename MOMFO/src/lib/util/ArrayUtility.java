@@ -1,5 +1,7 @@
 package lib.util;
 
+import java.util.List;
+
 import lib.lang.Primitive;
 
 public class ArrayUtility {
@@ -11,6 +13,19 @@ public class ArrayUtility {
 		return v;
 	}
 
+	public static double[][] listToDArray(List<Double[]>  d){
+		double[][]  ret = new double[d.size()][];
+		
+		for(int i =0;i<ret.length;i++) {
+			ret[i] = new double[(d.get(i).length)];
+			 for(int j = 0; j < ret[i].length;j++){
+				 ret[i][j] = d.get(i)[j];
+			 }
+		}
+		return ret;
+	}
+	
+	
 	public static double[] fromCSVdouble(String s, String separator) {
 		String[] fields = s.split(separator);
 		double[] retval = new double[fields.length];

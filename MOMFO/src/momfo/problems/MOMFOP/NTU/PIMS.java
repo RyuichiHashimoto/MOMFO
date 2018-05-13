@@ -41,7 +41,7 @@ public class PIMS extends ProblemSet{
 		double[] shiftValues= IO.readShiftValuesFromFile("Data/ShiftData/S_PIMS_1.txt");
 		prob.getgFunction().setShiftMatrix(shiftValues);
 //		IGDRef.AddRefFiles("");
-		problemSet.get(0).setIGDRefFile("Data/PF/circle.pf");
+		prob.setIGDRefFile("Data/PF/circle.pf");
 
 		double[][] matrix = IO.readMatrixFromFile("Data/MData/M_PIMS_1.txt");
 
@@ -58,7 +58,7 @@ public class PIMS extends ProblemSet{
 
 //		IGDRef.AddRefFiles("");
 		MMZDT prob = new MMZDT("rastrigin",50, 1,  0,1);
-		problemSet.get(0).setIGDRefFile("Data/PF/concave.pf");
+		prob.setIGDRefFile("Data/PF/concave.pf");
 
 		double[][] matrix = IO.readMatrixFromFile("Data/MData/M_PIMS_2.txt");
 		prob.getgFunction().setRotationMatrix(matrix);

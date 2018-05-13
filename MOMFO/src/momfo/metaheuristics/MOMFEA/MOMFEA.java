@@ -156,7 +156,7 @@ public class MOMFEA extends GeneticAlgorithm {
 //			igd[1] = (IGDCalclator.CalcIGD(population_.getAllObjectives(), calc,IGDRef.getRefs(t)));
 //			igd[1] = (IGDCalclator.CalcNormalizeIGD(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber)));
 			igd[0] = counter;
-			igd[1] = (IGDCalclator.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(),calc, IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t),random));
+//			igd[1] = (IGDCalclator.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(),calc, IGDRef.getNormalizeRefs(t),IGDRef.getMaxValue(t),IGDRef.getMinValue(t),random));
 			d.add(igd.clone());
 			igdHistory.add(new ArrayList<double []>(d));
 		}

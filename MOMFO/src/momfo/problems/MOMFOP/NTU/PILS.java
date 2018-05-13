@@ -36,7 +36,7 @@ public class PILS extends ProblemSet{
 		ProblemSet problemSet = new ProblemSet(1);
 
 		MMDTLZ prob = new MMDTLZ("griewank",2, 50, 1, -50,50);
-		problemSet.get(0).setIGDRefFile("Data/PF/circle.pf");
+		prob.setIGDRefFile("Data/PF/circle.pf");
 		problemSet.add(prob);
 		return problemSet;
 	}
@@ -45,7 +45,7 @@ public class PILS extends ProblemSet{
 		ProblemSet problemSet = new ProblemSet(1);
 
 		MMDTLZ prob = new MMDTLZ("ackley",2, 50, 1, -100,100);
-		problemSet.get(0).setIGDRefFile("Data/PF/circle.pf");
+		prob.setIGDRefFile("Data/PF/circle.pf");
 
 		double[] shiftValues= IO.readShiftValuesFromFile("Data/ShiftData/S_PILS_2.txt");
 		prob.getgFunction().setShiftMatrix(shiftValues);

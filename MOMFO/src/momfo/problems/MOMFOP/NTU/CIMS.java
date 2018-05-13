@@ -38,11 +38,12 @@ public class CIMS extends ProblemSet{
 		ProblemSet problemSet = new ProblemSet(1);
 
 		MMZDT prob = new MMZDT("rosenbrock",10,  1, -5,5);
-		problemSet.get(0).setIGDRefFile("Data/PF/concave.pf");
 
 
 		prob.setHType("concave");
 		problemSet.add(prob);
+		problemSet.get(0).setIGDRefFile("Data/PF/concave.pf");
+
 		return problemSet;
 	}
 
@@ -50,9 +51,9 @@ public class CIMS extends ProblemSet{
 	public static ProblemSet getT2() throws IOException {
 		ProblemSet problemSet = new ProblemSet(1);
 
-		problemSet.get(0).setIGDRefFile("Data/PF/circle.pf");
 
 		MMDTLZ prob = new MMDTLZ("mean",2, 10, 1, -5,5);
+		prob.setIGDRefFile("Data/PF/circle.pf");
 
 		double[] shiftValues = IO.readShiftValuesFromFile("Data/ShiftData/S_CIMS_2.txt");
 		prob.getgFunction().setShiftMatrix(shiftValues);

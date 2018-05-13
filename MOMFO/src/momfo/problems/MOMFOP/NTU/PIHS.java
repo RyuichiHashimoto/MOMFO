@@ -40,7 +40,7 @@ public class PIHS extends ProblemSet{
 
 		MMZDT prob = new MMZDT("sphere",50, 1,  -100,100);
 		prob.setHType("convex");
-		problemSet.get(0).setIGDRefFile("Data/PF/convex.pf");
+		prob.setIGDRefFile("Data/PF/convex.pf");
 
 		problemSet.add(prob);
 		return problemSet;
@@ -48,10 +48,10 @@ public class PIHS extends ProblemSet{
 
 	public static ProblemSet getT2() throws IOException {
 		ProblemSet problemSet = new ProblemSet(1);
-//		IGDRef.AddRefFiles("Data/PF/convex.pf");
 		MMZDT prob = new MMZDT("rastrigin",50, 1,  -100,100);
 		prob.setHType("convex");
-		problemSet.get(0).setIGDRefFile("Data/ShiftData/S_PIHS_2.txt");
+		prob.setIGDRefFile("Data/ShiftData/S_PIHS_2.txt");
+		prob.setIGDRefFile("Data/PF/convex.pf");
 
 		double[] shiftValues = IO.readShiftValuesFromFile("Data/ShiftData/S_PIHS_2.txt");
 		prob.getgFunction().setShiftMatrix(shiftValues);

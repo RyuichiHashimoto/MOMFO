@@ -3,6 +3,7 @@ package momfo.core;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.naming.NameNotFoundException;
@@ -152,7 +153,7 @@ public abstract class GeneticAlgorithm implements Serializable {
 		}
 		s.put(ParameterNames.FIN_EVALUATOR, finEvaluator);
 
-		taskNumber = s.getAsInt(ParameterNames.TASK_NUMBER);
+//		taskNumber = s.getAsInt(ParameterNames.TASK_NUMBER);
 
 		Object[] tempevoEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.EVO_EVALUATOR));
 		evoEvaluator = new Evaluator[tempevoEval.length];
@@ -169,33 +170,6 @@ public abstract class GeneticAlgorithm implements Serializable {
 		mutation.build(s);
 		parentsSelection.build(s);
 
-		/*
-				if (isMultitask) {
-		
-					for (int t = 0; t < finEvaluator.length; t++) {
-						s.putForce(ParameterNames.TEMP_TASK_NUMBER, t);
-						s.putForce(ParameterNames.IGD_REF_FILES, "Data/PF/concave.pf");
-						finEvaluator[t].build(s);
-					}
-					for (int t = 0; t < evoEvaluator.length; t++) {
-						s.putForce(ParameterNames.TEMP_TASK_NUMBER, t);
-						s.putForce(ParameterNames.IGD_REF_FILES, "Data/PF/concave.pf");
-						evoEvaluator[t].build(s);
-					}
-				} else {
-					for (int t = 0; t < finEvaluator.length; t++) {
-						s.putForce(ParameterNames.TEMP_TASK_NUMBER, t);
-						s.putForce(ParameterNames.IGD_REF_FILES, "Data/PF/concave.pf");
-						finEvaluator[t].build(s);
-					}
-					for (int t = 0; t < evoEvaluator.length; t++) {
-						s.putForce(ParameterNames.TEMP_TASK_NUMBER, t);
-						s.putForce(ParameterNames.IGD_REF_FILES, "Data/PF/concave.pf");
-						evoEvaluator[t].build(s);
-					}
-				}
-				s.putForce(ParameterNames.TEMP_TASK_NUMBER, -10000);
-				*/
 	}
 
 	@NeedOverriden
@@ -214,16 +188,25 @@ public abstract class GeneticAlgorithm implements Serializable {
 	};
 
 	public void evoEvaluation() {
-		if (isMultitask)
+		if (isMultitask) {
+			double[] igd = new double[2];
+
 			for (int t = 0; t < evoEvaluator.length; t++) {
 				evoEvaluator[t].evaluate(populationArray[t]);
 			}
-		else {
+			
+			int t=0;
+			igd[t] = ((List<Double>)(evoEvaluator[t].getValue())).get( ((List)(evoEvaluator[t].getValue())).size()-1);
+			t=1;
+			igd[t] = ((List<Double>)(evoEvaluator[t].getValue())).get( ((List)(evoEvaluator[t].getValue())).size()-1);
+			
+			setOutputParameter("igd",igd);
+		} else {
 			evoEvaluator[taskNumber].evaluate(population_);
 
-			for (int t = 0; t < evoEvaluator.length; t++) {
-				//				evoEvaluator[t].evaluate(population_);
-			}
+			double igd = ((List<Double>)(evoEvaluator[taskNumber].getValue())).get( ((List)(evoEvaluator[taskNumber].getValue())).size()-1);
+			setOutputParameter("igd",igd);
+
 		}
 
 	};

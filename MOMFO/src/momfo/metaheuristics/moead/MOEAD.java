@@ -21,8 +21,7 @@
 
 package momfo.metaheuristics.moead;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 import java.util.Vector;
 
 import javax.naming.NamingException;
@@ -33,8 +32,6 @@ import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.lang.Generics;
 import lib.math.Calculator;
 import lib.math.Permutation;
-import momfo.Indicator.IGDCalclator;
-import momfo.Indicator.IGDRef;
 import momfo.core.GeneticAlgorithm;
 import momfo.core.Operator;
 import momfo.core.Population;
@@ -250,16 +247,6 @@ public class MOEAD extends GeneticAlgorithm{
 		permutation = new int[populationSize_];
 		Permutation.randomPermutation(permutation,populationSize_,random);
 
-
-		int counter = 0;
-
-		List<double[]> igdHistory = new ArrayList<double[]>();
-		double[] igd = new double[2];
-		igd[0] = counter;
-		igd[1] = (IGDCalclator.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber),random));
-		igdHistory.add(igd.clone());
-		int[] permutation = new int[populationSize_];
-
 	}
 
 
@@ -303,9 +290,6 @@ public class MOEAD extends GeneticAlgorithm{
 				break;
 			}
 		}
-//		population_.printObjectivesToFile(directoryname +  "/Animation/FUN" + generation + ".dat");
-		double igd = (IGDCalclator.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(), IGDRef.getNormalizeRefs(tasknumber),IGDRef.getMaxValue(tasknumber),IGDRef.getMinValue(tasknumber),random));
-		setOutputParameter("IGDCalclator", igd);
 	}
 
 	@Override
@@ -336,7 +320,7 @@ public class MOEAD extends GeneticAlgorithm{
 
 	protected int [] permutation;
 	@Override
-	protected void buildImpl(CommandSetting s) throws JMException, notFoundException, NamingException, ReflectiveOperationException {
+	protected void buildImpl(CommandSetting s) throws JMException, notFoundException, NamingException, ReflectiveOperationException, IOException {
 
 		problem_ = ((ProblemSet) (setting.get(ParameterNames.PROBLEM_SET)))
 				.get(setting.get(ParameterNames.TASK_NUMBER));
@@ -352,7 +336,8 @@ public class MOEAD extends GeneticAlgorithm{
 		isMax    = s.get(ParameterNames.IS_MAX);
 
 
-
+		finEvaluator[taskNumber].build(setting);
+		evoEvaluator[taskNumber].build(setting);
 		ScalarzingFunction_ = Generics.cast(s.getAsInstanceByName(ParameterNames.SCALAR_FUNCTION, ""));;
 		s.putForce(ParameterNames.SCALAR_FUNCTION, ScalarzingFunction_);
 		comparator =Generics.cast(s.getAsInstanceByName(ParameterNames.MOEAD_COMPARATOR, ""));;
@@ -371,7 +356,7 @@ public class MOEAD extends GeneticAlgorithm{
 
 		populationSize_ = Calculator.conbination(numberofObjectives_-1 + numberOfDivision_ ,numberofObjectives_-1);
 
-		tasknumber =  s.get(ParameterNames.TASK_NUMBER);
+		taskNumber =  s.get(ParameterNames.TASK_NUMBER);
 
 		if(isInnerWeightVector_){
 			populationSize_ += Calculator.conbination(numberofObjectives_-1 + InnerWeightVectorDivision_ ,numberofObjectives_-1);

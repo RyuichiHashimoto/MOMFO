@@ -36,6 +36,6 @@ abstract public class SolverResult<T extends Solver> implements Buildable {
 	abstract public void close() throws IOException;
 
 	abstract public void save(CommandSetting s, Object ... results) throws IOException, NamingException;
-	abstract public Serializ able getMemento();
+	abstract public Serializable getMemento();
 
 }

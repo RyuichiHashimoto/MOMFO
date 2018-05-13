@@ -38,7 +38,7 @@ public class NIHS extends ProblemSet{
 		ProblemSet problemSet = new ProblemSet(1);
 
 		MMDTLZ prob = new MMDTLZ("rosenbrock",2, 50, 1, -80,80);
-		problemSet.get(0).setIGDRefFile("Data/PF/circle.pf");
+		prob.setIGDRefFile("Data/PF/circle.pf");
 
 		problemSet.add(prob);
 		return problemSet;
@@ -46,9 +46,10 @@ public class NIHS extends ProblemSet{
 
 	public static ProblemSet getT2() throws IOException {
 		ProblemSet problemSet = new ProblemSet(1);
-		problemSet.get(0).setIGDRefFile("Data/PF/convex.pf");
 
 		MMZDT prob = new MMZDT("sphere",50, 1,  -80,80);
+		prob.setIGDRefFile("Data/PF/convex.pf");
+
 		prob.setHType("convex");
 
 		problemSet.add(prob);

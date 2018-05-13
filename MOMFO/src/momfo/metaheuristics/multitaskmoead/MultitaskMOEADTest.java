@@ -39,6 +39,9 @@ class MultitaskMOEADTest {
 		.put(ParameterNames.CROSSOVER, "momfo.operators.crossover.SBXCrossover")
 		.put(ParameterNames.CROSSOVERProbability, "0.9")
 		.put(ParameterNames.SBXDisIndex, "20")
+		.put(ParameterNames.EVO_EVALUATOR, "momfo.operators.evaluator.IGDHisWithAllSol,momfo.operators.evaluator.IGDHisWithAllSol")
+		.put(ParameterNames.IGD_CALCLATOR, "momfo.Indicator.IGDHisWithAllSol")
+		.put(ParameterNames.FIN_EVALUATOR, "momfo.operators.evaluator.NullEvaluator,momfo.operators.evaluator.NullEvaluator")
 		.put(ParameterNames.MUTATION, "momfo.operators.mutation.PolynomialMutation")
 		.put(ParameterNames.MUTATIONProbability, "-1")
 		.put(ParameterNames.PMDisIndex, "20")
@@ -73,10 +76,10 @@ class MultitaskMOEADTest {
 		solver.runOnce();
 
 
-		double[] IGD = (double[]) solver.getGA().getOutputParameter("IGDCalclator");
-			if (!(IGD[0] == IGDValues_Task1[taskNumber]))
+		double[] IGD = (double[]) solver.getGA().getOutputParameter("igd");
+			if (!(IGD[0] == IGDValues_Task1[problemNumber]))
 				fail("IGDCalclator Value of Task 1 is wrong " + "corrct anser is " + IGDValues_Task1[taskNumber] + " but my answer is" + IGD[0]);
-			else if (!(IGD[1] == IGDValues_Task2[taskNumber]))
+			else if (!(IGD[1] == IGDValues_Task2[problemNumber]))
 				fail("IGDCalclator Value of Task 2 is wrong " + "corrct anser is " + IGDValues_Task2[taskNumber] + " but my answer is" + IGD[1]);
 			else
 				System.out.println("SUCCCESS");
@@ -95,12 +98,12 @@ class MultitaskMOEADTest {
 			3.5357668013543563E-4,1.7981917043366627E-4	,2.070604162075519433e-04,
 			2.837082007232086993e-04,4.024248299196193229e-03,1.754022360052057334e-04,
 			1.522138933479712630e+00,8.122739679472584795e-01,7.453151598261105459e-04
-	}; 
-	
+	};
+
 	private final double[] IGDValues_Task2 = {
 			0.0024182954167999314,6.921732011169843E-4,1.643551083100139331e-04,
 			4.987954895799217442e-02,1.634405017276245076e+01,3.687665361718667732e-03,
 			2.394295859861442796e-04,3.151659714796690992e-02,2.618409750496212413e-02
-	}; 
+	};
 
 }

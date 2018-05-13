@@ -48,6 +48,9 @@ class MOEADTest {
 		.put(ParameterNames.INNER_DIVISION_SIZE, 0 )
 		.put(ParameterNames.OUTER_DIVISION_SIZE,( ( problemNumber== 8 ||problemNumber== 7) && (taskNumber == 0) )  ? 13:99)
 		.put(ParameterNames.MOEAD_ALPHA,1.0)
+		.put(ParameterNames.EVO_EVALUATOR, "momfo.operators.evaluator.IGDHisWithAllSol,momfo.operators.evaluator.IGDHisWithAllSol")
+		.put(ParameterNames.IGD_CALCLATOR, "momfo.Indicator.IGDHisWithAllSol")
+		.put(ParameterNames.FIN_EVALUATOR, "momfo.operators.evaluator.NullEvaluator,momfo.operators.evaluator.NullEvaluator")
 		.put(ParameterNames.SIZE_OF_NEIBORHOOD_At_UPDATE,20)
 		.put(ParameterNames.IS_NORM,false)
 		.put(ParameterNames.SIZE_OF_NEIBORHOOD_At_MATING,20)
@@ -72,7 +75,7 @@ class MOEADTest {
 //		double[] obj = (double[]) algorithm.getAlgorithm().getOutputParameter("FinalFUN");
 //		double[] val = (double[]) algorithm.getAlgorithm().getOutputParameter("FinalVAR");
 
-		double IGD = (double) solver.getGA().getOutputParameter("IGDCalclator");
+		double IGD = (double) solver.getGA().getOutputParameter("igd");
 		if (taskNumber == 0) {
 			if (!(IGD == IGDValues_Task1[problemNumber]))
 				fail("IGDCalclator Value of Task 1 is wrong " + "corrct anser is " + IGDValues_Task1[problemNumber] + " but my answer is" + IGD);

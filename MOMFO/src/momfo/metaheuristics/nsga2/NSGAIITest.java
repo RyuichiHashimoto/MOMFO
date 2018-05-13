@@ -59,14 +59,13 @@ class NSGAIITest {
 
 
 
-		System.out.println("");
+		System.out.println(ProblemName[problemNumber]+":"+"Task"+(taskNumber+1));
 		GAFramework solver = new GAFramework();
 		solver.build(setting);
 		solver.runOnce();
 
-//		double[] obj = (double[]) algorithm.getAlgorithm().getOutputParameter("FinalFUN");
-//		double[] val = (double[]) algorithm.getAlgorithm().getOutputParameter("FinalVAR");
-		double IGD = (double) solver.getGA().getOutputParameter("IGDCalclator");
+
+		double IGD = (double) solver.getGA().getOutputParameter("igd");
 		if (taskNumber == 0) {
 			if (!(IGD == IGDValues_Task1[problemNumber]))
 				fail("IGDCalclator Value of Task 1 is wrong " + "corrct anser is " + IGDValues_Task1[problemNumber] + " but my answer is" + IGD);
@@ -75,6 +74,8 @@ class NSGAIITest {
 		} else if(taskNumber == 1){
 			if (!(IGD == IGDValues_Task2[problemNumber]))
 				fail("IGDCalclator Value of Task 2 is wrong " + "corrct anser is " + IGDValues_Task2[problemNumber] + " but my answer is" + IGD);
+			else
+				System.out.println("success");
 		}
 	}
 

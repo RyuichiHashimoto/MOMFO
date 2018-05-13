@@ -105,7 +105,18 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 	public boolean getAsBool(String key) throws NameNotFoundException, notFoundException {
 		return Boolean.parseBoolean(getAsStr(key));
 	}
+	public Object[] getAsInstanceArray(String key) throws NameNotFoundException, ReflectiveOperationException, notFoundException {
+		return getAsInstanceArray(key, ArrayUtility.DEFAULT_DELIMITER);
+	}
 
+	public Object[] getAsInstanceArray(String key, String delimiter) throws NameNotFoundException, ReflectiveOperationException, notFoundException {
+		String[] classNames = getAsSArray(key, delimiter);
+		Object[] retval = new Object[classNames.length];
+		for (int i = 0; i < retval.length; i++) {
+			retval[i] = Class.forName(classNames[i]).newInstance();
+		}
+		return retval;
+	}
 	public boolean getAsBool(String key, boolean def) {
 		if (containsKey(key)) {
 			Object val;

@@ -24,8 +24,6 @@ import momfo.util.Ranking.NDSRanking;
 
 public class NSGA2 extends GeneticAlgorithm {
 
-
-
 	private int populationSize_;
 
 	private Population offSpring_;
@@ -67,10 +65,10 @@ public class NSGA2 extends GeneticAlgorithm {
 
 		problem_ = ((ProblemSet) (setting.get(ParameterNames.PROBLEM_SET)))
 				.get(setting.get(ParameterNames.TASK_NUMBER));
-		
+
 		finEvaluator[taskNumber].build(setting);
 		evoEvaluator[taskNumber].build(setting);
-		
+
 		populationSize_ = setting.getAsInt(ParameterNames.POPULATION_SIZE);
 
 		NSGAIIComparator_ = Generics.cast(setting.getAsInstanceByName(ParameterNames.NSGAIIComparator, ""));;
@@ -139,11 +137,11 @@ public class NSGA2 extends GeneticAlgorithm {
 		selection = new LabSpecifiedNSGAIISelection();
 		selection.build(setting);
 		population_ = selection.getNextPopulation(merge_);
+	
 		NDSRanking ranki_ = new NDSRanking(false, random);
 		ranki_.setPop(population_);
 		ranki_.Ranking();
 
-		setOutputParameter("IGDCalclator", 0.04);
 	}
 
 	@Override

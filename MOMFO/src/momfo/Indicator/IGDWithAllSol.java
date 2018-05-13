@@ -27,11 +27,10 @@ public class IGDWithAllSol extends IGDCalclator{
 		int refSize = referencePoint.length;
 
 		for(int pop = 0;pop<objective.length;pop++){
-			for(int o = 0;o<referencePoint[0].length ;o++){
+			for(int o = 0;o<referencePoint[pop].length ;o++){
 				normalizeObjective[pop][o] = (objective[pop][o] - minValue[o])/(maxValue[o] - minValue[o]);
 			}
 		}
-
 		for(int i = 0;i <refSize;i++){
 			double min = Double.POSITIVE_INFINITY;
 			for(int pop = 0;pop<objective.length;pop++){

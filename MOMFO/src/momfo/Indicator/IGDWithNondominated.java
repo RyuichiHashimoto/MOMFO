@@ -3,6 +3,7 @@ package momfo.Indicator;
 import javax.naming.NameNotFoundException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.math.Distance;
 import momfo.core.Population;
 import momfo.util.Ranking.NDSRanking;
@@ -10,7 +11,7 @@ import momfo.util.Ranking.NDSRanking;
 public class IGDWithNondominated extends IGDCalclator {
 
 
-	public void build(CommandSetting st) throws NameNotFoundException{
+	public void build(CommandSetting st) throws NameNotFoundException, notFoundException, ReflectiveOperationException{
 		super.build(st);
 	}
 

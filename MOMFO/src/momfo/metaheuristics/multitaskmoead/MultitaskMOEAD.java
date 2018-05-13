@@ -33,8 +33,6 @@ import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.math.Calculator;
 import lib.math.Permutation;
-import momfo.Indicator.IGDCalclator;
-import momfo.Indicator.IGDRef;
 import momfo.core.GeneticAlgorithm;
 import momfo.core.Operator;
 import momfo.core.Population;
@@ -309,7 +307,7 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		for (int t = 0; t < ParentsSelectioncounter.length; t++) {
 			ParentsSelectioncounter[t] = 10;
 		}
-
+/*
 		for (int t = 0; t < problemSet_.countProblem(); t++) {
 			List<double[]> d = new ArrayList<double[]>();
 			boolean[] calc = new boolean[populationArray[t].size()]; //IGD計算をする個体の選出するための配列
@@ -328,6 +326,7 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 			cont[t] = false;
 			populationArray[t].printObjectivesToFile("output_"+ (t+1)+".dat");
 		}
+		*/
 		int totalPopulationSize_ = 0;
 
 		for (int t = 0; t < numberOfTasks; t++) {
@@ -404,15 +403,6 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 			}
 		}
 
-		double[] igd = new double[2];
-
-		for (int t = 0; t < numberOfTasks; t++) {
-			igd[t] = (IGDCalclator.CalcNormalizeIGD_To_NonDominated(populationArray[t].getAllObjectives(),
-					IGDRef.getNormalizeRefs(t), IGDRef.getMaxValue(t), IGDRef.getMinValue(t), random));
-		}
-
-
-		setOutputParameter("IGDCalclator", igd);
 	}
 
 	@Override
@@ -476,11 +466,13 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 	protected void buildImpl(CommandSetting s)
 			throws ReflectiveOperationException, NamingException, IOException, notFoundException, JMException {
 
+		
+		s.put(ParameterNames.IS_MULTITASK, isMultitask);
 		problemSet_  = s.get(ParameterNames.PROBLEM_SET);
 		numberOfTasks = problemSet_.countProblem();
 		isMax = s.getAsBArray(ParameterNames.IS_MAX);
 		isNorm = s.getAsBArray(ParameterNames.IS_NORM);
-
+		
 		InnerWeightVectorDivision_  = s.getAsNArray(ParameterNames.INNER_DIVISION_SIZE);
 		numberOfParents_ = s.getAsNArray(ParameterNames.N_OF_PARENTS);
 		numberOfDivision_ = s.getAsNArray(ParameterNames.OUTER_DIVISION_SIZE);
@@ -497,11 +489,18 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		ScalarzingFunction_ = new ScalarzingFunction[numberOfTasks];
 		comparator = new MOEADComparator[numberOfTasks];
 
+		Object task = null;
+		if(s.containsKe(ParameterNames.TASK_NUMBER))
+			task = s.get(ParameterNames.TASK_NUMBER);
+		
 		for (int i = 0;i < sss.length;i++) {
 			ScalarzingFunction_[i] = (ScalarzingFunction) sss[i];
 			comparator[i] = (MOEADComparator) ccc[i];
+			s.putForce(ParameterNames.TASK_NUMBER,i);
+			finEvaluator[i].build(s);
+			evoEvaluator[i].build(s);
 		}
-
+		s.putForce(ParameterNames.TASK_NUMBER,task);
 
 //		ScalarzingFunction_ = (ScalarzingFunction[]) s.getAsInstanceArray(ParameterNames.SCALAR_FUNCTION);
 		s.putForce(ParameterNames.SCALAR_FUNCTION, ScalarzingFunction_);
@@ -544,6 +543,11 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 	public MultitaskMOEAD() {
 		super();
 		isMultitask = true;
+	}
+
+	@Override
+	public Population execute() throws JMException, ClassNotFoundException {
+		return null;
 	}
 
 	

@@ -7,6 +7,7 @@ import javax.naming.NameNotFoundException;
 
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
+import lib.experiments.Exception.CommandSetting.notFoundException;
 
 
 
@@ -19,12 +20,12 @@ public abstract class IGDCalclator  extends Indicator{
 
 	public double POWER;
 
-	public void build(CommandSetting st) throws NameNotFoundException {
+	public void build(CommandSetting st) throws NameNotFoundException, notFoundException, ReflectiveOperationException {
 		super.build(st);
 		try{
 			POWER = st.get(ParameterNames.IGD_POWER);
 		}catch(NameNotFoundException e) {
-			POWER = 2;
+			POWER = 2.0;
 		}
 	}
 
@@ -44,7 +45,7 @@ public abstract class IGDCalclator  extends Indicator{
 	public final double calcNormalizeIGD(double[][]  objective,IGDRef ref) {
 		boolean[] checker = new boolean[objective.length];
 		for(int i =0; i < checker.length;i++) checker[i] = true;
-		return calcNormalizeIGD(objective,checker,ref.getRefs(),ref.getMaxValue(),ref.getMinValue());
+		return calcNormalizeIGD(objective,checker,ref.getNormalizeRefs(),ref.getMaxValue(),ref.getMinValue());
 	};
 
 	public final double calcNormalizeIGD(double[][]  objective , double[][] referencePoint,double[] maxValue,double[] minValue){

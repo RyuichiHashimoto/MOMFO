@@ -1,7 +1,5 @@
 package momfo.result;
 
-import static mo.solver.ga.GAFramework.*;
-import static optsys.platform.RunSetting.*;
 
 import java.io.BufferedWriter;
 import java.io.CharArrayWriter;
@@ -11,12 +9,10 @@ import java.io.Writer;
 
 import javax.naming.NamingException;
 
-import optsys.platform.RunSetting;
-import optsys.platform.StreamProvider;
-import lib.experiment.Setting;
-import mo.problem.MOProblem;
-import mo.solutionset.Solutionset;
-import mo.solver.ga.GAFramework;
+import Network.GridComputing.StreamProvider;
+import lib.experiments.CommandSetting;
+import lib.experiments.ParameterNames;
+import momfo.core.ProblemSet;
 
 public class PopulationResult extends GAResult {
 	public static final String DEFAULT_FILE_NAME = "population.mtd";
@@ -24,23 +20,23 @@ public class PopulationResult extends GAResult {
 	protected CharArrayWriter caWriter;
 
 	@Override
-	public void build(Setting s) throws NamingException, IOException, ReflectiveOperationException {
-		this.solver = s.get(RunSetting.SOLVER);
-		Writer w = ((StreamProvider) solver.setting.get(STREAM_PROVIDER)).getWriter(getOutputName(s));
+	public void build(CommandSetting s) throws NamingException, IOException, ReflectiveOperationException {
+		this.solver = s.get(ParameterNames.SOLVER);
+		Writer w = ((StreamProvider) solver.setting.get(ParameterNames.STREAM_PROVIDER)).getWriter(getOutputName(s));
 		writer = new BufferedWriter(w);
 		if (w instanceof CharArrayWriter) caWriter = (CharArrayWriter) w;
 
-		MOProblem prob = s.get(GAFramework.PROBLEM);
-		int nObj = prob.nObjectives();
-		int nTrials = s.getAsInt(NTRIALS);
-		isMaximize = prob.isMaximize();
-		writer.write(Solutionset.MTDHeader(nObj, nTrials, isMaximize));
+		ProblemSet prob = s.get(ParameterNames.PROBLEM_SET);
+//		int nObj = prob.nObjectives();
+//		int nTrials = s.getAsInt(NTRIALS);
+//		isMaximize = prob.isMaximize();
+//		writer.write(Solutionset.MTDHeader(nObj, nTrials, isMaximize));
 	}
 
 	@Override
 	public void afterTrial() throws IOException {
-		writer.write(solver.getPopulation().toText(isMaximize));
-		writer.write("\n");
+//		writer.write(solver.getPopulation().toText(isMaximize));
+//		writer.write("\n");
 	}
 
 	@Override
@@ -48,15 +44,16 @@ public class PopulationResult extends GAResult {
 		writer.flush();
 	}
 
+
 	@Override
-	public void save(Setting s, Object... results) throws IOException, NamingException {
-		StreamProvider sp = s.get(STREAM_PROVIDER);
+	public void save(CommandSetting s, Object... results) throws IOException, NamingException {
+		StreamProvider sp = s.get(ParameterNames.STREAM_PROVIDER);
 		try (Writer w = new BufferedWriter(sp.getWriter(getOutputName(s)))) {
 			String[] cast = new String[results.length];
 			for (int i = 0; i < results.length; i++) {
 				cast[i] = (String) results[i];
+				w.write(cast[i]);
 			}
-			w.write(Solutionset.join(cast));
 		}
 	}
 
@@ -70,8 +67,10 @@ public class PopulationResult extends GAResult {
 		writer.close();
 	}
 
-	@Override
-	protected String getOutputName(Setting s) throws NamingException {
-		return s.getAsStr(NAME_SPACE, "") + DEFAULT_FILE_NAME;
+	protected String getOutputName(CommandSetting s) throws NamingException {
+		return null;
 	}
+
+
+	
 }

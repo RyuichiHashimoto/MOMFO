@@ -36,7 +36,7 @@ public class CILS extends ProblemSet{
 		ProblemSet problemSet = new ProblemSet(1);
 
 		MMDTLZ prob = new MMDTLZ("rastrigin",2, 50, 1, -2,2);
-		problemSet.get(0).setIGDRefFile("Data/PF/circle.pf");
+		prob.setIGDRefFile("Data/PF/circle.pf");
 
 		problemSet.add(prob);
 		return problemSet;
@@ -44,9 +44,9 @@ public class CILS extends ProblemSet{
 
 	public static ProblemSet getT2() throws IOException {
 		ProblemSet problemSet = new ProblemSet(1);
-		problemSet.get(0).setIGDRefFile("Data/PF/convex.pf");
 
 		MMZDT prob = new MMZDT("ackley",50, 1,  -1,1);
+		prob.setIGDRefFile("Data/PF/convex.pf");
 
 
 		problemSet.add(prob);

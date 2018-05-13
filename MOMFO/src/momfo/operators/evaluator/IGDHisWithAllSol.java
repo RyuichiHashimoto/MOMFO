@@ -42,7 +42,7 @@ public class IGDHisWithAllSol extends Evaluator {
 	public void build(CommandSetting s) throws NameNotFoundException, JMException, NamingException,
 			ReflectiveOperationException, IOException, notFoundException {
 		evaluation = new ArrayList<Double>();
-		
+
 		int taskNumber = s.get(ParameterNames.TASK_NUMBER);
 		String filename = ((ProblemSet)s.get(ParameterNames.PROBLEM_SET)).get(taskNumber).getIGDRefFile();
 		IGDReference = new IGDRef(filename);
@@ -56,7 +56,9 @@ public class IGDHisWithAllSol extends Evaluator {
 		Population pop = (Population)d;
 		double[][] obj = pop.getAllObjectives();
 //		System.out.println(IGDCalclator.calcIGD(obj,IGDReference));
-		((List<Double>)evaluation).add(IGDCalclator.calcIGD(obj,IGDReference));
+//		((List<Double>)evaluation).add(IGDCalclator.calcNormalizeIGD(obj,IGDReference));
+		((List<Double>)evaluation).add(IGDCalclator.calcNormalizeIGD(obj,IGDReference));
+
 	}
 
 	public static void main(String[] args) throws IOException, NameNotFoundException, notFoundException, JMException, NamingException, ReflectiveOperationException {
