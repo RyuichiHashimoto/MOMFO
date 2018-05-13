@@ -1,7 +1,6 @@
 package Network.GridComputing;
 
-import static Network.GridComputing.RunSetting.SOLVER;
-import static Network.GridComputing.RunSetting.STREAM_PROVIDER;
+import static Network.GridComputing.RunSetting.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -65,7 +64,7 @@ public class Slave {
 		setting = (CommandSetting) ois.readObject();
 
 		// receive task
-		while (!setting.containKey(NetworkConstants.TERMINATE_SIGNAL)) {
+		while (!setting.containsKey(NetworkConstants.TERMINATE_SIGNAL)) {
 			// run the solver
 			Throwable thrown = null;
 			try {

@@ -1,7 +1,5 @@
 package momfo.core;
 
-
-
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
@@ -23,8 +21,7 @@ import momfo.operators.mutation.Mutation;
 import momfo.operators.selection.ParentsSelection.ParentsSelection;
 import momfo.util.JMException;
 
-
-public abstract  class GeneticAlgorithm implements Serializable {
+public abstract class GeneticAlgorithm implements Serializable {
 
 	public static String name = "";
 
@@ -54,27 +51,26 @@ public abstract  class GeneticAlgorithm implements Serializable {
 
 	}
 
-
-	public ProblemSet getProblemSet(){
+	public ProblemSet getProblemSet() {
 		return problemSet_;
 	}
 
-	public void setRandom(BuildInRandom d){
+	public void setRandom(BuildInRandom d) {
 		random = d;
 	}
 
-	public BuildInRandom getRandom(){
+	public BuildInRandom getRandom() {
 		return random;
 	}
 
-	protected int tasknumber;
+	protected int taskNumber;
 
 	public boolean isMultitask() {
 		return isMultitask;
 	}
 
-	public void setTaskNumber(int d){
-		tasknumber = d;
+	public void setTaskNumber(int d) {
+		taskNumber = d;
 	}
 
 	//名前を入力してそれに該当したoperator を返す
@@ -86,8 +82,7 @@ public abstract  class GeneticAlgorithm implements Serializable {
 
 	protected boolean isMAX_;
 
-
-	public Map<String,Object> getAllmap(){
+	public Map<String, Object> getAllmap() {
 		return inputParameters_;
 	}
 
@@ -134,9 +129,10 @@ public abstract  class GeneticAlgorithm implements Serializable {
 		return problem_;
 	}
 
-	final public void build(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException, JMException, notFoundException {
+	final public void build(CommandSetting s)
+			throws ReflectiveOperationException, NamingException, IOException, JMException, notFoundException {
 		setting = s;
-		random = (BuildInRandom)s.get(ParameterNames.RANDOM_GENERATOR);
+		random = (BuildInRandom) s.get(ParameterNames.RANDOM_GENERATOR);
 
 		String genotypePack = "momfo.operators";
 
@@ -146,12 +142,26 @@ public abstract  class GeneticAlgorithm implements Serializable {
 		s.put(ParameterNames.CROSSOVER, crossover);
 		mutation = Generics.cast(s.getAsInstanceByName(ParameterNames.MUTATION, genotypePack));
 		s.put(ParameterNames.MUTATION, mutation);
-		parentsSelection = Generics.cast(s.getAsInstanceByName(ParameterNames.ParentsSelection, genotypePack));;
+		parentsSelection = Generics.cast(s.getAsInstanceByName(ParameterNames.ParentsSelection, genotypePack));
+		;
 		s.put(ParameterNames.ParentsSelection, parentsSelection);
-		finEvaluator = Generics.cast(s.getAsInstanceByName(ParameterNames.FIN_EVALUATOR, genotypePack));;
+		Object[] tempFinEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.FIN_EVALUATOR));
+		finEvaluator = new Evaluator[tempFinEval.length];
+		for (int i = 0; i < tempFinEval.length; i++) {
+			finEvaluator[i] = Generics.cast(tempFinEval[i]);
+		}
 		s.put(ParameterNames.FIN_EVALUATOR, finEvaluator);
-		evoEvaluator = Generics.cast(s.getAsInstanceByName(ParameterNames.EVO_EVALUATOR, genotypePack));;
-		s.put(ParameterNames.EVO_EVALUATOR, evoEvaluator );
+
+		taskNumber = s.getAsInt(ParameterNames.TASK_NUMBER);
+
+		Object[] tempevoEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.EVO_EVALUATOR));
+		evoEvaluator = new Evaluator[tempevoEval.length];
+		for (int i = 0; i < tempevoEval.length; i++) {
+			evoEvaluator[i] = Generics.cast(tempevoEval[i]);
+		}
+		s.put(ParameterNames.EVO_EVALUATOR, evoEvaluator);
+
+		//		evoEvaluator = Generics.cast(s.getAsInstanceByName(ParameterNames.EVO_EVALUATOR, genotypePack));;
 
 		buildImpl(s);
 		initialization.build(s);
@@ -159,17 +169,33 @@ public abstract  class GeneticAlgorithm implements Serializable {
 		mutation.build(s);
 		parentsSelection.build(s);
 
-
-		for(int t = 0;t < finEvaluator.length;t++){
-			s.putForce(ParameterNames.TEMP_TASK_NUMBER, t);
-			finEvaluator[t].build(s);
-		}
-
-		for(int t = 0;t < evoEvaluator.length;t++) {
-			s.putForce(ParameterNames.TEMP_TASK_NUMBER, t);
-			evoEvaluator[t].build(s);
-		}
-		s.putForce(ParameterNames.TEMP_TASK_NUMBER, -10000);
+		/*
+				if (isMultitask) {
+		
+					for (int t = 0; t < finEvaluator.length; t++) {
+						s.putForce(ParameterNames.TEMP_TASK_NUMBER, t);
+						s.putForce(ParameterNames.IGD_REF_FILES, "Data/PF/concave.pf");
+						finEvaluator[t].build(s);
+					}
+					for (int t = 0; t < evoEvaluator.length; t++) {
+						s.putForce(ParameterNames.TEMP_TASK_NUMBER, t);
+						s.putForce(ParameterNames.IGD_REF_FILES, "Data/PF/concave.pf");
+						evoEvaluator[t].build(s);
+					}
+				} else {
+					for (int t = 0; t < finEvaluator.length; t++) {
+						s.putForce(ParameterNames.TEMP_TASK_NUMBER, t);
+						s.putForce(ParameterNames.IGD_REF_FILES, "Data/PF/concave.pf");
+						finEvaluator[t].build(s);
+					}
+					for (int t = 0; t < evoEvaluator.length; t++) {
+						s.putForce(ParameterNames.TEMP_TASK_NUMBER, t);
+						s.putForce(ParameterNames.IGD_REF_FILES, "Data/PF/concave.pf");
+						evoEvaluator[t].build(s);
+					}
+				}
+				s.putForce(ParameterNames.TEMP_TASK_NUMBER, -10000);
+				*/
 	}
 
 	@NeedOverriden
@@ -182,15 +208,24 @@ public abstract  class GeneticAlgorithm implements Serializable {
 	abstract public void nextGeneration() throws JMException, NameNotFoundException;
 
 	public void finEvaluation() {
-		for(int t = 0;t < finEvaluator.length;t++) {
-			finEvaluator[t].evaluate();;
+		for (int t = 0; t < finEvaluator.length; t++) {
+			finEvaluator[t].evaluate();
 		}
 	};
 
-	public void evoEvaluation(){
-		for(int t = 0;t < evoEvaluator.length;t++) {
-			evoEvaluator[t].evaluate();;
+	public void evoEvaluation() {
+		if (isMultitask)
+			for (int t = 0; t < evoEvaluator.length; t++) {
+				evoEvaluator[t].evaluate(populationArray[t]);
+			}
+		else {
+			evoEvaluator[taskNumber].evaluate(population_);
+
+			for (int t = 0; t < evoEvaluator.length; t++) {
+				//				evoEvaluator[t].evaluate(population_);
+			}
 		}
+
 	};
 
 	abstract public boolean terminate();
@@ -199,11 +234,9 @@ public abstract  class GeneticAlgorithm implements Serializable {
 
 	abstract public int getGeneration();
 
-
 	abstract public Population getPopulation();
 
-
-	abstract protected void buildImpl(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException, notFoundException, JMException;
-
+	abstract protected void buildImpl(CommandSetting s)
+			throws ReflectiveOperationException, NamingException, IOException, notFoundException, JMException;
 
 }

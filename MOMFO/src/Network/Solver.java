@@ -50,7 +50,7 @@ public abstract class Solver implements Runnable, Buildable {
 				}
 
 				// whether the value is set or not
-				if (!s.containKey(name)) {
+				if (!s.containsKey(name)) {
 					if (param.required()) {
 						throw new NoSuchElementException(
 								"Parameter [" + name + "] is reqired by " + obj + ": \n" + param.description());

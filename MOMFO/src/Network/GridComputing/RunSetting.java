@@ -51,7 +51,7 @@ public class RunSetting {
 	public static Solver buildSolver(CommandSetting s) throws notFoundException, IllegalArgumentException, CannotConvertException, NamingException, IOException, ReflectiveOperationException, JMException  {
 		// make directory for output
 		StreamProvider sp;
-		if (s.containKey(OUTPUT_DIR)) {
+		if (s.containsKey(OUTPUT_DIR)) {
 			sp = new FileStreamProvider(s.getAsStr(OUTPUT_DIR));
 		} else {
 			sp = new FileStreamProvider();

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import lib.io.output.fileSubscription;
-import momfo.Indicator.IGD.IGDCalclator;
-import momfo.Indicator.IGD.IGDRef;
+import momfo.Indicator.IGDCalclator;
+import momfo.Indicator.IGDRef;
 import momfo.core.GeneticAlgorithm;
 import momfo.core.Operator;
 import momfo.core.Population;

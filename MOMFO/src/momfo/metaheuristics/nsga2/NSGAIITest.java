@@ -51,8 +51,14 @@ class NSGAIITest {
 		.put(ParameterNames.NSGAIIComparator, "momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorWithRandom")
 		.put(ParameterNames.N_OF_EVALUATIONS, 100000)
 		.put(ParameterNames.IS_MAX, false)
+		.put(ParameterNames.EVO_EVALUATOR, "momfo.operators.evaluator.IGDHisWithAllSol,momfo.operators.evaluator.IGDHisWithAllSol")
+		.put(ParameterNames.IGD_CALCLATOR, "momfo.Indicator.IGDHisWithAllSol")
+		.put(ParameterNames.FIN_EVALUATOR, "momfo.operators.evaluator.NullEvaluator,momfo.operators.evaluator.NullEvaluator")
 		.put(ParameterNames.TASK_NUMBER, taskNumber)
 		.put("times",0);
+
+
+
 		System.out.println("");
 		GAFramework solver = new GAFramework();
 		solver.build(setting);
@@ -73,7 +79,7 @@ class NSGAIITest {
 	}
 
 	public void eachTest(int problemNumber) throws JMException, notFoundException, IllegalArgumentException, CannotConvertException, NamingException, IOException, ReflectiveOperationException {
-		//eachTestTask(problemNumber,0);
+		eachTestTask(problemNumber,0);
 		eachTestTask(problemNumber,1);
 	}
 

@@ -89,7 +89,7 @@ public class GAFramework extends Solver{
 		}
 		ga_.finEvaluation();
 		notifyEvent(AFTER_TRIAL);
-
+		
 	}
 
 	@Command

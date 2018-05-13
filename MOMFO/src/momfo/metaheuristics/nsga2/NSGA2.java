@@ -11,13 +11,13 @@ import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.lang.Generics;
-import momfo.Indicator.IGD.IGDCalclator;
-import momfo.Indicator.IGD.IGDRef;
 import momfo.core.GeneticAlgorithm;
 import momfo.core.Operator;
 import momfo.core.Population;
 import momfo.core.ProblemSet;
 import momfo.core.Solution;
+import momfo.operators.selection.environmentalselection.EnvironmentalSelection;
+import momfo.operators.selection.environmentalselection.LabSpecifiedNSGAIISelection;
 import momfo.util.JMException;
 import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparator;
 import momfo.util.Ranking.NDSRanking;
@@ -58,15 +58,19 @@ public class NSGA2 extends GeneticAlgorithm {
 
 	@Override
 	protected void buildImpl(CommandSetting setting)
-			throws ReflectiveOperationException, NamingException, IOException, notFoundException {
+			throws ReflectiveOperationException, NamingException, IOException, notFoundException, JMException {
 		evaluations_ = 0;
 		maxEvaluations_ = setting.get(ParameterNames.N_OF_EVALUATIONS);
 		isMAX_ = setting.getAsBool(ParameterNames.IS_MAX);
 		//		comparator_binary = new NSGAIIComparatorWithRandom(parameters);
-		tasknumber = setting.get(ParameterNames.TASK_NUMBER);
+		taskNumber = setting.get(ParameterNames.TASK_NUMBER);
 
 		problem_ = ((ProblemSet) (setting.get(ParameterNames.PROBLEM_SET)))
 				.get(setting.get(ParameterNames.TASK_NUMBER));
+		
+		finEvaluator[taskNumber].build(setting);
+		evoEvaluator[taskNumber].build(setting);
+		
 		populationSize_ = setting.getAsInt(ParameterNames.POPULATION_SIZE);
 
 		NSGAIIComparator_ = Generics.cast(setting.getAsInstanceByName(ParameterNames.NSGAIIComparator, ""));;
@@ -91,13 +95,6 @@ public class NSGA2 extends GeneticAlgorithm {
 		}
 		population_.printObjectivesToFile("output_InitialFUN.dat");
 		ranking = null;
-		igd[0] = counter;
-		igd[1] = (IGDCalclator.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(),
-				IGDRef.getNormalizeRefs(tasknumber), IGDRef.getMaxValue(tasknumber), IGDRef.getMinValue(tasknumber),
-				random));
-		//		igd[1] = (IGDCalclator.CalcIGD(population_.getAllObjectives(), IGDRef.getRefs(tasknumber)));
-
-		igdHistory.add(igd.clone());
 
 	}
 
@@ -131,7 +128,7 @@ public class NSGA2 extends GeneticAlgorithm {
 		}
 		return;
 	}
-
+	 EnvironmentalSelection selection;
 	@Override
 	public void nextGeneration() throws JMException, NameNotFoundException {
 
@@ -139,16 +136,14 @@ public class NSGA2 extends GeneticAlgorithm {
 		merge_.merge(population_);
 		merge_.merge(offSpring_);
 
-
-
+		selection = new LabSpecifiedNSGAIISelection();
+		selection.build(setting);
+		population_ = selection.getNextPopulation(merge_);
 		NDSRanking ranki_ = new NDSRanking(false, random);
 		ranki_.setPop(population_);
 		ranki_.Ranking();
-		double igd = (IGDCalclator.CalcNormalizeIGD_To_NonDominated(population_.getAllObjectives(),
-				IGDRef.getNormalizeRefs(tasknumber), IGDRef.getMaxValue(tasknumber), IGDRef.getMinValue(tasknumber),
-				random));
 
-		setOutputParameter("IGDCalclator", igd);
+		setOutputParameter("IGDCalclator", 0.04);
 	}
 
 	@Override

@@ -1,4 +1,4 @@
-package momfo.operators.evaluator.IGDEvaluator;
+package momfo.operators.evaluator;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,18 +10,18 @@ import javax.naming.NamingException;
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.notFoundException;
-import momfo.Indicator.IGD.IGDCalclator;
-import momfo.Indicator.IGD.IGDRef;
+import momfo.Indicator.IGDCalclator;
+import momfo.Indicator.IGDRef;
+import momfo.Indicator.IGDWithAllSol;
 import momfo.core.Population;
 import momfo.core.ProblemSet;
 import momfo.core.Solution;
-import momfo.operators.evaluator.Evaluator;
 import momfo.problems.MOMFOP.NTU.CIHS;
 import momfo.util.JMException;
 
 /*
- * This class assumes that the class of evaluation in base class object is List<Double> 
- * 
+ * This class assumes that the class of evaluation in base class object is List<Double>
+ *
  */
 
 public class IGDHisWithAllSol extends Evaluator {
@@ -29,6 +29,10 @@ public class IGDHisWithAllSol extends Evaluator {
 	IGDRef IGDReference;
 
 	IGDCalclator IGDCalclator;
+
+	public IGDHisWithAllSol() {
+
+	}
 
 	public IGDRef getIGDRef(){
 		return IGDReference;
@@ -38,23 +42,20 @@ public class IGDHisWithAllSol extends Evaluator {
 	public void build(CommandSetting s) throws NameNotFoundException, JMException, NamingException,
 			ReflectiveOperationException, IOException, notFoundException {
 		evaluation = new ArrayList<Double>();
-
-		String filename =(String) s.get(ParameterNames.IGD_REF_FILES);
+		
+		int taskNumber = s.get(ParameterNames.TASK_NUMBER);
+		String filename = ((ProblemSet)s.get(ParameterNames.PROBLEM_SET)).get(taskNumber).getIGDRefFile();
 		IGDReference = new IGDRef(filename);
-
-
-		if( s.get(ParameterNames.IGD_CALCLATOR).getClass() == String.class) {
-			IGDCalclator = s.getAsInstanceByName(ParameterNames.IGD_CALCLATOR,"");
-			s.putForce(ParameterNames.IGD_CALCLATOR, IGDCalclator);
-		} else {
-			IGDCalclator = s.get(ParameterNames.IGD_CALCLATOR);
-		}
+		IGDCalclator = new IGDWithAllSol();
+		IGDCalclator.build(s);
 	}
 
 	@Override
 	public void evaluate(Object d) {
+		flag = true;
 		Population pop = (Population)d;
 		double[][] obj = pop.getAllObjectives();
+//		System.out.println(IGDCalclator.calcIGD(obj,IGDReference));
 		((List<Double>)evaluation).add(IGDCalclator.calcIGD(obj,IGDReference));
 	}
 

@@ -292,19 +292,20 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 	}
 
 
-	public Object[] getAsInstanceArray(String key) throws NameNotFoundException, ReflectiveOperationException, notFoundException {
-		return getAsInstanceArray(key, ArrayUtility.DEFAULT_DELIMITER);
-	}
-
-	public Object[] getAsInstanceArray(String key, String delimiter) throws NameNotFoundException, ReflectiveOperationException, notFoundException {
+	public Object[] getAsInstanceArrayByName(String key, String delimiter) throws NameNotFoundException, ReflectiveOperationException, notFoundException {
 		String[] classNames = getAsSArray(key, delimiter);
 		Object[] retval = new Object[classNames.length];
 		for (int i = 0; i < retval.length; i++) {
+			System.out.println(classNames[i]);
 			retval[i] = Class.forName(classNames[i]).newInstance();
 		}
 		return retval;
 	}
 
+	public Object[] getAsInstanceArrayByName(String key) throws NameNotFoundException, ReflectiveOperationException, notFoundException {
+		return getAsInstanceArrayByName(key,ParameterNames.SETTING_FILE_DEMILITER);
+	}
+	
 	public double[] getAsDArray(String key) throws NameNotFoundException {
 		return getAsDArray(key, ArrayUtility.DEFAULT_DELIMITER);
 	}
@@ -346,6 +347,9 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 	}
 
 	public <T> T getAsInstanceByName(String key, String defaultPackage) throws NamingException, ReflectiveOperationException {
+
+
+
 		String className = get(key);
 		if (!defaultPackage.endsWith(".")) defaultPackage += ".";
 		if (!className.contains(".")) set(key, defaultPackage + className);
@@ -487,11 +491,11 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 			try {
 				ret += key + FileConstants.FILE_DEMILITER + getAsStr(key) + FileConstants.NEWLINE_DEMILITER;
 			} catch (NameNotFoundException e) {
-				ret += key + FileConstants.FILE_DEMILITER + "???" + FileConstants.NEWLINE_DEMILITER;				
+				ret += key + FileConstants.FILE_DEMILITER + "???" + FileConstants.NEWLINE_DEMILITER;
 			}
 		}
-		
-		
+
+
 		return ret;
 	}
 

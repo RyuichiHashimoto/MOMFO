@@ -21,7 +21,8 @@ https://ieeexplore.ieee.org/document/7464295/
 Ryuichi Hashimoto
 
 ## E-mail Address
-comming soon 
+ryuichihashimoto.git(at)gmail.com
+please convert (at) into @.
 
 ## Last Modified
 29, 2017 April

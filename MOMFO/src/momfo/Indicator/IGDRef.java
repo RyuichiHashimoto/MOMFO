@@ -1,4 +1,4 @@
-package momfo.Indicator.IGD;
+package momfo.Indicator;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;

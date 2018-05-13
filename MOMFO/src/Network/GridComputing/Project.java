@@ -60,7 +60,7 @@ public class Project extends Task {
 		if (--nRemainTasks_ == 0) {// all the subtasks finished
 			// make StreamProvider
 			StreamProvider sProvider;
-			if (CommandSetting_.containKey("dir")) {
+			if (CommandSetting_.containsKey("dir")) {
 				String dest = CommandSetting_.getAsStr("dir", null);
 				sProvider = new FileStreamProvider(dest);
 			} else {

@@ -6,7 +6,6 @@ import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
-import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.notFoundException;
 import momfo.core.Operator;
 import momfo.util.JMException;
@@ -17,16 +16,22 @@ public abstract class Evaluator extends Operator{
 
 	protected Object evaluatee;
 
+	protected boolean flag;
+	
+	public boolean getFlag() {
+		return flag;
+	}
+	
+	public Evaluator() {
+		
+	}
 
 	String filePath;
 
 	@Override
 	public void build(CommandSetting s) throws NameNotFoundException, JMException, NamingException,
 			ReflectiveOperationException, IOException, notFoundException {
-			
-		evaluatee = s.get(ParameterNames.EVALUATEE);
-
-		
+//		evaluatee = s.get(ParameterNames.EVALUATEE);
 	}
 
 	public <T>T getValue(){
@@ -37,7 +42,8 @@ public abstract class Evaluator extends Operator{
 		return (T) evaluatee;
 	}
 
-	public void evaluate() {
+	public void evaluate(){
+		flag = true;
 		evaluate(evaluatee);
 	}
 

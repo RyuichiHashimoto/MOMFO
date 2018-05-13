@@ -1,4 +1,4 @@
-package momfo.Indicator.IGD;
+package momfo.Indicator;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -7,7 +7,6 @@ import javax.naming.NameNotFoundException;
 
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
-import momfo.Indicator.Indicator;
 
 
 
