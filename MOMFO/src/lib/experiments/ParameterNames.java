@@ -72,7 +72,9 @@ public class ParameterNames {
 	public static final double EPS = 1.0e-14;
 	public static final int DEFAULT_SEED = 1995;
 	public static final String SETTING_FILE_DEMILITER = ",";
-
+	public static final double UPPERLIMIT_UNIFIEDSPACE = 1;
+	public static final double LOWERLIMIT_UNIFIEDSPACE = 0;
+	
 
 	public static final String IGD_REF_FILES = "IGD_FILES";
 	public static final String IGD_POWER = "IGD_POWER";

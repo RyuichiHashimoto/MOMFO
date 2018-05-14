@@ -23,8 +23,16 @@ public abstract class Problem {
 	public void setIGDRefFile(String name){
 		IGDRef = name;
 	}
+	
+	public double[] getUpperLimit() {
+		return upperLimit_;
+	}
+	
 
-
+	public double[] getLowerLimit() {
+		return upperLimit_;
+	}
+	
 	protected int numberOfConstraint_;
 	protected int numberOfVariables_;
 	protected int numberOfObjectives_;
