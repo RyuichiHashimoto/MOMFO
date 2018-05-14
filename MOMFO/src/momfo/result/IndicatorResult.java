@@ -7,7 +7,7 @@ import java.util.List;
 
 import javax.naming.NamingException;
 
-import Network.GridComputing.RunSetting;
+import Network.RunSetting;
 import Network.GridComputing.StreamProvider;
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;

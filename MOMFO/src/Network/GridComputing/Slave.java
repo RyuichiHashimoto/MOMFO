@@ -1,6 +1,6 @@
 package Network.GridComputing;
 
-import static Network.GridComputing.RunSetting.*;
+import static Network.RunSetting.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,7 +13,7 @@ import java.net.URLClassLoader;
 import Network.Solver;
 import Network.SolverResult;
 import Network.Constants.NetworkConstants;
-import lib.experiments.CommandSetting;
+import lib.experiments.CommandSetting; 
 
 /*
  * This class manage the assigned tasks to be performed from a Master node.

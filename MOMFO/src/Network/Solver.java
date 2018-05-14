@@ -1,7 +1,7 @@
 package Network;
 
 import static Network.CommonSolverEvent.*;
-import static Network.GridComputing.RunSetting.*;
+import static Network.RunSetting.*;
 
 import java.io.IOException;
 import java.lang.reflect.Field;

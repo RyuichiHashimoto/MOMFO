@@ -9,8 +9,8 @@ import java.util.Map;
 
 import javax.naming.NamingException;
 
+import Network.RunSetting;
 import Network.SolverResult;
-import Network.GridComputing.RunSetting;
 import Network.GridComputing.StreamProvider;
 import lib.experiments.CommandSetting;
 import lib.experiments.FormatDate;

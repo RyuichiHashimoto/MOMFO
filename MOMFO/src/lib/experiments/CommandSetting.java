@@ -1,16 +1,18 @@
 package lib.experiments;
-
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.Reader;
 import java.io.Serializable;
 import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
@@ -18,12 +20,22 @@ import javax.naming.NamingException;
 import lib.directory.DirectoryMaker;
 import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.io.FileConstants;
+import lib.io.input.CatReader;
 import lib.lang.Generics;
 import lib.util.ArrayUtility;
 
 public class CommandSetting extends AbstractMap<String,Object> implements Serializable {
 
 	protected HashMap<String, Object> parameter;
+
+
+	/** Symbol for the end of the sub-setting specification. */
+	private static final String CLOSING_SUBSETTING = ":end";
+	/** Symbol to specify the sub-setting in command line style specification. */
+	public static final String SUBSETTING = "@";
+	/** Symbol to remove the element via command line. */
+	public static final String NULL = "null";
+
 
 	public CommandSetting(CommandSetting d) {
 		parameter = new HashMap<String, Object>(d.getHashMap());
@@ -38,7 +50,6 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 		parameter = new HashMap<String, Object>(parameter_);
 	}
 
-
 	public String[] getAsSArray(String key, String delimiter) throws NameNotFoundException, notFoundException {
 		Object o = get(key);
 		if (o instanceof String) {
@@ -49,12 +60,23 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 			throw new ClassCastException();
 		}
 	}
-	
+
 	public CommandSetting(File file) throws IOException, NameNotFoundException {
 		parameter = new HashMap<String, Object>();
 		load(file);
 		parseData();
 	}
+
+	public void load(File file) throws IOException {
+		load(file, false);
+	}
+
+	public void load(File file, boolean suppressWarning) throws IOException {
+		CatReader ir = new CatReader(file);
+		loadSetting(ir, suppressWarning, false);
+	}
+
+
 
 	/** Parse arguments. */
 	public CommandSetting(String[] arguments) throws IOException, NamingException {
@@ -107,7 +129,50 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 		parseData();
 	}
 
+	public void load(String fileName, boolean suppressWarning) throws IOException {
+		CatReader ir = new CatReader(fileName);
+		loadSetting(ir, suppressWarning, false);
+	}
 
+	public void load(String fileName) throws IOException, NamingException {
+		load(fileName, false);
+	}
+	public void load(Reader reader, boolean suppressWarning) throws IOException {
+		loadSetting(new CatReader(reader), suppressWarning, false);
+	}
+
+	private void loadSetting(CatReader ir, boolean suppressWarning, boolean isSubSetting) throws IOException {
+		String line;
+		while((line = ir.readLine()) != null){
+			// comment line and empty line
+			if(line.startsWith("#")) continue;
+			if(line.length() == 0) continue;
+			// end of subsetting
+			if (line.startsWith(CLOSING_SUBSETTING)) {
+				if (isSubSetting) return;
+				else throw new IllegalArgumentException(CLOSING_SUBSETTING+" must placed after subsetting declaration.");
+			}
+			// declare subsetting
+			if (line.startsWith(":")) {
+				CommandSetting subset = new CommandSetting();
+				subset.loadSetting(ir, suppressWarning, true);
+				warningPut(line.substring(1), subset, suppressWarning);
+				continue;
+			}
+			// multi-line specification
+			while (line.endsWith("\\")) {
+				String newLine = ir.readLine();
+				if (newLine == null) {
+					throw new IllegalArgumentException("One more line is expected.");
+				}
+				line = line.substring(0, line.length() - 1) + newLine;
+			}
+			// setting specifying line
+			String[] paramset = line.split("(([ \t]*=)|: )[ \t]*", 2);
+			warningPut(paramset[0], paramset[1], suppressWarning);
+		}
+		ir.close();
+	}
 	private void parseData() throws NameNotFoundException {
 		SettingFormula parser = new SettingFormula(this);
 		List<String> keyList = new ArrayList<>(parameter.keySet());
@@ -115,7 +180,39 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 			parseGet_(keyList.get(keyList.size() - 1), parser, keyList);
 		}
 	}
+	public CommandSetting getAsSetting(String key) throws NameNotFoundException {
+		return (CommandSetting) get(key);
+	}
+
+	protected Pattern anchor = Pattern.compile("\\*\\{(?<key>.*?)\\}");
 	
+	private String parseGet_(String key, SettingFormula parser, List<String> keyList) throws NameNotFoundException {
+		Object obj = get(key);
+		if (!(obj instanceof String)) {
+			keyList.remove(key);
+			return obj.toString();
+		}
+		// resolve anchor; replace *{key} with the corresponding value.
+		String value = (String) obj;
+		Matcher matcher = anchor.matcher(value);
+		while(matcher.find()) {
+			value = matcher.replaceFirst(parseGet_(matcher.group("key"), parser, keyList));
+			matcher = anchor.matcher(value);
+		}
+		String retval;
+		// parse formula; calculate value
+		if (value.startsWith("$")) {
+			double val = parser.parseFormula(value.substring(1));
+			set(key, val);
+			retval = String.valueOf(val);
+		} else {
+			set(key, value);
+			retval = value;
+		}
+		keyList.remove(key);
+		return retval;
+	}
+
 	public String[] getAsSArray(String key, String delimiter, String[] def) throws notFoundException {
 		if (containsKey(key)) {
 			try {

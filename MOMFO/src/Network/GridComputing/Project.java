@@ -1,6 +1,6 @@
 package Network.GridComputing;
 
-import static Network.GridComputing.RunSetting.*;
+import static Network.RunSetting.*;
 
 import java.io.IOException;
 

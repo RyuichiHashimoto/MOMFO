@@ -1,9 +1,6 @@
 package Network.GridComputing;
 
-import static Network.GridComputing.RunSetting.NAME_SPACE;
-import static Network.GridComputing.RunSetting.RESULT;
-import static Network.GridComputing.RunSetting.RESULT_DELIMITER;
-import static Network.GridComputing.RunSetting.STREAM_PROVIDER;
+import static Network.RunSetting.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +10,7 @@ import javax.naming.NamingException;
 
 import Network.SolverResult;
 import lib.experiments.CommandSetting;
-import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.experiments.Exception.CommandSetting.notFoundException; 
 
 
 public class Task implements Serializable {

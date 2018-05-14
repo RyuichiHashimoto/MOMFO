@@ -1,6 +1,6 @@
 package Network.GridComputing;
 
-import static Network.GridComputing.RunSetting.*;
+import static Network.RunSetting.*;
 
 import java.io.File;
 import java.io.ObjectOutputStream;
@@ -9,7 +9,7 @@ import java.net.Socket;
 import Network.Constants.NetworkConstants;
 import lib.Structure.ObjectStack;
 import lib.experiments.CommandSetting;
-import lib.lang.PathTreat;
+import lib.lang.PathTreat; 
 
 public class TaskProvider {
 	public static final String SUBSETTING = "@";

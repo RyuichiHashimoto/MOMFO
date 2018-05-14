@@ -8,7 +8,6 @@ import java.io.Writer;
 
 import javax.naming.NamingException;
 
-import Network.GridComputing.RunSetting;
 import Network.GridComputing.StreamProvider;
 import lib.experiments.CommandSetting;
 import lib.lang.NeedOverriden;
