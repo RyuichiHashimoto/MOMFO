@@ -1,4 +1,4 @@
-package experiments;
+package lib.experiments;
 
 import java.io.BufferedWriter;
 import java.io.File;

@@ -9,7 +9,6 @@ import javax.naming.NamingException;
 
 import Network.GridComputing.RunSetting;
 import Network.GridComputing.StreamProvider;
-import experiments.Setting;
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
 import lib.util.ArrayUtility;
@@ -20,7 +19,7 @@ public class IndicatorResult extends GAResult {
 	protected int[] recordGens_;
 	protected Evaluator evaluator;
 	private double[][] values;
-	
+
 	@Override
 	public void build(CommandSetting s) throws NamingException, ReflectiveOperationException, IOException {
 
@@ -63,28 +62,18 @@ public class IndicatorResult extends GAResult {
 		return values;
 	}
 
-//Override
-	public void save(Setting s, Object... results) throws IOException, NamingException {
+	@Override
+	public void save(CommandSetting s, Object... results) throws IOException, NamingException {
 		writer = ((StreamProvider) s.get(ParameterNames.STREAM_PROVIDER)).getWriter(getOutputName(s));
 		writer = new BufferedWriter(writer);
-		values = ArrayUtility.listToDArray( (List<Double[]>) evaluator.getValue()).clone(); 
-		
-		save();
-	}
+		values = ArrayUtility.listToDArray( (List<Double[]>) evaluator.getValue()).clone();
 
-//Override
-	protected String getOutputName(Setting s) throws NamingException {
-		return s.getAsStr(RunSetting.NAME_SPACE, "") + "indicators.csv";
+		save();
 	}
 
 	@Override
 	protected String getOutputName(CommandSetting s) throws NamingException {
-		return null;
+		return s.getAsStr(RunSetting.NAME_SPACE, "") + "indicators.csv";
 	}
 
-	@Override
-	public void save(CommandSetting s, Object... results) throws IOException, NamingException {
-		// TODO 自動生成されたメソッド・スタブ
-
-	}
 }

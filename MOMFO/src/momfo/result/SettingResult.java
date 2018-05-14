@@ -12,7 +12,6 @@ import javax.naming.NamingException;
 import Network.SolverResult;
 import Network.GridComputing.RunSetting;
 import Network.GridComputing.StreamProvider;
-import experiments.Setting;
 import lib.experiments.CommandSetting;
 import lib.experiments.FormatDate;
 import momfo.core.GAFramework;
@@ -67,7 +66,7 @@ public class SettingResult extends SolverResult<GAFramework> {
 		ArrayList<String> javaVer = new ArrayList<>();
 		long comptTime = 0;
 		for (int i = 0; i < results.length; i++) {
-			Setting set = (Setting) results[i];
+			CommandSetting set = (CommandSetting) results[i];
 			FormatDate fd = set.get("runAt");
 			if (earliest == null) {
 				earliest = fd;
@@ -117,15 +116,11 @@ public class SettingResult extends SolverResult<GAFramework> {
 		return s;
 	}
 
-	protected String getOutputName(Setting s) throws NamingException {
+	@Override
+	protected String getOutputName(CommandSetting s) throws NamingException {
 		return s.getAsStr(RunSetting.NAME_SPACE, "") + "info.ini";
 	}
 
-	@Override
-	protected String getOutputName(CommandSetting s) throws NamingException {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
-	}
 
 
 }

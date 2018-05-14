@@ -22,34 +22,23 @@
 package momfo.metaheuristics.MOMFEA;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
 import lib.experiments.Exception.CommandSetting.notFoundException;
-import lib.io.output.fileSubscription;
 import lib.math.Permutation;
-import momfo.Indicator.IGDCalclator;
-import momfo.Indicator.IGDRef;
 import momfo.core.GeneticAlgorithm;
 import momfo.core.Operator;
 import momfo.core.Population;
-import momfo.core.Problem;
-import momfo.core.ProblemSet;
 import momfo.core.Solution;
-import momfo.operators.selection.ParentsSelection.BinaryTournament;
 import momfo.operators.selection.ParentsSelection.ParentsSelection;
 import momfo.util.JMException;
 import momfo.util.Sort;
 import momfo.util.Comparator.Comparator;
 import momfo.util.Comparator.CrowdingDistanceComparator;
-import momfo.util.Comparator.ScalarFitnessComparator;
 import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparator;
-import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorDominance;
-import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorNextGen;
 import momfo.util.Ranking.NDSRanking;
 
 
@@ -83,15 +72,7 @@ public class MOMFEA extends GeneticAlgorithm {
 
 	HashMap parameters;
 
-	public MOMFEA(Problem problem) {
-		super(problem);
-	} // DMOEA
-
-	public MOMFEA(ProblemSet problemSet_) {
-		super(problemSet_);
-		// TODO 自動生成されたコンストラクター・スタブ
-	}
-
+	
 	private ParentsSelection selection_ ;//= new BinaryTournament();
 	private Comparator comparator_binary;
 	private  NSGAIIComparator  comparator_Dominance;
@@ -100,7 +81,7 @@ public class MOMFEA extends GeneticAlgorithm {
 	private String directoryname;
 
 	public void setting() throws JMException{
-		evaluations_  = 0;
+/*		evaluations_  = 0;
 		parameters.put("RandomGenerator", random);
 		comparator_binary = new ScalarFitnessComparator(parameters);
 		comparator_nextGen = new NSGAIIComparatorNextGen(parameters);
@@ -191,10 +172,12 @@ public class MOMFEA extends GeneticAlgorithm {
 			fileSubscription. printToFile(directoryname.replace("Task1","Task"+String.valueOf(t+1)) + "/IGDHistory/"+"IGDCalclator"+time+".dat",igdHistory.get(t));
 		}//population_.printVariablesToFile("result/config/FinalVAR" + time + ".dat");
 		return null;
+		*/
 	}
 
 
 	public boolean makeNextGeneration() throws JMException{
+/*
 		Solution[] parents = new Solution[2];
 		offSpring_.clear();
 		for (int p = 0; p < (populationSize_ / 2); p++) {
@@ -249,8 +232,9 @@ public class MOMFEA extends GeneticAlgorithm {
 			if (evaluations_ == maxEvaluations_){
 				return true;
 			}
+			
 		} // for
-
+*/
 		return false;
 	}
 
@@ -447,26 +431,22 @@ public class MOMFEA extends GeneticAlgorithm {
 
 	@Override
 	public boolean terminate() {
-		// TODO 自動生成されたメソッド・スタブ
-		return false;
+		return evaluations_ == maxEvaluations_;
 	}
 
 	@Override
 	public int getEvaluations() {
-		// TODO 自動生成されたメソッド・スタブ
-		return 0;
+		return evaluations_;
 	}
 
 	@Override
 	public int getGeneration() {
-		// TODO 自動生成されたメソッド・スタブ
-		return 0;
+		return evaluations_/populationSize_;
 	}
 
 	@Override
 	public Population getPopulation() {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		return population_;
 	}
 
 	@Override
@@ -474,6 +454,12 @@ public class MOMFEA extends GeneticAlgorithm {
 			throws ReflectiveOperationException, NamingException, IOException, notFoundException, JMException {
 		// TODO 自動生成されたメソッド・スタブ
 		
+	}
+
+
+	@Override
+	public Population execute() throws JMException, ClassNotFoundException {
+		return null;
 	}
 
 

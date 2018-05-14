@@ -1,12 +1,15 @@
 package lib.experiments;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Serializable;
 import java.util.AbstractMap;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 
 import javax.naming.NameNotFoundException;
@@ -35,10 +38,6 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 		parameter = new HashMap<String, Object>(parameter_);
 	}
 
-	public CommandSetting(String[] array) {
-		System.err.println("output.sin");
-		// TODO Auto-generated constructor stub
-	}
 
 	public String[] getAsSArray(String key, String delimiter) throws NameNotFoundException, notFoundException {
 		Object o = get(key);
@@ -50,7 +49,73 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 			throw new ClassCastException();
 		}
 	}
+	
+	public CommandSetting(File file) throws IOException, NameNotFoundException {
+		parameter = new HashMap<String, Object>();
+		load(file);
+		parseData();
+	}
 
+	/** Parse arguments. */
+	public CommandSetting(String[] arguments) throws IOException, NamingException {
+		this();
+		parseArgs(arguments);
+	}
+
+	public void parseArgs(String[] args) throws NamingException, IOException {
+		parseArgs(args, 0, false);
+	}
+
+	public void parseArgs(String[] args, boolean surpressWarning) throws NamingException, IOException {
+		parseArgs(args, 0, surpressWarning);
+	}
+
+	public void parseArgs(String[] args, int index) throws NamingException, IOException {
+		parseArgs(args, index, false);
+	}
+
+	/**
+	 * Adds settings from the command line style string array.
+	 *
+	 * @param args
+	 * @throws NamingException
+	 */
+	public void parseArgs(String[] args, int index, boolean surpressWarning) throws NamingException, IOException {
+		while (index < args.length) {
+			// load setting file
+			if (!args[index].startsWith("-")) {
+				load(args[index++]);
+				continue;
+			}
+			// parse setting given as a commandline argument
+			if (args[index].contains(SUBSETTING)) {
+				String[] set = args[index].split(SUBSETTING);
+				getAsSetting(set[0].substring(1)).put(set[1], args[index + 1]);
+			} else {
+				String key = args[index].substring(1);
+				if (NULL.equals(args[index + 1])) {
+					remove(key);
+				} else {
+					Object org = put(key, args[index + 1]);
+					if (!surpressWarning) {
+						System.out.println(args[index] +" = "+ org +" is overwritten by "+ args[index + 1]);
+					}
+				}
+			}
+			index += 2;
+		}
+		parseData();
+	}
+
+
+	private void parseData() throws NameNotFoundException {
+		SettingFormula parser = new SettingFormula(this);
+		List<String> keyList = new ArrayList<>(parameter.keySet());
+		while (keyList.size() != 0) {
+			parseGet_(keyList.get(keyList.size() - 1), parser, keyList);
+		}
+	}
+	
 	public String[] getAsSArray(String key, String delimiter, String[] def) throws notFoundException {
 		if (containsKey(key)) {
 			try {
@@ -316,7 +381,7 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 	public Object[] getAsInstanceArrayByName(String key) throws NameNotFoundException, ReflectiveOperationException, notFoundException {
 		return getAsInstanceArrayByName(key,ParameterNames.SETTING_FILE_DEMILITER);
 	}
-	
+
 	public double[] getAsDArray(String key) throws NameNotFoundException {
 		return getAsDArray(key, ArrayUtility.DEFAULT_DELIMITER);
 	}

@@ -63,4 +63,8 @@ public class FormatDate implements Comparable<FormatDate>, Serializable {
 		if (o == null) throw new NullPointerException();
 		return cal.compareTo(o.cal);
 	}
+	public static void main(String[] args) {
+		System.out.println(FormatDate.getDate().toString());
+	}
+	
 }
