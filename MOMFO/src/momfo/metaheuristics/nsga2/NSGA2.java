@@ -19,6 +19,7 @@ import momfo.core.ProblemSet;
 import momfo.core.Solution;
 import momfo.operators.selection.environmentalselection.EnvironmentalSelection;
 import momfo.operators.selection.environmentalselection.LabSpecifiedNSGAIISelection;
+import momfo.operators.solutionevaluator.SolutionEvaluator;
 import momfo.util.JMException;
 import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparator;
 import momfo.util.Ranking.NDSRanking;
@@ -55,10 +56,10 @@ public class NSGA2 extends GeneticAlgorithm {
 			} catch(NotVerifiedYet e){				
 				throw new JMException(e.getClass().getName() + "   "+e.getMessage());
 			}
-			
+//			SolutionEvaluator			
 			problem_.repair(newSolution, null);
 			evaluations_++;
-			problem_.evaluate(newSolution);
+			solEvaluator[taskNumber].evaluate(newSolution);
 			population_.add(newSolution);
 		}
 	}
@@ -122,9 +123,9 @@ public class NSGA2 extends GeneticAlgorithm {
 			offspring = crossover.crossover(parents[0], parents[1]);
 
 			offspring[0] = mutation.mutation(offspring[0]);
-			problem_.repair(offspring[0], null);
-			problem_.evaluate(offspring[0]);
-
+			
+			solEvaluator[taskNumber].evaluate(offspring[0]);
+			
 			evaluations_ = evaluations_ + 1;
 
 			offSpring_.add(offspring[0]);

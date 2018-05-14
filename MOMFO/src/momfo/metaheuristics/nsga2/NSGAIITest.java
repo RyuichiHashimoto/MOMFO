@@ -44,6 +44,8 @@ class NSGAIITest {
 		.put(ParameterNames.SEEDER, "lib.experiments.SequenceSeeder")
 		.put(ParameterNames.INITIALIZATION, "momfo.operators.initializer.UnifiedRealArray")
 		.put(ParameterNames.ParentsSelection, "momfo.operators.selection.ParentsSelection.BinaryTournament")
+		.put(ParameterNames.SOL_EVALUATOR, "momfo.operators.solutionevaluator.UnifiedSpaceEvaluator,momfo.operators.solutionevaluator.UnifiedSpaceEvaluator")
+		.put(ParameterNames.SOL_DECODER, "momfo.operators.decoder.MinMaxDecoder,momfo.operators.decoder.MinMaxDecoder")
 		.put(ParameterNames.EVALUATION, "momfo.operators.evaluation.NTUProblemEvaluation")
 		.put(ParameterNames.POPULATION_SIZE, 100)
 		.put(ParameterNames.PROBLEM_SET, (ProblemName[problemNumber]))

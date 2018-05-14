@@ -1,6 +1,9 @@
 package momfo.operators.solutionevaluator;
 
+import java.io.IOException;
+
 import javax.naming.NameNotFoundException;
+import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
@@ -21,7 +24,7 @@ abstract public class SolutionEvaluator extends Operator {
 	
 	int taskNumber;
 	@Override	
-	public void build(CommandSetting s) throws NameNotFoundException, notFoundException {
+	public void build(CommandSetting s) throws NameNotFoundException, notFoundException, ReflectiveOperationException, JMException, NamingException, IOException {
 		isMultitask = s.getAsBool(ParameterNames.IS_MULTITASK);
 		
 		if(isMultitask) {

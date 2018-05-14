@@ -24,8 +24,10 @@ public class ParameterNames {
 	public static final String EVO_EVALUATOR = "EVO_EVALUATOR";
 	public static final String FIN_EVALUATOR = "FIN_EVALUATOR";
 	public static final String EVALUATEE = "FIN_EVALUATEE";
-
-
+	public static final String SOL_DECODER = "SOLDECODER";
+	public static final String SOL_EVALUATOR = "SOL_EVALUATOR";
+	public static final int    Default_TEMPTASKNUMBER = -1;
+	
 	public static final String EVALUATION = "evaluation";
 	public static final String CROSSOVER = "crossoverMethod";
 	public static final String MUTATION = "mutationMethod";

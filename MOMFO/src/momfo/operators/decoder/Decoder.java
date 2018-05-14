@@ -30,6 +30,7 @@ abstract public class Decoder extends Operator {
 
 	int taskNumber;
 
+	
 	@Override
 	public void build(CommandSetting s) throws NameNotFoundException, JMException, NamingException,
 			ReflectiveOperationException, IOException, notFoundException {

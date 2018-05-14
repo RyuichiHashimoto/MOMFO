@@ -20,6 +20,7 @@ import momfo.operators.evaluator.Evaluator;
 import momfo.operators.initializer.Initializer;
 import momfo.operators.mutation.Mutation;
 import momfo.operators.selection.ParentsSelection.ParentsSelection;
+import momfo.operators.solutionevaluator.SolutionEvaluator;
 import momfo.util.JMException;
 
 public abstract class GeneticAlgorithm implements Serializable {
@@ -48,6 +49,9 @@ public abstract class GeneticAlgorithm implements Serializable {
 	protected ParentsSelection parentsSelection;
 	protected CommandSetting setting;
 
+	protected SolutionEvaluator[] solEvaluator;
+
+	
 	public GeneticAlgorithm() {
 
 	}
@@ -145,6 +149,18 @@ public abstract class GeneticAlgorithm implements Serializable {
 		s.put(ParameterNames.ParentsSelection, parentsSelection);
 		initialization = Generics.cast(s.getAsInstanceByName(ParameterNames.INITIALIZATION, genotypePack));
 		s.put(ParameterNames.INITIALIZATION, initialization);
+
+		Object[] tempSolEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.SOL_EVALUATOR));
+		solEvaluator = new SolutionEvaluator[tempSolEval.length];
+		for (int i = 0; i < tempSolEval.length; i++) {
+			s.putForce(ParameterNames.TEMP_TASK_NUMBER, i);
+			solEvaluator[i] = Generics.cast(tempSolEval[i]);
+			solEvaluator[i].build(s);
+		}
+		s.putForce(ParameterNames.TEMP_TASK_NUMBER, ParameterNames.Default_TEMPTASKNUMBER);
+
+		s.put(ParameterNames.SOL_EVALUATOR, solEvaluator);
+
 		
 		
 		Object[] tempFinEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.FIN_EVALUATOR));

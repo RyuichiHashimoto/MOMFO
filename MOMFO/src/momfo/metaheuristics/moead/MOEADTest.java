@@ -14,6 +14,7 @@ import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.CannotConvertException;
 import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.lang.Generics;
 import momfo.core.GAFramework;
 import momfo.util.JMException;
 
@@ -43,19 +44,24 @@ class MOEADTest {
 		.put(ParameterNames.MUTATION, "momfo.operators.mutation.PolynomialMutation")
 		.put(ParameterNames.MUTATIONProbability, "-1")
 		.put(ParameterNames.PMDisIndex, "20")
+		.put(ParameterNames.SOL_EVALUATOR, "momfo.operators.solutionevaluator.UnifiedSpaceEvaluator,momfo.operators.solutionevaluator.UnifiedSpaceEvaluator")
+		.put(ParameterNames.SOL_DECODER, "momfo.operators.decoder.MinMaxDecoder,momfo.operators.decoder.MinMaxDecoder")
+		.put(ParameterNames.EVALUATION, "momfo.operators.evaluation.NTUProblemEvaluation")
+		.put(ParameterNames.INITIALIZATION, "momfo.operators.initializer.UnifiedRealArray")		
 		.put(ParameterNames.SCALAR_FUNCTION,"momfo.util.ScalarzingFunction.TchebycheffForMin")
-		.put(ParameterNames.MOEAD_COMPARATOR,"momfo.util.Comparator.MOEADComparator.NomalMOEADComapator")
+		.put(ParameterNames.SCALAR_FUNCTION,"momfo.util.ScalarzingFunction.TchebycheffForMin")
+		.put(ParameterNames.IS_MULTITASK,false)
 		.put(ParameterNames.INNER_DIVISION_SIZE, 0 )
 		.put(ParameterNames.OUTER_DIVISION_SIZE,( ( problemNumber== 8 ||problemNumber== 7) && (taskNumber == 0) )  ? 13:99)
 		.put(ParameterNames.MOEAD_ALPHA,1.0)
 		.put(ParameterNames.EVO_EVALUATOR, "momfo.operators.evaluator.IGDHisWithAllSol,momfo.operators.evaluator.IGDHisWithAllSol")
 		.put(ParameterNames.IGD_CALCLATOR, "momfo.Indicator.IGDHisWithAllSol")
 		.put(ParameterNames.FIN_EVALUATOR, "momfo.operators.evaluator.NullEvaluator,momfo.operators.evaluator.NullEvaluator")
+		.put(ParameterNames.MOEAD_COMPARATOR, "momfo.util.Comparator.Comparator.MOEAADComparator.NomalMOEADComparator,momfo.util.Comparator.Comparator.MOEAADComparator.NomalMOEADComparator")
 		.put(ParameterNames.SIZE_OF_NEIBORHOOD_At_UPDATE,20)
 		.put(ParameterNames.IS_NORM,false)
 		.put(ParameterNames.SIZE_OF_NEIBORHOOD_At_MATING,20)
 		.put(ParameterNames.SEEDER, "lib.experiments.SequenceSeeder")
-		.put(ParameterNames.INITIALIZATION, "momfo.operators.initializer.testInitializer")
 		.put(ParameterNames.ParentsSelection, "momfo.operators.selection.ParentsSelection.BinaryTournament")
 		.put(ParameterNames.EVALUATION, "momfo.operators.evaluation.NTUProblemEvaluation")
 		.put(ParameterNames.POPULATION_SIZE, "100")

@@ -30,6 +30,7 @@ import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.lang.Generics;
+import lib.lang.NotVerifiedYet;
 import lib.math.Calculator;
 import lib.math.Permutation;
 import momfo.core.GeneticAlgorithm;
@@ -134,8 +135,19 @@ public class MOEAD extends GeneticAlgorithm{
 	public void initPopulation() throws JMException, ClassNotFoundException {
  		for (int i = 0; i < populationSize_; i++) {
 			Solution newSolution = new Solution(problem_,random);
+			try {
+				newSolution = new Solution(problem_, random);
+				initialization.initialize(newSolution);
+			} catch(NotVerifiedYet e){				
+				throw new JMException(e.getClass().getName() + "   "+e.getMessage());
+			}
+			
 			problem_.repair(newSolution,null);
 			problem_.evaluate(newSolution);
+			
+			
+			solEvaluator[taskNumber].evaluate(newSolution);
+
 			evaluations_++;
 			population_.add((newSolution));
 		}
@@ -275,9 +287,10 @@ public class MOEAD extends GeneticAlgorithm{
 			offSpring[0] = mutation.mutation(offSpring[0]);
 
 
-			problem_.repair(offSpring[0],null);
-			problem_.evaluate(offSpring[0]);
-
+//			problem_.repair(offSpring[0],null);
+//			problem_.evaluate(offSpring[0]);
+			solEvaluator[taskNumber].evaluate(offSpring[0]);
+			
 			evaluations_++;
 
 			updateReference(offSpring[0]);
@@ -340,7 +353,8 @@ public class MOEAD extends GeneticAlgorithm{
 		evoEvaluator[taskNumber].build(setting);
 		ScalarzingFunction_ = Generics.cast(s.getAsInstanceByName(ParameterNames.SCALAR_FUNCTION, ""));;
 		s.putForce(ParameterNames.SCALAR_FUNCTION, ScalarzingFunction_);
-		comparator =Generics.cast(s.getAsInstanceByName(ParameterNames.MOEAD_COMPARATOR, ""));;
+		Object[] temp = Generics.cast(s.getAsInstanceArray(ParameterNames.MOEAD_COMPARATOR, ""));
+		comparator =  ( Generics.cast(temp[taskNumber]) );
 
 
 		ScalarzingFunction_.build(s);

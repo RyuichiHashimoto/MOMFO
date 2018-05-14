@@ -40,7 +40,7 @@ public abstract class Problem {
 	}
 	
 	public double[] getLowerLimit() {
-		return upperLimit_;
+		return lowerLimit_;
 	}
 	
 	protected int numberOfConstraint_;

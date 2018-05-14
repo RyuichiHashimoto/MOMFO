@@ -13,9 +13,6 @@ public abstract class Function {
 	double[] UpperLimit;
 	double[] LowerLimit;
 
-
-
-
 	int numberOfDistanceVariables_;
 
 	public int NumberOfDistanceVariables_(){;
