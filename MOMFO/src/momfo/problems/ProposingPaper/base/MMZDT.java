@@ -127,8 +127,7 @@ public class MMZDT extends Problem {
 	}
 
 	@Override
-	public void evaluate(Solution solution) throws JMException {
-		double vars[] = decode(solution);
+	public double[] evaluate(double[] val) throws JMException {
 
 
 
@@ -136,10 +135,10 @@ public class MMZDT extends Problem {
 		double[] xI = new double[k_];
 		double[] xII = new double[numberOfVariables_ - k_];
 		for (int i = 0; i < k_; i++)
-			xI[i] = vars[i];
+			xI[i] = val[i];
 
 		for (int i = k_; i < numberOfVariables_; i++)
-			xII[i - k_] = vars[i];
+			xII[i - k_] = val[i];
 
 
 
@@ -149,10 +148,13 @@ public class MMZDT extends Problem {
 		double g = gfunction.evaluate(xII)+1.0;
 		double f2 = g * evalH(f1, g);
 
+		
+		double[] ret = new double[2];
+		ret[0] = f1; ret[1] = f2;
+		return ret;
 		// System.out.println("g: " + g);
-		solution.setFeasible(true);
-		solution.setObjective(0, f1);
-		solution.setObjective(1, f2);
+//		solution.setObjective(0, f1);
+//		solution.setObjective(1, f2);
 	}
 
 
@@ -224,10 +226,10 @@ public class MMZDT extends Problem {
 	}
 
 	@Override
-	public double[] decode(Solution d) {
+	public double[] decode(double[] d) {
 		double ret[] = new double[numberOfVariables_];
 		for(int v = 0; v < numberOfVariables_;v++){
-			ret[v] = (upperLimit_[v] - lowerLimit_[v])*d.getValue(v) + lowerLimit_[v];
+			ret[v] = (upperLimit_[v] - lowerLimit_[v])*d[v] + lowerLimit_[v];
 		}
 		return ret;
 	}

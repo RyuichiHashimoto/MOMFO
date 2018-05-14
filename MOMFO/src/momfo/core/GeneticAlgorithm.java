@@ -137,15 +137,16 @@ public abstract class GeneticAlgorithm implements Serializable {
 
 		String genotypePack = "momfo.operators";
 
-		initialization = Generics.cast(s.getAsInstanceByName(ParameterNames.INITIALIZATION, genotypePack));
-		s.put(ParameterNames.INITIALIZATION, initialization);
 		crossover = Generics.cast(s.getAsInstanceByName(ParameterNames.CROSSOVER, genotypePack));
 		s.put(ParameterNames.CROSSOVER, crossover);
 		mutation = Generics.cast(s.getAsInstanceByName(ParameterNames.MUTATION, genotypePack));
 		s.put(ParameterNames.MUTATION, mutation);
 		parentsSelection = Generics.cast(s.getAsInstanceByName(ParameterNames.ParentsSelection, genotypePack));
-		;
 		s.put(ParameterNames.ParentsSelection, parentsSelection);
+		initialization = Generics.cast(s.getAsInstanceByName(ParameterNames.INITIALIZATION, genotypePack));
+		s.put(ParameterNames.INITIALIZATION, initialization);
+		
+		
 		Object[] tempFinEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.FIN_EVALUATOR));
 		finEvaluator = new Evaluator[tempFinEval.length];
 		for (int i = 0; i < tempFinEval.length; i++) {

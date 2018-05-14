@@ -19,35 +19,34 @@ public class UnifiedRealArray extends Initializer {
 	@Override
 	public void build(CommandSetting st) throws notFoundException, NamingException, ReflectiveOperationException, IOException {
 		super.build(st);
-		int dims = -1;
+		int dim = -1;
 		if(isMultitask) {
-			dims =  problemSet.getMaxDimension();
-			upperlimit = new double[dims];
-			lowerlimit = new double[dims];
-			for(int i=0;i<dims;i++) {
+			dim =  problemSet.getMaxDimension();
+			upperlimit = new double[dim];
+			lowerlimit = new double[dim];
+			for(int i=0;i<dim;i++) {
 				upperlimit[i] = ParameterNames.UPPERLIMIT_UNIFIEDSPACE;
 				lowerlimit[i] = ParameterNames.LOWERLIMIT_UNIFIEDSPACE;
 			}			
 		} else {
-			dims = problem.getNumberOfVariables();
-			upperlimit = new double[dims];
-			lowerlimit = new double[dims];
-			for(int i=0;i<dims;i++) {
+			dim = problem.getNumberOfVariables();
+			upperlimit = new double[dim];
+			lowerlimit = new double[dim];
+			
+			for(int i=0;i<dim;i++) {
 				upperlimit[i] = ParameterNames.UPPERLIMIT_UNIFIEDSPACE;
 				lowerlimit[i] = ParameterNames.LOWERLIMIT_UNIFIEDSPACE;
 			}
 		}
-		assert dims <= 0: this.getName()+": the dimension of variable space is not found exception";		
+		assert dim > 0: this.getName()+": the dimension of variable space must be more than 1, not " + dim;		
 	}
 
 	@Override
-	@NeedVerified
 	public void initialize(Solution sol) throws NotVerifiedYet {
 		for (int i = 0; i < upperlimit.length; i++) {
 			double value = lowerlimit[i] + (upperlimit[i] - lowerlimit[i]) * mt.nextDoubleII();
-			sol.setValue(i, value);
+			sol.setValue(i, value);			
 		}
-		throw new NotVerifiedYet(this);
 	}
 
 }

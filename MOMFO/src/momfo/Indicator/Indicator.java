@@ -18,8 +18,14 @@ public abstract class Indicator implements Buildable{
 		random = st.get(ParameterNames.RANDOM_GENERATOR);
 
 		if(st.containsKey(ParameterNames.IS_MULTITASK)) {
-			isMAXproblem_ = (boolean) st.getAsBArray(ParameterNames.IS_MAX)[st.getAsInt(ParameterNames.TASK_NUMBER)];
-			System.out.println(isMAXproblem_);
+
+			if(st.getAsBool(ParameterNames.IS_MULTITASK)) {
+				isMAXproblem_ = (boolean) st.getAsBArray(ParameterNames.IS_MAX)[st.getAsInt(ParameterNames.TASK_NUMBER)];
+//				System.out.println(isMAXproblem_);
+			} else {
+				isMAXproblem_ = (boolean) st.getAsBool(ParameterNames.IS_MAX);
+			}
+			
 		} else {
 			isMAXproblem_ = (boolean) st.getAsBool(ParameterNames.IS_MAX);
 		}

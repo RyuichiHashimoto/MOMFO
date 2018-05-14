@@ -11,6 +11,7 @@ import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.lang.Generics;
+import lib.lang.NotVerifiedYet;
 import momfo.core.GeneticAlgorithm;
 import momfo.core.Operator;
 import momfo.core.Population;
@@ -46,7 +47,15 @@ public class NSGA2 extends GeneticAlgorithm {
 	public void initPopulation() throws JMException, ClassNotFoundException {
 		population_ = new Population(populationSize_);
 		for (int i = 0; i < populationSize_; i++) {
-			Solution newSolution = new Solution(problem_, random);
+			Solution newSolution = null;
+			
+			try {
+				newSolution = new Solution(problem_, random);
+				initialization.initialize(newSolution);
+			} catch(NotVerifiedYet e){				
+				throw new JMException(e.getClass().getName() + "   "+e.getMessage());
+			}
+			
 			problem_.repair(newSolution, null);
 			evaluations_++;
 			problem_.evaluate(newSolution);
@@ -76,7 +85,7 @@ public class NSGA2 extends GeneticAlgorithm {
 		NSGAIIComparator_.build(setting);
 	}
 
-	public void initialize(int seed) throws ClassNotFoundException, JMException {
+	public void initialize(int seed) throws ClassNotFoundException, JMException{
 		super.initialize(seed);
 
 		initPopulation();

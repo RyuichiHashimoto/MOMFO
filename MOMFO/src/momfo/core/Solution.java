@@ -251,6 +251,7 @@ public class Solution implements Cloneable{
 	}
 
 	public Solution(Problem a,BuildInRandom random_){
+		
 		problemSet_ = null;
 		problem_ = a;
 		numberOftasks =1;
@@ -272,16 +273,16 @@ public class Solution implements Cloneable{
 		for(int i=0;i<numberOfConstrain_ ;i++){
 			constrain_[i] = 0d;
 		}
-
-
+		
 		for(int i = 0;i<numberOfVariables_;i++){
 			upperlimit_[i] = 1.0;//a.getUpperlimit_(i);
 			lowerlimit_[i] = 0.0;//a.getLowerlimit_(i);
 		}
+		
 		objective_ = new double[numberOfObjectives_];
 		SolutionType_ = a.getSolutionType_();
 		ID_  = -1;
-		remake();
+//		remake();
 	}
 
 	public Solution(int numberOfObjective){

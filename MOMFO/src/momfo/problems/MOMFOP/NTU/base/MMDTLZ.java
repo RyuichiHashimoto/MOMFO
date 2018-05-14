@@ -96,18 +96,16 @@ public class MMDTLZ extends Problem {
 		gfunction.setShiftMatrix(shiftValues);
 	}
 
-	public void evaluate(Solution solution) throws JMException {
-//		double vars[] = scaleVariables(solution);
-		double vars[] = decode(solution);
+	public double[] evaluate(double[] sol) throws JMException {
 
 		double[] xI = new double[numberOfObjectives_ - 1];
 		double[] xII = new double[numberOfVariables_ - numberOfObjectives_ + 1];
 
 		for (int i = 0; i < numberOfObjectives_ - 1; i++)
-			xI[i] = vars[i];
+			xI[i] = sol[i];
 
 		for (int i = numberOfObjectives_ - 1; i < numberOfVariables_; i++)
-			xII[i - numberOfObjectives_ + 1] = vars[i];
+			xII[i - numberOfObjectives_ + 1] = sol[i];
 
 
 
@@ -127,10 +125,7 @@ public class MMDTLZ extends Problem {
 			} // if
 		} // for
 
-		solution.rescaleObjectives(numberOfObjectives_);
-
-		for (int i = 0; i < numberOfObjectives_; i++)
-			solution.setObjective(0 + i, f[i]);
+		return f;
 	}
 
 
@@ -141,14 +136,12 @@ public class MMDTLZ extends Problem {
 	}
 
 	@Override
-	public double[] decode(Solution d) {
-
+	public double[] decode(double[] val) {
 		double ret[] = new double[numberOfVariables_];
 		for(int v = 0; v < numberOfVariables_;v++){
-			ret[v] = (upperLimit_[v] - lowerLimit_[v])*d.getValue(v) + lowerLimit_[v];
+			ret[v] = (upperLimit_[v] - lowerLimit_[v])*val[v] + lowerLimit_[v];
 		}
 		return ret;
-
 	}
 
 }

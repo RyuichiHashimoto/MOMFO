@@ -7,12 +7,23 @@ import momfo.util.JMException;
 public abstract class Problem {
 
 
-	public abstract void evaluate(Solution a) throws JMException;
+//	public abstract void evaluate(Solution a) throws JMException;
 
+	public abstract double[] evaluate(double[] val) throws JMException;
 
+	public double[] evaluate(Solution sol) throws JMException {
+		return evaluate(sol.getValue());
+	};
+
+	public double[] decode(Solution sol){
+		return decode(sol.getValue());
+	};
+	
+	public abstract double[] decode(double[] val);
+
+	
 	public abstract void repair(Solution d,Map<String, Object> a) throws JMException;
 
-	public abstract double[] decode(Solution d) ;
 
 	protected String IGDRef;
 
@@ -28,7 +39,6 @@ public abstract class Problem {
 		return upperLimit_;
 	}
 	
-
 	public double[] getLowerLimit() {
 		return upperLimit_;
 	}
@@ -51,7 +61,6 @@ public abstract class Problem {
 		return numberOfConstraint_;
 	}
 
-
 	public int getNumberOfObjectives(){
 		return numberOfObjectives_;
 	}
@@ -60,19 +69,15 @@ public abstract class Problem {
 		return numberOfVariables_;
 	}
 
-	public double getUpperlimit_(int key){
+	public double getUpperLimit(int key){
 		return upperLimit_[key];
 	}
-	public double getLowerlimit_(int key){
+	public double getLowerLimit(int key){
 		return lowerLimit_[key];
 	}
 
 	public	int getSolutionType_(){
 		return variableType_;
 	};
-
-
-
-
 
 }
