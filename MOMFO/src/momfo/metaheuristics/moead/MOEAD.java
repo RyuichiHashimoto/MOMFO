@@ -340,6 +340,7 @@ public class MOEAD extends GeneticAlgorithm{
 
 		ScalarzingFunctionName = s.get(ParameterNames.SCALAR_FUNCTION);
 		maxEvaluations = s.get(ParameterNames.N_OF_EVALUATIONS);
+		taskNumber = setting.get(ParameterNames.TASK_NUMBER);
 
 		numberOfParents_ = s.get(ParameterNames.N_OF_PARENTS);
 
@@ -353,7 +354,9 @@ public class MOEAD extends GeneticAlgorithm{
 		evoEvaluator[taskNumber].build(setting);
 		ScalarzingFunction_ = Generics.cast(s.getAsInstanceByName(ParameterNames.SCALAR_FUNCTION, ""));;
 		s.putForce(ParameterNames.SCALAR_FUNCTION, ScalarzingFunction_);
-		Object[] temp = Generics.cast(s.getAsInstanceArray(ParameterNames.MOEAD_COMPARATOR, ""));
+		
+		System.out.println(s.getAsStr(ParameterNames.MOEAD_COMPARATOR));
+		Object[] temp = Generics.cast(s.getAsInstanceArray(ParameterNames.MOEAD_COMPARATOR,ParameterNames.SETTING_FILE_DEMILITER));
 		comparator =  ( Generics.cast(temp[taskNumber]) );
 
 

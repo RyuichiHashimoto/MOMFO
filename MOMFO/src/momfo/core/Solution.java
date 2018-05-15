@@ -247,7 +247,7 @@ public class Solution implements Cloneable{
 
 		SolutionType_ = 2;
 		ID_  = -1;
-		remake();
+//		remake();
 	}
 
 	public Solution(Problem a,BuildInRandom random_){

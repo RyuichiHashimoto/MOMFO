@@ -31,6 +31,7 @@ import javax.naming.NamingException;
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.lang.NotVerifiedYet;
 import lib.math.Calculator;
 import lib.math.Permutation;
 import momfo.core.GeneticAlgorithm;
@@ -52,7 +53,6 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 	private double[] alpha;
 
 	private int[] populationSize_;
-
 
 	double[][] ReferencePoint_;
 
@@ -114,7 +114,7 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 	private double rmp;
 	double[] NofReplacing;
 
-	//1つ目の要素はタスク番号, 2つ目の要素は個体番号，
+	// 1つ目の要素はタスク番号, 2つ目の要素は個体番号，
 	private int[] getSolutionID(int n, int[] populationSize) {
 		int[] ret = new int[2];
 
@@ -158,17 +158,24 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 	public void initPopulation() throws JMException, ClassNotFoundException {
 		for (int t = 0; t < problemSet_.countProblem(); t++) {
 			for (int i = 0; i < populationSize_[t]; i++) {
-				Solution newSolution = new Solution(problemSet_, i % problemSet_.countProblem(), random);
-				//				Solution newSolution = new Solution(problemSet_.get(t));
+				Solution newSolution = null;// new Solution(problemSet_, i % problemSet_.countProblem(), random);
+				// Solution newSolution = new Solution(problemSet_.get(t));
+				try {
+					newSolution = new Solution(problemSet_, t, random);
+					initialization.initialize(newSolution);
+				} catch (NotVerifiedYet e) {
+					throw new JMException(e.getClass().getName() + "   " + e.getMessage());
+				}
 
 				problemSet_.get(t).repair(newSolution, null);
-				problemSet_.get(t).evaluate(newSolution);
+				// problemSet_.get(t).evaluate(newSolution);
+				solEvaluator[t].evaluate(newSolution);
 				evaluations_[t]++;
 				populationArray[t].add((newSolution));
 			} // for
 		}
 	} // initPopulation
-	// initPopulation
+		// initPopulation
 
 	public void initReferencePoint() throws ClassNotFoundException, JMException {
 		for (int t = 0; t < problemSet_.countProblem(); t++) {
@@ -193,7 +200,7 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		ss = sizeOfMatingNeiborhood_[tasknumber];
 		boolean returnflag = false;
 
-		//他タスクを解く個体との交叉
+		// 他タスクを解く個体との交叉
 		if (random.nextDoubleIE() < rmp) {
 			returnflag = true;
 			do {
@@ -230,7 +237,7 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 				}
 			}
 		}
-		//System.out.println("test");
+		// System.out.println("test");
 
 		return returnflag;
 	}
@@ -238,13 +245,13 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 	void updateReference(Solution individual, int task) {
 		for (int n = 0; n < problemSet_.get(task).getNumberOfObjectives(); n++) {
 			if (comparator[task].compare(individual.getObjective(n), indArray_[task][n].getObjective(n))) {
-				ReferencePoint_[task][n] = alpha[task]* individual.getObjective(n);
+				ReferencePoint_[task][n] = alpha[task] * individual.getObjective(n);
 				indArray_[task][n] = individual;
 			}
 		}
 	}
 
-	//Updateした回数を返す
+	// Updateした回数を返す
 	int updateProblem(Solution indiv, int Tasks_id, int id) throws JMException {
 		int size;
 
@@ -268,7 +275,6 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		return Updatetimes;
 	} // updateProblem
 
-
 	public void initialize(int seed) throws ClassNotFoundException, JMException {
 		super.initialize(seed);
 
@@ -276,7 +282,7 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		evaluations_ = new int[numberOfTasks];
 		ReferencePoint_ = new double[numberOfTasks][];
 		indArray_ = new Solution[numberOfTasks][];
-		cont = new boolean [numberOfTasks];
+		cont = new boolean[numberOfTasks];
 		for (int t = 0; t < numberOfTasks; t++) {
 			evaluations_[t] = 0;
 			populationArray[t] = new Population(populationSize_[t]);
@@ -288,7 +294,6 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		setNeighborhood();
 
 		initPopulation();
-
 
 		initReferencePoint();
 
@@ -307,26 +312,20 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		for (int t = 0; t < ParentsSelectioncounter.length; t++) {
 			ParentsSelectioncounter[t] = 10;
 		}
-/*
-		for (int t = 0; t < problemSet_.countProblem(); t++) {
-			List<double[]> d = new ArrayList<double[]>();
-			boolean[] calc = new boolean[populationArray[t].size()]; //IGD計算をする個体の選出するための配列
-			//SkillFactorの照合
-			for (int p = 0; p < populationArray[t].size(); p++) {
-				calc[p] = true;
-			}
-			//IGD計算
-			igd[0] = counter;
-			igd[1] = (IGDCalclator.CalcNormalizeIGD_To_NonDominated(populationArray[t].getAllObjectives(), calc,
-					IGDRef.getNormalizeRefs(t), IGDRef.getMaxValue(t), IGDRef.getMinValue(t), random));
-			replacingRate.add(new ArrayList<double[]>(d));
-
-			d.add(igd.clone());
-			igdHistory.add(new ArrayList<double[]>(d));
-			cont[t] = false;
-			populationArray[t].printObjectivesToFile("output_"+ (t+1)+".dat");
-		}
-		*/
+		/*
+		 * for (int t = 0; t < problemSet_.countProblem(); t++) { List<double[]> d = new
+		 * ArrayList<double[]>(); boolean[] calc = new
+		 * boolean[populationArray[t].size()]; //IGD計算をする個体の選出するための配列 //SkillFactorの照合
+		 * for (int p = 0; p < populationArray[t].size(); p++) { calc[p] = true; }
+		 * //IGD計算 igd[0] = counter; igd[1] =
+		 * (IGDCalclator.CalcNormalizeIGD_To_NonDominated(populationArray[t].
+		 * getAllObjectives(), calc, IGDRef.getNormalizeRefs(t), IGDRef.getMaxValue(t),
+		 * IGDRef.getMinValue(t), random)); replacingRate.add(new
+		 * ArrayList<double[]>(d));
+		 * 
+		 * d.add(igd.clone()); igdHistory.add(new ArrayList<double[]>(d)); cont[t] =
+		 * false; populationArray[t].printObjectivesToFile("output_"+ (t+1)+".dat"); }
+		 */
 		int totalPopulationSize_ = 0;
 
 		for (int t = 0; t < numberOfTasks; t++) {
@@ -351,7 +350,7 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		for (int t = 0; t < problemSet_.countProblem(); t++) {
 			for (int i = 0; i < populationSize_[t]; i++) {
 				int n = permutation[count++];
-				//1つ目の要素はタスク番号, 2つ目の要素は個体番号，
+				// 1つ目の要素はタスク番号, 2つ目の要素は個体番号，
 				int[] temp = getSolutionID(n, populationSize_);
 
 				// or int n = i;
@@ -365,7 +364,7 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 				Vector<Integer> parentsNumber = new Vector<Integer>();
 				Vector<Integer> TaskNumber_List = new Vector<Integer>();
 
-				//他タスクを解く個体を選択したかどうか
+				// 他タスクを解く個体を選択したかどうか
 				boolean selectOtherTasksFlag = matingSelection(parentsNumber, TaskNumber_List, tasks, n,
 						numberOfParents_[tasks]);
 
@@ -377,14 +376,16 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 
 				parentsNumber = null;
 				TaskNumber_List = null;
-				// Apply  crossover
+				// Apply crossover
 				offspring = crossover.crossover(parents)[0];
 
 				offspring = mutation.mutation(offspring);
 
 				problemSet_.get(tasks).repair(offspring, null);
 
-				problemSet_.get(tasks).evaluate(offspring);
+				// problemSet_.get(tasks).evaluate();
+
+				solEvaluator[tasks].evaluate(offspring);
 
 				evaluations_[tasks]++;
 
@@ -412,8 +413,8 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 
 	@Override
 	public boolean terminate() {
-		for(int i = 0; i < cont.length;i++) {
-			if(!cont[i])
+		for (int i = 0; i < cont.length; i++) {
+			if (!cont[i])
 				return false;
 		}
 
@@ -431,9 +432,8 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 	}
 
 	/*
-	 *  this method does not return the exact
-	 *  number of generations in some case especially when
-	 *  the number of solutions assigned to each island is different.
+	 * this method does not return the exact number of generations in some case
+	 * especially when the number of solutions assigned to each island is different.
 	 */
 
 	@Override
@@ -445,7 +445,7 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 			evaluation += evaluations_[t];
 		}
 
-		return evaluation/size;
+		return evaluation / size;
 	}
 
 	@Override
@@ -466,21 +466,21 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 	protected void buildImpl(CommandSetting s)
 			throws ReflectiveOperationException, NamingException, IOException, notFoundException, JMException {
 
-		
-		s.put(ParameterNames.IS_MULTITASK, isMultitask);
-		problemSet_  = s.get(ParameterNames.PROBLEM_SET);
+		s.putForce(ParameterNames.IS_MULTITASK, isMultitask);
+		problemSet_ = s.get(ParameterNames.PROBLEM_SET);
 		numberOfTasks = problemSet_.countProblem();
 		isMax = s.getAsBArray(ParameterNames.IS_MAX);
 		isNorm = s.getAsBArray(ParameterNames.IS_NORM);
-		
-		InnerWeightVectorDivision_  = s.getAsNArray(ParameterNames.INNER_DIVISION_SIZE);
+
+		InnerWeightVectorDivision_ = s.getAsNArray(ParameterNames.INNER_DIVISION_SIZE);
 		numberOfParents_ = s.getAsNArray(ParameterNames.N_OF_PARENTS);
 		numberOfDivision_ = s.getAsNArray(ParameterNames.OUTER_DIVISION_SIZE);
 		numberofObjectives_ = problemSet_.getNumberOfObjectives();
 		alpha = s.getAsDArray(ParameterNames.MOEAD_ALPHA);
 		sizeOfNeiborhoodRepleaced_ = s.getAsNArray(ParameterNames.SIZE_OF_NEIBORHOOD_At_UPDATE);
 		sizeOfMatingNeiborhood_ = s.getAsNArray(ParameterNames.SIZE_OF_NEIBORHOOD_At_MATING);
-		maxEvaluations = s.getAsNArray(ParameterNames.N_OF_EVALUATIONS);;
+		maxEvaluations = s.getAsNArray(ParameterNames.N_OF_EVALUATIONS);
+		;
 		rmp = s.get(ParameterNames.RMP);
 
 		Object[] sss = s.getAsInstanceArray(ParameterNames.SCALAR_FUNCTION);
@@ -490,24 +490,23 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		comparator = new MOEADComparator[numberOfTasks];
 
 		Object task = null;
-		if(s.containsKe(ParameterNames.TASK_NUMBER))
+		if (s.containsKe(ParameterNames.TASK_NUMBER))
 			task = s.get(ParameterNames.TASK_NUMBER);
-		
-		for (int i = 0;i < sss.length;i++) {
+
+		for (int i = 0; i < sss.length; i++) {
 			ScalarzingFunction_[i] = (ScalarzingFunction) sss[i];
 			comparator[i] = (MOEADComparator) ccc[i];
-			s.putForce(ParameterNames.TASK_NUMBER,i);
+			s.putForce(ParameterNames.TASK_NUMBER, i);
 			finEvaluator[i].build(s);
 			evoEvaluator[i].build(s);
 		}
-		s.putForce(ParameterNames.TASK_NUMBER,task);
+		s.putForce(ParameterNames.TASK_NUMBER, task);
 
-//		ScalarzingFunction_ = (ScalarzingFunction[]) s.getAsInstanceArray(ParameterNames.SCALAR_FUNCTION);
+		// ScalarzingFunction_ = (ScalarzingFunction[])
+		// s.getAsInstanceArray(ParameterNames.SCALAR_FUNCTION);
 		s.putForce(ParameterNames.SCALAR_FUNCTION, ScalarzingFunction_);
 		s.putForce(ParameterNames.MOEAD_COMPARATOR, comparator);
 		s.getAsNArray(ParameterNames.N_OF_EVALUATIONS);
-
-
 
 		neighborhood_ = new int[problemSet_.countProblem()][][];
 		WeightedVector_ = new double[problemSet_.countProblem()][][];
@@ -521,8 +520,9 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		for (int t = 0; t < numberOfTasks; t++) {
 			s.putForce(ParameterNames.SCALAR_FUNCTION, ScalarzingFunction_[t]);
 			s.putForce(ParameterNames.MOEAD_COMPARATOR, comparator[t]);
-			s.put(ParameterNames.TEMP_TASK_NUMBER, t );
-			ScalarzingFunction_[t].build(s);;
+			s.put(ParameterNames.TEMP_TASK_NUMBER, t);
+			ScalarzingFunction_[t].build(s);
+			;
 			comparator[t].build(s);
 
 			populationSize_[t] = Calculator.conbination(numberofObjectives_[t] - 1 + numberOfDivision_[t],
@@ -534,11 +534,10 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 			}
 
 		}
-		s.put(ParameterNames.TEMP_TASK_NUMBER, Integer.MIN_VALUE );
+		s.put(ParameterNames.TEMP_TASK_NUMBER, Integer.MIN_VALUE);
 		s.putForce(ParameterNames.SCALAR_FUNCTION, ScalarzingFunction_);
 		s.putForce(ParameterNames.MOEAD_COMPARATOR, comparator);
 	}
-
 
 	public MultitaskMOEAD() {
 		super();
@@ -550,5 +549,4 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		return null;
 	}
 
-	
 } // MOEAD

@@ -220,12 +220,9 @@ public abstract class GeneticAlgorithm implements Serializable {
 			setOutputParameter("igd",igd);
 		} else {
 			evoEvaluator[taskNumber].evaluate(population_);
-
 			double igd = ((List<Double>)(evoEvaluator[taskNumber].getValue())).get( ((List)(evoEvaluator[taskNumber].getValue())).size()-1);
 			setOutputParameter("igd",igd);
-
 		}
-
 	};
 
 	abstract public boolean terminate();

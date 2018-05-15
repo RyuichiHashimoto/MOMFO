@@ -22,7 +22,7 @@ class MultitaskMOEADTest {
 
 	@Test
 	public void test() throws JMException, notFoundException, IllegalArgumentException, CannotConvertException, NamingException, IOException, ReflectiveOperationException {
-		for (int i = 0; i < 9; i++) {
+		for (int i = 7; i < 9; i++) {
 			eachTest(i);
 		}
 	}
@@ -39,12 +39,19 @@ class MultitaskMOEADTest {
 		.put(ParameterNames.CROSSOVER, "momfo.operators.crossover.SBXCrossover")
 		.put(ParameterNames.CROSSOVERProbability, "0.9")
 		.put(ParameterNames.SBXDisIndex, "20")
+		.put(ParameterNames.TASK_NUMBER, 0)		
 		.put(ParameterNames.EVO_EVALUATOR, "momfo.operators.evaluator.IGDHisWithAllSol,momfo.operators.evaluator.IGDHisWithAllSol")
 		.put(ParameterNames.IGD_CALCLATOR, "momfo.Indicator.IGDHisWithAllSol")
 		.put(ParameterNames.FIN_EVALUATOR, "momfo.operators.evaluator.NullEvaluator,momfo.operators.evaluator.NullEvaluator")
 		.put(ParameterNames.MUTATION, "momfo.operators.mutation.PolynomialMutation")
+		.put(ParameterNames.INITIALIZATION, "momfo.operators.initializer.UnifiedRealArray")
+		.put(ParameterNames.ParentsSelection, "momfo.operators.selection.ParentsSelection.NullSelection")
+		.put(ParameterNames.SOL_EVALUATOR, "momfo.operators.solutionevaluator.UnifiedSpaceEvaluator,momfo.operators.solutionevaluator.UnifiedSpaceEvaluator")
+		.put(ParameterNames.SOL_DECODER, "momfo.operators.decoder.MinMaxDecoder,momfo.operators.decoder.MinMaxDecoder")
 		.put(ParameterNames.MUTATIONProbability, "-1")
 		.put(ParameterNames.PMDisIndex, "20")
+//		.put(ParameterNames.PMDisIndex, "")
+		.put(ParameterNames.IS_MULTITASK, true)
 		.put(ParameterNames.INNER_DIVISION_SIZE, "0,0" )
 		.put(ParameterNames.OUTER_DIVISION_SIZE, (problemNumber== 8 ||problemNumber== 7)  ? "13,99" :"99,99")
 		.put(ParameterNames.MOEAD_ALPHA,"1.0,1.0")
