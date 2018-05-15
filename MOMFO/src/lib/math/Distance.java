@@ -20,7 +20,8 @@ public class Distance {
 
 
 	public static double calcEuclid(double[] a, double[] b) {
-		assert (a.length == b.length) : "calc in Distance Class :: two array have diffrecent length";
+		assert (a.length == b.length)  : ":: two array have diffrecent length";
+		
 		double sum = 0;
 		for (int i = 0; i < a.length; i++) {
 			

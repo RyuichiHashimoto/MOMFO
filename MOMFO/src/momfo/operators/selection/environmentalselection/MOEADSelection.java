@@ -3,6 +3,7 @@ package momfo.operators.selection.environmentalselection;
 import javax.naming.NameNotFoundException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.Exception.CommandSetting.notFoundException;
 import momfo.core.Population;
 import momfo.util.JMException;
 
@@ -13,7 +14,7 @@ public class MOEADSelection extends EnvironmentalSelection{
 		super();
 	}
 
-	public void build(CommandSetting st) throws NameNotFoundException {
+	public void build(CommandSetting st) throws NameNotFoundException, notFoundException {
 		super.build(st);
 	}
 

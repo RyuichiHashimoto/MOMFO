@@ -398,32 +398,31 @@ public class Population {
 
 	public String objectiveToStr(){
 		String ret = "";
-		
+
 		int NumberOfObjectives = population_[0].getNumberOfObjectives();
 		for(int i = 0 ;i < populationSize;i++){
 			for (int j = 0; j < NumberOfObjectives-1; j++){
-					ret += (population_[i].getObjective(j) + FileConstants.FILE_DEMILITER);					
+					ret += (population_[i].getObjective(j) + FileConstants.FILE_DEMILITER);
 			}
 			ret += (population_[i].getObjective(NumberOfObjectives-1)+FileConstants.NEWLINE_DEMILITER);
 		}
 		return ret;
 	}
-	
 
 	public String variableToStr(){
 		String ret = "";
-		
+
 		int NumberOfVariables = population_[0].getNumberOfVariables();
 		for(int i = 0 ;i < populationSize;i++){
 			for (int j = 0; j < NumberOfVariables-1; j++){
-					ret += (population_[i].getObjective(j) + FileConstants.FILE_DEMILITER);					
+					ret += (population_[i].getValue(j) + FileConstants.FILE_DEMILITER);
 			}
-			ret += (population_[i].getObjective(NumberOfVariables-1)+FileConstants.NEWLINE_DEMILITER);
+			ret += (population_[i].getValue(NumberOfVariables-1)+FileConstants.NEWLINE_DEMILITER);
 		}
 		return ret;
 	}
 
-	
+
 	public void printFeasibleObjectivesToFile(String path) {
 		try {
 			FileOutputStream fos = new FileOutputStream(path);

@@ -22,7 +22,7 @@ public class BinaryTournament extends ParentsSelection {
 
 		try {
 
-			comparator = new NSGAIIComparatorWithRandom(s.get(ParameterNames.IS_MAX),random);
+			comparator = new NSGAIIComparatorWithRandom(s.getAsBool(ParameterNames.IS_MAX),random);
 		} catch (NamingException e) {
 			comparator = null;
 			System.out.print(e.getMessage());

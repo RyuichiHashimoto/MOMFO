@@ -1,7 +1,5 @@
 package momfo.operators.evaluator;
 
-import static org.junit.jupiter.api.Assumptions.assumingThat;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +30,10 @@ public class IGDHisWithAllSol extends Evaluator {
 
 	IGDCalclator IGDCalclator;
 
+	String FileName;
+
+	public String getIGDFileName() {return FileName;};
+
 	public IGDHisWithAllSol() {
 
 	}
@@ -45,20 +47,19 @@ public class IGDHisWithAllSol extends Evaluator {
 			ReflectiveOperationException, IOException, notFoundException {
 		evaluation = new ArrayList<Double>();
 		int taskNumber = s.get(ParameterNames.TASK_NUMBER);
-		System.out.println(((ProblemSet)s.get(ParameterNames.PROBLEM_SET)).get(taskNumber).getName());
-		String filename = ((ProblemSet)s.get(ParameterNames.PROBLEM_SET)).get(taskNumber).getIGDRefFile();
-		IGDReference = new IGDRef(filename);
+		FileName  = ((ProblemSet)s.get(ParameterNames.PROBLEM_SET)).get(taskNumber).getIGDRefFile();
+		IGDReference = new IGDRef(FileName);
 		IGDCalclator = new IGDWithAllSol();
 		IGDCalclator.build(s);
 	}
 
 	@Override
-	public void evaluate(Object d) { 
+	public void evaluate(Object d) {
 		flag = true;
 		Population pop = (Population)d;
 		double[][] obj = pop.getAllObjectives();
-//		System.out.println(IGDCalclator.calcIGD(obj,IGDReference));
-//		((List<Double>)evaluation).add(IGDCalclator.calcNormalizeIGD(obj,IGDReference));
+
+
 		((List<Double>)evaluation).add(IGDCalclator.calcNormalizeIGD(obj,IGDReference));
 	}
 

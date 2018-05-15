@@ -8,6 +8,7 @@ import javax.naming.NamingException;
 import Network.GridComputing.FileStreamProvider;
 import Network.GridComputing.StreamProvider;
 import lib.experiments.CommandSetting;
+import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.CannotConvertException;
 import lib.experiments.Exception.CommandSetting.notFoundException;
 import momfo.util.JMException;
@@ -55,7 +56,7 @@ public class RunSetting {
 		if (s.containsKey(OUTPUT_DIR)) {
 			sp = new FileStreamProvider(s.getAsStr(OUTPUT_DIR));
 		} else {
-			sp = new FileStreamProvider();
+			sp = new FileStreamProvider(ParameterNames.Default_RESULT_DIR);
 		}
 		s.set(STREAM_PROVIDER, sp);
 

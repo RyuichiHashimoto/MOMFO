@@ -97,6 +97,7 @@ public abstract class Solver implements Runnable, Buildable {
 		buildImpl();
 		// instantiate Results
 		String[] resultName = s.getAsSArray(RESULT, RESULT_DELIMITER, new String[0]);
+
 		for (int i = 0; i < resultName.length; i++) {
 			SolverResult<?> rst = Generics.cast(Class.forName(resultName[i]).newInstance());
 			Solver.buildObject(rst, s);
@@ -111,7 +112,7 @@ public abstract class Solver implements Runnable, Buildable {
 		thrown_ = null;
 	}
 
-	abstract protected void solve() throws IOException, ClassNotFoundException, JMException, NameNotFoundException;
+	abstract protected void solve() throws IOException, ClassNotFoundException, JMException, NameNotFoundException, notFoundException;
 
 	/**
 	 * The same as {@link #run()} except for this method can throw exceptions.

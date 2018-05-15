@@ -19,7 +19,6 @@ import momfo.core.ProblemSet;
 import momfo.core.Solution;
 import momfo.operators.selection.environmentalselection.EnvironmentalSelection;
 import momfo.operators.selection.environmentalselection.LabSpecifiedNSGAIISelection;
-import momfo.operators.solutionevaluator.SolutionEvaluator;
 import momfo.util.JMException;
 import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparator;
 import momfo.util.Ranking.NDSRanking;
@@ -49,14 +48,14 @@ public class NSGA2 extends GeneticAlgorithm {
 		population_ = new Population(populationSize_);
 		for (int i = 0; i < populationSize_; i++) {
 			Solution newSolution = null;
-			
+
 			try {
 				newSolution = new Solution(problem_, random);
 				initialization.initialize(newSolution);
-			} catch(NotVerifiedYet e){				
+			} catch(NotVerifiedYet e){
 				throw new JMException(e.getClass().getName() + "   "+e.getMessage());
 			}
-//			SolutionEvaluator			
+//			SolutionEvaluator
 			problem_.repair(newSolution, null);
 			evaluations_++;
 			solEvaluator[taskNumber].evaluate(newSolution);
@@ -68,11 +67,12 @@ public class NSGA2 extends GeneticAlgorithm {
 	protected void buildImpl(CommandSetting setting)
 			throws ReflectiveOperationException, NamingException, IOException, notFoundException, JMException {
 		evaluations_ = 0;
-		maxEvaluations_ = setting.get(ParameterNames.N_OF_EVALUATIONS);
+		maxEvaluations_ = setting.getAsInt(ParameterNames.N_OF_EVALUATIONS);
 		isMAX_ = setting.getAsBool(ParameterNames.IS_MAX);
 		//		comparator_binary = new NSGAIIComparatorWithRandom(parameters);
-		taskNumber = setting.get(ParameterNames.TASK_NUMBER);
-
+		taskNumber = setting.getAsInt(ParameterNames.TASK_NUMBER);
+		setting.putForce(ParameterNames.TASK_NUMBER, taskNumber);
+		
 		problem_ = ((ProblemSet) (setting.get(ParameterNames.PROBLEM_SET)))
 				.get(setting.get(ParameterNames.TASK_NUMBER));
 
@@ -88,9 +88,9 @@ public class NSGA2 extends GeneticAlgorithm {
 
 	public void initialize(int seed) throws ClassNotFoundException, JMException{
 		super.initialize(seed);
-
+		evaluations_ = 0;
 		initPopulation();
-
+		
 		merge_ = new Population(populationSize_ * 2);
 		igdHistory = new ArrayList<double[]>();
 		double[] igd = new double[2];
@@ -123,9 +123,9 @@ public class NSGA2 extends GeneticAlgorithm {
 			offspring = crossover.crossover(parents[0], parents[1]);
 
 			offspring[0] = mutation.mutation(offspring[0]);
-			
+
 			solEvaluator[taskNumber].evaluate(offspring[0]);
-			
+
 			evaluations_ = evaluations_ + 1;
 
 			offSpring_.add(offspring[0]);
@@ -138,7 +138,7 @@ public class NSGA2 extends GeneticAlgorithm {
 	}
 	 EnvironmentalSelection selection;
 	@Override
-	public void nextGeneration() throws JMException, NameNotFoundException {
+	public void nextGeneration() throws JMException, NameNotFoundException, notFoundException {
 
 		merge_.clear();
 		merge_.merge(population_);
@@ -147,7 +147,7 @@ public class NSGA2 extends GeneticAlgorithm {
 		selection = new LabSpecifiedNSGAIISelection();
 		selection.build(setting);
 		population_ = selection.getNextPopulation(merge_);
-	
+
 		NDSRanking ranki_ = new NDSRanking(false, random);
 		ranki_.setPop(population_);
 		ranki_.Ranking();

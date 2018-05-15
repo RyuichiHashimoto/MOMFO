@@ -22,7 +22,7 @@ class MultitaskMOEADTest {
 
 	@Test
 	public void test() throws JMException, notFoundException, IllegalArgumentException, CannotConvertException, NamingException, IOException, ReflectiveOperationException {
-		for (int i = 7; i < 9; i++) {
+		for (int i = 0; i < 7; i++) {
 			eachTest(i);
 		}
 	}
@@ -39,9 +39,8 @@ class MultitaskMOEADTest {
 		.put(ParameterNames.CROSSOVER, "momfo.operators.crossover.SBXCrossover")
 		.put(ParameterNames.CROSSOVERProbability, "0.9")
 		.put(ParameterNames.SBXDisIndex, "20")
-		.put(ParameterNames.TASK_NUMBER, 0)		
+		.put(ParameterNames.TASK_NUMBER, 0)
 		.put(ParameterNames.EVO_EVALUATOR, "momfo.operators.evaluator.IGDHisWithAllSol,momfo.operators.evaluator.IGDHisWithAllSol")
-		.put(ParameterNames.IGD_CALCLATOR, "momfo.Indicator.IGDHisWithAllSol")
 		.put(ParameterNames.FIN_EVALUATOR, "momfo.operators.evaluator.NullEvaluator,momfo.operators.evaluator.NullEvaluator")
 		.put(ParameterNames.MUTATION, "momfo.operators.mutation.PolynomialMutation")
 		.put(ParameterNames.INITIALIZATION, "momfo.operators.initializer.UnifiedRealArray")
@@ -61,10 +60,8 @@ class MultitaskMOEADTest {
 		.put(ParameterNames.IS_NORM,"false,false")
 		.put(ParameterNames.SIZE_OF_NEIBORHOOD_At_MATING,"20,20")
 		.put(ParameterNames.SEEDER, "lib.experiments.SequenceSeeder")
-		.put(ParameterNames.INITIALIZATION, "momfo.operators.initializer.testInitializer")
 		.put(ParameterNames.PBI_PARAMETER, "5.0,5.0")
 		.put(ParameterNames.ParentsSelection, "momfo.operators.selection.ParentsSelection.RandomSelectionWithoutReplacement")
-		.put(ParameterNames.EVALUATION, "momfo.operators.evaluation.NTUProblemEvaluation")
 		.put(ParameterNames.POPULATION_SIZE, "100,100")
 		.put(ParameterNames.PROBLEM_SET, (ProblemName[problemNumber]))
 		.put(ParameterNames.SEEDER_SEED, "1")
@@ -85,9 +82,9 @@ class MultitaskMOEADTest {
 
 		double[] IGD = (double[]) solver.getGA().getOutputParameter("igd");
 			if (!(IGD[0] == IGDValues_Task1[problemNumber]))
-				fail("IGDCalclator Value of Task 1 is wrong " + "corrct anser is " + IGDValues_Task1[taskNumber] + " but my answer is" + IGD[0]);
+				fail("IGDCalclator Value of Task 1 is wrong " + "corrct anser is " + IGDValues_Task1[problemNumber] + " but my answer is" + IGD[0]);
 			else if (!(IGD[1] == IGDValues_Task2[problemNumber]))
-				fail("IGDCalclator Value of Task 2 is wrong " + "corrct anser is " + IGDValues_Task2[taskNumber] + " but my answer is" + IGD[1]);
+				fail("IGDCalclator Value of Task 2 is wrong " + "corrct anser is " + IGDValues_Task2[problemNumber] + " but my answer is" + IGD[1]);
 			else
 				System.out.println("SUCCCESS");
 
@@ -95,7 +92,7 @@ class MultitaskMOEADTest {
 
 	public void eachTest(int problemNumber) throws JMException, notFoundException, IllegalArgumentException, CannotConvertException, NamingException, IOException, ReflectiveOperationException {
 		eachTestTask(problemNumber,0);
-	//	eachTestTask(problemNumber,1);
+//		eachTestTask(problemNumber,1);
 	}
 
 	public void Separate() throws JMException, ClassNotFoundException, NameNotFoundException {

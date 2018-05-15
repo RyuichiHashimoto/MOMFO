@@ -22,15 +22,19 @@ public class IGDWithAllSol extends IGDCalclator{
 
 	@Override
 	public double calcNormalizeIGD(double[][]  objective, boolean[] checker , double[][] referencePoint,double[] maxValue,double[] minValue){
+		assert maxValue.length == minValue.length;
+//		assert objective[0].length == referencePoint[0].length;
+
 		double[][] normalizeObjective = new double[objective.length][referencePoint[0].length];
 		double ret = 0;
 		int refSize = referencePoint.length;
 
 		for(int pop = 0;pop<objective.length;pop++){
-			for(int o = 0;o<referencePoint[pop].length ;o++){
+			for(int o = 0;o<objective[pop].length ;o++){
 				normalizeObjective[pop][o] = (objective[pop][o] - minValue[o])/(maxValue[o] - minValue[o]);
 			}
 		}
+
 		for(int i = 0;i <refSize;i++){
 			double min = Double.POSITIVE_INFINITY;
 			for(int pop = 0;pop<objective.length;pop++){

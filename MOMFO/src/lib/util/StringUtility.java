@@ -112,7 +112,7 @@ public class StringUtility {
 	 * IOException { List<String> file = Files.readAllLines(path,
 	 * Charset.defaultCharset()); List<String> given =
 	 * Arrays.asList(str.split("\r\n?|\n"));
-	 * 
+	 *
 	 * int len = Math.min(file.size(), given.size()); for (int i = 0; i < len; i++)
 	 * { if (!file.get(i).equals(given.get(i))) { throw new AssertionError(i
 	 * +"th line: \n<br>"+ file.get(i) + "\n<br>"+ given.get(i)); } } int i = len;
@@ -123,7 +123,7 @@ public class StringUtility {
 	/**
 	 * Replaces \r or \r\n to \n. Note that \r\n is always replaced to \n, not to
 	 * \n\n.
-	 * 
+	 *
 	 * @param obj
 	 * @return Replaced string
 	 */
@@ -140,4 +140,33 @@ public class StringUtility {
 		}
 		return sb.toString();
 	}
+
+	public static String toString(double[][] allObjectives) {
+		return toString(allObjectives,StringDelimieter);
+	}
+
+	public static String toString(List<Double> allObjectives) {
+		return toString(allObjectives,StringDelimieter);
+	}
+
+	public static String toString(List<Double> allObjectives,String delimieter) {
+
+		String ret = "";
+		int size = allObjectives.size() - 1;
+		for(int i = 0;i < size;i++) {
+			ret += allObjectives.get(i) + delimieter;
+		}
+		ret += allObjectives.get(size);
+		return ret;
+	}
+
+	private static String toString(double[][] allObjectives, String delimiter) {
+		String ret = "";
+		for(int  i =0;i<allObjectives.length;i++) {
+			ret += toString(allObjectives[i], delimiter);
+			if(i != allObjectives.length-1) 	ret += FileConstants.NEWLINE_DEMILITER;
+		}
+		return ret;
+	}
+
 }

@@ -170,6 +170,16 @@ public class Solution implements Cloneable{
 		objective_[key] = a;
 	}
 
+	public void setObjective(double[] a){
+		rescaleObjectives(a.length);
+		for(int i = 0;i<a.length;i++) {
+			objective_[i] = a[i];
+		}
+		
+		
+//		objective_[key] = a;
+	}
+	
 	public void remake(){
 		if(SolutionType_ == 1){
 			ramakeWithInt();
@@ -487,7 +497,7 @@ public class Solution implements Cloneable{
 		objective_ = new double[numberOfObjectives_];
 
 		for(int i=0;i<numberOfObjectives_;i++){
-			objective_[i] = objective_[i] * -1;
+			objective_[i] = Double.MAX_VALUE;
 		}
 
 

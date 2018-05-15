@@ -15,6 +15,7 @@ import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.lang.Generics;
 import lib.lang.NeedOverriden;
 import lib.math.BuildInRandom;
+import lib.util.StringUtility;
 import momfo.operators.crossover.Crossover;
 import momfo.operators.evaluator.Evaluator;
 import momfo.operators.initializer.Initializer;
@@ -51,7 +52,6 @@ public abstract class GeneticAlgorithm implements Serializable {
 
 	protected SolutionEvaluator[] solEvaluator;
 
-	
 	public GeneticAlgorithm() {
 
 	}
@@ -161,8 +161,6 @@ public abstract class GeneticAlgorithm implements Serializable {
 
 		s.put(ParameterNames.SOL_EVALUATOR, solEvaluator);
 
-		
-		
 		Object[] tempFinEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.FIN_EVALUATOR));
 		finEvaluator = new Evaluator[tempFinEval.length];
 		for (int i = 0; i < tempFinEval.length; i++) {
@@ -170,7 +168,7 @@ public abstract class GeneticAlgorithm implements Serializable {
 		}
 		s.put(ParameterNames.FIN_EVALUATOR, finEvaluator);
 
-//		taskNumber = s.getAsInt(ParameterNames.TASK_NUMBER);
+		//		taskNumber = s.getAsInt(ParameterNames.TASK_NUMBER);
 
 		Object[] tempevoEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.EVO_EVALUATOR));
 		evoEvaluator = new Evaluator[tempevoEval.length];
@@ -180,12 +178,12 @@ public abstract class GeneticAlgorithm implements Serializable {
 		s.put(ParameterNames.EVO_EVALUATOR, evoEvaluator);
 
 		//		evoEvaluator = Generics.cast(s.getAsInstanceByName(ParameterNames.EVO_EVALUATOR, genotypePack));;
-
 		buildImpl(s);
 		initialization.build(s);
 		crossover.build(s);
 		mutation.build(s);
 		parentsSelection.build(s);
+
 
 	}
 
@@ -196,13 +194,14 @@ public abstract class GeneticAlgorithm implements Serializable {
 
 	abstract public void recombination() throws JMException;
 
-	abstract public void nextGeneration() throws JMException, NameNotFoundException;
+	abstract public void nextGeneration() throws JMException, NameNotFoundException, notFoundException;
 
 	public void finEvaluation() {
 		for (int t = 0; t < finEvaluator.length; t++) {
 			finEvaluator[t].evaluate();
 		}
-	};
+		System.out.println(StringUtility.toString(population_.getAllObjectives()));
+	}
 
 	public void evoEvaluation() {
 		if (isMultitask) {
@@ -212,16 +211,20 @@ public abstract class GeneticAlgorithm implements Serializable {
 				evoEvaluator[t].evaluate(populationArray[t]);
 			}
 			
-			int t=0;
-			igd[t] = ((List<Double>)(evoEvaluator[t].getValue())).get( ((List)(evoEvaluator[t].getValue())).size()-1);
-			t=1;
-			igd[t] = ((List<Double>)(evoEvaluator[t].getValue())).get( ((List)(evoEvaluator[t].getValue())).size()-1);
+			int t = 0;
+			igd[t] = ((List<Double>) (evoEvaluator[t].getValue()))
+					.get(((List) (evoEvaluator[t].getValue())).size() - 1);
+			t = 1;
+			igd[t] = ((List<Double>) (evoEvaluator[t].getValue()))
+					.get(((List) (evoEvaluator[t].getValue())).size() - 1);
+			setOutputParameter("igd", igd);
 			
-			setOutputParameter("igd",igd);
+//			System.out.println(((List) (evoEvaluator[t].getValue())).size() - 1);
 		} else {
 			evoEvaluator[taskNumber].evaluate(population_);
-			double igd = ((List<Double>)(evoEvaluator[taskNumber].getValue())).get( ((List)(evoEvaluator[taskNumber].getValue())).size()-1);
-			setOutputParameter("igd",igd);
+			double igd = ((List<Double>) (evoEvaluator[taskNumber].getValue()))
+					.get(((List) (evoEvaluator[taskNumber].getValue())).size() - 1);
+			setOutputParameter("igd", igd);
 		}
 	};
 

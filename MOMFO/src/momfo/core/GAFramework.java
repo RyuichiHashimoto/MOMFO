@@ -62,7 +62,7 @@ public class GAFramework extends Solver{
 
 
 	@Override
-	public void solve() throws IOException, ClassNotFoundException, JMException, NameNotFoundException {
+	public void solve() throws IOException, ClassNotFoundException, JMException, NameNotFoundException, notFoundException {
 		startTime_ = System.currentTimeMillis();
 		System.gc();  // clear heap before running
 
@@ -71,10 +71,12 @@ public class GAFramework extends Solver{
 		}
 	}
 
-	public void runOnce() throws IOException, ClassNotFoundException, JMException, NameNotFoundException {
+	public void runOnce() throws IOException, ClassNotFoundException, JMException, NameNotFoundException, notFoundException {
 		// TODO: record seed value
 		int seed = seeder_.nextSeed();
 		ga_.initialize(seed);
+		ga_.evoEvaluation();
+//		System.out.println(StringUtility.toString(ga_.getPopulation().getAllObjectives()));
 		notifyEvent(AFTER_INTITIALIZATION);
 		while (!ga_.terminate()) {
 			ga_.recombination();

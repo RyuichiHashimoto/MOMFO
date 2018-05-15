@@ -4,6 +4,7 @@ import javax.naming.NameNotFoundException;
 
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
+import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.math.Permutation;
 import momfo.core.Population;
 import momfo.metaheuristics.nsga2.CrowdingDistance;
@@ -21,7 +22,7 @@ public class LabSpecifiedNSGAIISelection extends EnvironmentalSelection{
 		super();
 	}
 
-	public void build(CommandSetting st) throws NameNotFoundException {
+	public void build(CommandSetting st) throws NameNotFoundException, notFoundException {
 		super.build(st);
 		populationSize = st.getAsInt(ParameterNames.POPULATION_SIZE);
 		comparatorBinary = st.get(ParameterNames.NSGAIIComparator);
