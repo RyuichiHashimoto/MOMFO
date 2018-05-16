@@ -1,16 +1,20 @@
 package momfo.result;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.List;
 
 import javax.naming.NamingException;
 
 import Network.RunSetting;
 import Network.Solver;
+import Network.GridComputing.StreamProvider;
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.CannotConvertException;
 import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.util.ArrayUtility;
 import momfo.operators.evaluator.Evaluator;
 import momfo.util.JMException;
 
@@ -73,15 +77,8 @@ public class IndicatorResult extends GAResult {
 
 	@Override
 	public void save() throws IOException {
+		
 
-		for (int g = 0; g < values[0].length; g++) {
-			for (int i = 0; i < values.length; i++) {
-				writer.write(Double.toString( values[i][g] ));
-				if (i !=  values.length - 1) writer.write("\t");
-			}
-			writer.write("\n");
-		}
-		close();
 	}
 
 
@@ -99,11 +96,11 @@ public class IndicatorResult extends GAResult {
 	public void save(CommandSetting s, Object... results) throws IOException, NamingException {
 		assert false;
 		for(int i = 0;i < evaluator.length;i++) {
-//			writer = ((StreamProvider) s.get(ParameterNames.STREAM_PROVIDER)).getWriter(getOutputName(s));
-//			writer = new BufferedWriter(writer);
-//			values = ArrayUtility.listToDArray( (List<Double[]>) evaluator.getValue()).clone();
+			writer = ((StreamProvider) s.get(ParameterNames.STREAM_PROVIDER)).getWriter(getOutputName(s));
+			writer = new BufferedWriter(writer);
+			values = ArrayUtility.listToDArray( (List<Double[]>) evaluator.getValue()).clone();
 		}
-//		save();
+		save();
 	}
 
 	@Override
