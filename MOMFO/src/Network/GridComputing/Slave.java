@@ -1,6 +1,6 @@
 package Network.GridComputing;
 
-import static Network.RunSetting.*;
+import static lib.experiments.ParameterNames.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -13,7 +13,7 @@ import java.net.URLClassLoader;
 import Network.Solver;
 import Network.SolverResult;
 import Network.Constants.NetworkConstants;
-import lib.experiments.CommandSetting; 
+import lib.experiments.CommandSetting;
 
 /*
  * This class manage the assigned tasks to be performed from a Master node.
@@ -32,12 +32,12 @@ public class Slave {
 
 	CommandSetting setting;
 
-	String masterHostName = "";
+	String masterHostName = "hughes.cs.osakafu-u.ac.jp";
 
 
 	public static void main(String[] args) throws Exception {
 		Slave slave = new Slave();
-		Socket socket = new Socket("Doctor", NetworkConstants.PORT_NUMBER);
+		Socket socket = new Socket("hughes.cs.osakafu-u.ac.jp", NetworkConstants.PORT_NUMBER);
 //		Socket socket = new Socket(NetworkConstants.MASTER_HOST, NetworkConstants.PORT_NUMBER);
 		ObjectOutputStream oos;
 		SlaveDeadHook deadhook;

@@ -44,7 +44,7 @@ public class GAFramework extends Solver{
 		nTrials = setting.getAsInt(NTRIALS);
 		seeder_ = (Seeder) setting.getAsInstance(SEEDER);
 		seeder_.setSeed(setting.getAsInt(SEEDER_SEED));
-
+		
 		try {
 			seeder_.skip(setting.getAsInt(SEED_OFFSET));
 		} catch (NamingException e) {
@@ -52,12 +52,12 @@ public class GAFramework extends Solver{
 		}
 		setting.put(RANDOM_GENERATOR, new BuildInRandom(ParameterNames.DEFAULT_SEED));
 		String ga = setting.getAsStr(GA);
-
+		
 		if (!ga.contains(".")) setting.putForce(GA, DEF_GA_PACKAGE + ga.toLowerCase() +"."+ ga);
 		setting.set(GA, ga_ = setting.getAsInstance(GA));
-
+		
 		ga_.build(setting);
-
+		
 	}
 
 

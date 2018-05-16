@@ -14,12 +14,16 @@ import Network.SolverResult;
 import Network.GridComputing.StreamProvider;
 import lib.experiments.CommandSetting;
 import lib.experiments.FormatDate;
+import lib.experiments.Exception.CommandSetting.CannotConvertException;
+import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.io.FileConstants;
 import momfo.core.GAFramework;
+import momfo.util.JMException;
 
 // TODO: sort
 public class SettingResult extends SolverResult<GAFramework> {
 	@Override
-	public void build(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException {
+	public void build(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException, notFoundException, IllegalArgumentException, CannotConvertException, JMException {		
 		super.build(s);
 	}
 
@@ -118,7 +122,7 @@ public class SettingResult extends SolverResult<GAFramework> {
 
 	@Override
 	protected String getOutputName(CommandSetting s) throws NamingException {
-		return s.getAsStr(RunSetting.NAME_SPACE, "") + "info.ini";
+		return s.getAsStr(RunSetting.NAME_SPACE, "") + "Setting" + FileConstants.FILEPATH_DEMILITER+"info.ini";
 	}
 
 

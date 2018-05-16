@@ -10,7 +10,11 @@ import javax.naming.NamingException;
 
 import Network.GridComputing.StreamProvider;
 import lib.experiments.CommandSetting;
+import lib.experiments.ParameterNames;
+import lib.experiments.Exception.CommandSetting.CannotConvertException;
+import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.lang.NeedOverriden;
+import momfo.util.JMException;
 
 // TODO: implement AutoCloseable?
 abstract public class SolverResult<T extends Solver> implements Buildable {
@@ -20,8 +24,8 @@ abstract public class SolverResult<T extends Solver> implements Buildable {
 
 
 	@Override
-	public void build(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException {
-		this.solver = s.get(RunSetting.SOLVER);
+	public void build(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException, notFoundException, IllegalArgumentException, CannotConvertException, JMException {
+		this.solver = s.get(ParameterNames.SOLVER);
 		writer = new BufferedWriter(((StreamProvider) solver.setting.get(RunSetting.STREAM_PROVIDER)).getWriter(getOutputName(s)));
 	}
 

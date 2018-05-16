@@ -2,7 +2,7 @@ package lib.io;
 
 public class FileConstants {
 
-	public static final String NEWLINE_DEMILITER = "\n";
+	public static final String NEWLINE_DEMILITER = "\r\n";
 
 	public static final String FILE_DEMILITER = "\t";
 

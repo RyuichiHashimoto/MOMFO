@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Path;
 
+import lib.directory.DirectoryMaker;
 import lib.lang.PathTreat;
 
 public class FileStreamProvider extends StreamProvider {
@@ -15,13 +16,14 @@ public class FileStreamProvider extends StreamProvider {
 		this(PathTreat.getCurrentDir());
 	}
 
-	public FileStreamProvider(String dir) {
+	public FileStreamProvider(String dir){
 		this(new File(dir));
 	}
 
 	public FileStreamProvider(File dir) {
-		baseDir = dir;
-		baseDir.mkdirs();
+		baseDir = dir;		
+//		baseDir.mkdir();
+		DirectoryMaker.Make(dir);
 	}
 
 	public FileStreamProvider(Path path){

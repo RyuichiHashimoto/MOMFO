@@ -15,7 +15,6 @@ import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.lang.Generics;
 import lib.lang.NeedOverriden;
 import lib.math.BuildInRandom;
-import lib.util.StringUtility;
 import momfo.operators.crossover.Crossover;
 import momfo.operators.evaluator.Evaluator;
 import momfo.operators.initializer.Initializer;
@@ -152,11 +151,14 @@ public abstract class GeneticAlgorithm implements Serializable {
 
 		Object[] tempSolEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.SOL_EVALUATOR));
 		solEvaluator = new SolutionEvaluator[tempSolEval.length];
+
 		for (int i = 0; i < tempSolEval.length; i++) {
 			s.putForce(ParameterNames.TEMP_TASK_NUMBER, i);
 			solEvaluator[i] = Generics.cast(tempSolEval[i]);
 			solEvaluator[i].build(s);
 		}
+
+		
 		s.putForce(ParameterNames.TEMP_TASK_NUMBER, ParameterNames.Default_TEMPTASKNUMBER);
 
 		s.put(ParameterNames.SOL_EVALUATOR, solEvaluator);
@@ -176,7 +178,7 @@ public abstract class GeneticAlgorithm implements Serializable {
 			evoEvaluator[i] = Generics.cast(tempevoEval[i]);
 		}
 		s.put(ParameterNames.EVO_EVALUATOR, evoEvaluator);
-
+		
 		//		evoEvaluator = Generics.cast(s.getAsInstanceByName(ParameterNames.EVO_EVALUATOR, genotypePack));;
 		buildImpl(s);
 		initialization.build(s);
@@ -200,7 +202,6 @@ public abstract class GeneticAlgorithm implements Serializable {
 		for (int t = 0; t < finEvaluator.length; t++) {
 			finEvaluator[t].evaluate();
 		}
-		System.out.println(StringUtility.toString(population_.getAllObjectives()));
 	}
 
 	public void evoEvaluation() {

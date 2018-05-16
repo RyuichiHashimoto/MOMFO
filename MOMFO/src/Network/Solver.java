@@ -94,14 +94,16 @@ public abstract class Solver implements Runnable, Buildable {
 	public void build(CommandSetting s) throws NamingException, IOException, ReflectiveOperationException,
 			notFoundException, IllegalArgumentException, CannotConvertException, JMException {
 		setting = s;
+
 		buildImpl();
+		
 		// instantiate Results
 		String[] resultName = s.getAsSArray(RESULT, RESULT_DELIMITER, new String[0]);
-
 		for (int i = 0; i < resultName.length; i++) {
-			SolverResult<?> rst = Generics.cast(Class.forName(resultName[i]).newInstance());
+			SolverResult<?> rst = Generics.cast(Class.forName(resultName[i]).newInstance());			
 			Solver.buildObject(rst, s);
-			results.add(rst);
+			
+			results.add(rst);			
 		}
 	}
 

@@ -4,7 +4,8 @@ import java.io.File;
 
 public class DirectoryMaker {
 
-	public static void Make(String Derectory){
+	public static void Make(String argDerectory){
+		String Derectory = argDerectory.replace("\\", "/");
 		String[] Directoryes = Derectory.split("/");
 
 		String name = "";
@@ -14,6 +15,10 @@ public class DirectoryMaker {
 			newDir.mkdir();
 			name += "/";
 		}
+	}
+
+	public static void Make(File dir){
+		Make(dir.getPath());
 	}
 
 
