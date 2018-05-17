@@ -58,7 +58,7 @@ public class NSGA2 extends GeneticAlgorithm {
 //			SolutionEvaluator
 			problem_.repair(newSolution, null);
 			evaluations_++;
-			solEvaluator[taskNumber].evaluate(newSolution);
+//			solEvaluator[taskNumber].evaluate(newSolution);
 			population_.add(newSolution);
 		}
 	}
@@ -72,12 +72,9 @@ public class NSGA2 extends GeneticAlgorithm {
 		//		comparator_binary = new NSGAIIComparatorWithRandom(parameters);
 		taskNumber = setting.getAsInt(ParameterNames.TASK_NUMBER);
 		setting.putForce(ParameterNames.TASK_NUMBER, taskNumber);
-		
+
 		problem_ = ((ProblemSet) (setting.get(ParameterNames.PROBLEM_SET)))
 				.get(setting.get(ParameterNames.TASK_NUMBER));
-
-		finEvaluator[taskNumber].build(setting);
-		evoEvaluator[taskNumber].build(setting);
 
 		populationSize_ = setting.getAsInt(ParameterNames.POPULATION_SIZE);
 
@@ -90,7 +87,7 @@ public class NSGA2 extends GeneticAlgorithm {
 		super.initialize(seed);
 		evaluations_ = 0;
 		initPopulation();
-		
+
 		merge_ = new Population(populationSize_ * 2);
 		igdHistory = new ArrayList<double[]>();
 		double[] igd = new double[2];

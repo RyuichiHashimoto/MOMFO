@@ -185,7 +185,7 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 	}
 
 	protected Pattern anchor = Pattern.compile("\\*\\{(?<key>.*?)\\}");
-	
+
 	private String parseGet_(String key, SettingFormula parser, List<String> keyList) throws NameNotFoundException {
 		Object obj = get(key);
 		if (!(obj instanceof String)) {
@@ -468,11 +468,11 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 	public Object[] getAsInstanceArrayByName(String key, String delimiter) throws NameNotFoundException, ReflectiveOperationException, notFoundException {
 		String[] classNames = getAsSArray(key, delimiter);
 		Object[] retval = new Object[classNames.length];
-		
+
 		for (int i = 0; i < retval.length; i++) {
 			retval[i] = Class.forName(classNames[i]).newInstance();
 		}
-		
+
 		return retval;
 	}
 
@@ -522,11 +522,10 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 
 	public <T> T getAsInstanceByName(String key, String defaultPackage) throws NamingException, ReflectiveOperationException {
 
-
-
 		String className = get(key);
 		if (!defaultPackage.endsWith(".")) defaultPackage += ".";
-		if (!className.contains(".")) set(key, defaultPackage + className);
+		if (!className.contains(".")) putForce(key, defaultPackage + className);
+				
 		return getAsInstance(key);
 	}
 
@@ -536,8 +535,9 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 	 * The only difference is that this is allowed to overwrite save.
 	 */
 
-	public void putForce(String key, Object value) {
+	public CommandSetting putForce(String key, Object value) {
 		parameter.put(key, value);
+		return this;
 	}
 
 	public CommandSetting clone() {
@@ -668,8 +668,6 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 				ret += key + FileConstants.FILE_DEMILITER + "???" + FileConstants.NEWLINE_DEMILITER;
 			}
 		}
-
-
 		return ret;
 	}
 

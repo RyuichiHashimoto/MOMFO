@@ -371,31 +371,6 @@ public class Population {
 		}
 	}
 
-
-
-	public void printObjectivesAndTotalConstrainToFile(String path) {
-		try {
-			FileOutputStream fos = new FileOutputStream(path);
-			OutputStreamWriter osw = new OutputStreamWriter(fos);
-			BufferedWriter bw = new BufferedWriter(osw);
-
-			if (size() > 0) {
-				int NumberOfObjectives = population_[0].getNumberOfObjectives();
-				for(int i = 0 ;i < populationSize;i++){
-					for (int j = 0; j < NumberOfObjectives; j++){
-							bw.write(population_[i].getObjective(j) + "	");
-					}
-					bw.write(String.valueOf(population_[i].getViolation()));
-					bw.newLine();
-
-				}
-			}
-			bw.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
 	public String objectiveToStr(){
 		String ret = "";
 

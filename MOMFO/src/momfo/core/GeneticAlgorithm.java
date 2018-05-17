@@ -3,7 +3,6 @@ package momfo.core;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.naming.NameNotFoundException;
@@ -151,33 +150,12 @@ public abstract class GeneticAlgorithm implements Serializable {
 
 		Object[] tempSolEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.SOL_EVALUATOR));
 		solEvaluator = new SolutionEvaluator[tempSolEval.length];
-
+			
 		for (int i = 0; i < tempSolEval.length; i++) {
 			s.putForce(ParameterNames.TEMP_TASK_NUMBER, i);
 			solEvaluator[i] = Generics.cast(tempSolEval[i]);
 			solEvaluator[i].build(s);
 		}
-
-		
-		s.putForce(ParameterNames.TEMP_TASK_NUMBER, ParameterNames.Default_TEMPTASKNUMBER);
-
-		s.put(ParameterNames.SOL_EVALUATOR, solEvaluator);
-
-		Object[] tempFinEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.FIN_EVALUATOR));
-		finEvaluator = new Evaluator[tempFinEval.length];
-		for (int i = 0; i < tempFinEval.length; i++) {
-			finEvaluator[i] = Generics.cast(tempFinEval[i]);
-		}
-		s.put(ParameterNames.FIN_EVALUATOR, finEvaluator);
-
-		//		taskNumber = s.getAsInt(ParameterNames.TASK_NUMBER);
-
-		Object[] tempevoEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.EVO_EVALUATOR));
-		evoEvaluator = new Evaluator[tempevoEval.length];
-		for (int i = 0; i < tempevoEval.length; i++) {
-			evoEvaluator[i] = Generics.cast(tempevoEval[i]);
-		}
-		s.put(ParameterNames.EVO_EVALUATOR, evoEvaluator);
 		
 		//		evoEvaluator = Generics.cast(s.getAsInstanceByName(ParameterNames.EVO_EVALUATOR, genotypePack));;
 		buildImpl(s);
@@ -199,35 +177,10 @@ public abstract class GeneticAlgorithm implements Serializable {
 	abstract public void nextGeneration() throws JMException, NameNotFoundException, notFoundException;
 
 	public void finEvaluation() {
-		for (int t = 0; t < finEvaluator.length; t++) {
-			finEvaluator[t].evaluate();
-		}
+//		for (int t = 0; t < finEvaluator.length; t++) {
+//			finEvaluator[t].evaluate();
+//		}
 	}
-
-	public void evoEvaluation() {
-		if (isMultitask) {
-			double[] igd = new double[2];
-
-			for (int t = 0; t < evoEvaluator.length; t++) {
-				evoEvaluator[t].evaluate(populationArray[t]);
-			}
-			
-			int t = 0;
-			igd[t] = ((List<Double>) (evoEvaluator[t].getValue()))
-					.get(((List) (evoEvaluator[t].getValue())).size() - 1);
-			t = 1;
-			igd[t] = ((List<Double>) (evoEvaluator[t].getValue()))
-					.get(((List) (evoEvaluator[t].getValue())).size() - 1);
-			setOutputParameter("igd", igd);
-			
-//			System.out.println(((List) (evoEvaluator[t].getValue())).size() - 1);
-		} else {
-			evoEvaluator[taskNumber].evaluate(population_);
-			double igd = ((List<Double>) (evoEvaluator[taskNumber].getValue()))
-					.get(((List) (evoEvaluator[taskNumber].getValue())).size() - 1);
-			setOutputParameter("igd", igd);
-		}
-	};
 
 	abstract public boolean terminate();
 
@@ -239,5 +192,10 @@ public abstract class GeneticAlgorithm implements Serializable {
 
 	abstract protected void buildImpl(CommandSetting s)
 			throws ReflectiveOperationException, NamingException, IOException, notFoundException, JMException;
+
+	public Population[] getPopulationSet() {
+		// TODO 自動生成されたメソッド・スタブ
+		return null;
+	}
 
 }

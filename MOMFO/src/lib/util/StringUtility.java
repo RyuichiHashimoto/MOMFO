@@ -162,11 +162,33 @@ public class StringUtility {
 
 	private static String toString(double[][] allObjectives, String delimiter) {
 		String ret = "";
-		for(int  i =0;i<allObjectives.length;i++) {
+		for(int  i =0;i<allObjectives.length-1;i++) {
 			ret += toString(allObjectives[i], delimiter);
-			if(i != allObjectives.length-1) 	ret += FileConstants.NEWLINE_DEMILITER;
+			ret += FileConstants.NEWLINE_DEMILITER;
 		}
 		return ret;
+	}
+
+	public static String toStringWithIndex(Double[] array,String delimiter){
+		return toStringWithIndex(array,delimiter,1);		
+	}
+
+	public static String toStringWithIndex(Double[] array,String delimiter, int coefficient){
+		String ret = "";		
+		for(int  i =0;i<array.length-1;i++) {
+			ret += (i+1)*coefficient + delimiter + array[i];
+			ret += FileConstants.NEWLINE_DEMILITER;
+		}		
+		return ret;		
+	}
+	
+	
+	public static String toStringWithIndex(Double[] array){
+		return toStringWithIndex(array,StringDelimieter,1);
+	}
+
+	public static String toStringWithIndex(Double[] array,int coeffcient){
+		return toStringWithIndex(array,StringDelimieter,coeffcient);
 	}
 
 }

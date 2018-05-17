@@ -7,7 +7,6 @@ import static momfo.util.GAEvent.*;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
 import Network.Solver;
@@ -62,26 +61,25 @@ public class GAFramework extends Solver{
 
 
 	@Override
-	public void solve() throws IOException, ClassNotFoundException, JMException, NameNotFoundException, notFoundException {
+	public void solve() throws IOException, ClassNotFoundException, JMException, notFoundException, NamingException {
 		startTime_ = System.currentTimeMillis();
 		System.gc();  // clear heap before running
 
 		for (run_ = 0; run_ < nTrials; run_++) {
-			runOnce();
+			System.out.println((run_ + 1) + " run has started");
+			runOnce();			
 		}
 	}
 
-	public void runOnce() throws IOException, ClassNotFoundException, JMException, NameNotFoundException, notFoundException {
+	public void runOnce() throws IOException, ClassNotFoundException, JMException, notFoundException, NamingException {
 		// TODO: record seed value
 		int seed = seeder_.nextSeed();
 		ga_.initialize(seed);
-		ga_.evoEvaluation();
 //		System.out.println(StringUtility.toString(ga_.getPopulation().getAllObjectives()));
 		notifyEvent(AFTER_INTITIALIZATION);
 		while (!ga_.terminate()) {
 			ga_.recombination();
 			ga_.nextGeneration();
-			ga_.evoEvaluation();
 			notifyEvent(AFTER_GENERATION);
 		}
 		ga_.finEvaluation();
@@ -123,6 +121,11 @@ public class GAFramework extends Solver{
 		return ga_.getPopulation();
 	}
 
+	public Population[] getPopulationSet(){
+		return ga_.getPopulationSet();
+	}
+
+	
 	public String getGAName() {
 		return ga_.getClass().getSimpleName();
 	}

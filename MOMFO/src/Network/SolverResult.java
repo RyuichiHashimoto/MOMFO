@@ -21,7 +21,7 @@ abstract public class SolverResult<T extends Solver> implements Buildable {
 
 	protected T solver;
 	protected Writer writer;
-
+	
 
 	@Override
 	public void build(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException, notFoundException, IllegalArgumentException, CannotConvertException, JMException {

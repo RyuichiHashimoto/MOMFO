@@ -114,7 +114,7 @@ public abstract class Solver implements Runnable, Buildable {
 		thrown_ = null;
 	}
 
-	abstract protected void solve() throws IOException, ClassNotFoundException, JMException, NameNotFoundException, notFoundException;
+	abstract protected void solve() throws IOException, ClassNotFoundException, JMException, NameNotFoundException, notFoundException, NamingException;
 
 	/**
 	 * The same as {@link #run()} except for this method can throw exceptions.
@@ -137,7 +137,7 @@ public abstract class Solver implements Runnable, Buildable {
 			e.printStackTrace();
 			try {
 				notifyEvent(EXCEPTION_RISE);
-			} catch (IOException ioe) {
+			} catch (IOException | NamingException ioe) {
 				ioe.printStackTrace();
 			}
 		}
@@ -160,7 +160,7 @@ public abstract class Solver implements Runnable, Buildable {
 		}
 	}
 
-	public void notifyEvent(SolverEvent event) throws IOException {
+	public void notifyEvent(SolverEvent event) throws IOException, NameNotFoundException, NamingException {
 		for (int i = 0; i < results.size(); i++) {
 			event.notifyEvent(results.get(i));
 		}

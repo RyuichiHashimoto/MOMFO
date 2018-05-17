@@ -9,23 +9,32 @@ public class ArrayUtility {
 	public static final String DEFAULT_DELIMITER = ",";
 
 	@SafeVarargs
-	public static <T> T[] veco(T ... v) {
+	public static <T> T[] veco(T... v) {
 		return v;
 	}
 
-	public static double[][] listToDArray(List<Double[]>  d){
-		double[][]  ret = new double[d.size()][];
-		
-		for(int i =0;i<ret.length;i++) {
+	public static double[][] listToDArrays(List<Double[]> d) {
+		double[][] ret = new double[d.size()][];
+
+		for (int i = 0; i < ret.length; i++) {
 			ret[i] = new double[(d.get(i).length)];
-			 for(int j = 0; j < ret[i].length;j++){
-				 ret[i][j] = d.get(i)[j];
-			 }
+			for (int j = 0; j < ret[i].length; j++) {
+				ret[i][j] = d.get(i)[j];
+			}
 		}
 		return ret;
 	}
-	
-	
+
+	public static double[] listToDArray(List<Double> d) {
+		double[] ret = new double[d.size()];
+
+		for (int i = 0; i < ret.length; i++) {
+				ret[i] = d.get(i);
+		}
+		return ret;
+	}
+
+
 	public static double[] fromCSVdouble(String s, String separator) {
 		String[] fields = s.split(separator);
 		double[] retval = new double[fields.length];
@@ -34,6 +43,7 @@ public class ArrayUtility {
 		}
 		return retval;
 	}
+
 	public static int[] fromCSVint(String s, String separator) {
 		String[] fields = s.split(separator);
 		int[] retval = new int[fields.length];
@@ -52,8 +62,4 @@ public class ArrayUtility {
 		return retval;
 	}
 
-	
-	
-
-	
 }

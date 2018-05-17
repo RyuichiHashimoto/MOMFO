@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.io.Writer;
 
+import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
 import Network.GridComputing.StreamProvider;
@@ -18,27 +19,44 @@ public class PopulationResult extends GAResult {
 	public static final String DEFAULT_FILE_NAME = "population.mtd";
 	protected boolean isMaximize;
 	protected CharArrayWriter caWriter;
-
+	protected CommandSetting st;
+	
+	int nOfTrial = 0;
+	int offSet;
+	
 	@Override
 	public void build(CommandSetting s) throws NamingException, IOException, ReflectiveOperationException {
 		this.solver = s.get(ParameterNames.SOLVER);
-		Writer w = ((StreamProvider) solver.setting.get(ParameterNames.STREAM_PROVIDER)).getWriter(getOutputName(s));
-		writer = new BufferedWriter(w);
-		if (w instanceof CharArrayWriter) caWriter = (CharArrayWriter) w;
+		st = s;
 
 		ProblemSet prob = s.get(ParameterNames.PROBLEM_SET);
-//		int nObj = prob.nObjectives();
-//		int nTrials = s.getAsInt(NTRIALS);
-//		isMaximize = prob.isMaximize();
-//		writer.write(Solutionset.MTDHeader(nObj, nTrials, isMaximize));
+		
+		if(s.containsKey(ParameterNames.SEED_OFFSET)){
+			offSet = s.getAsInt(ParameterNames.SEED_OFFSET);
+		} else {
+			offSet = 0;
+		}
 	}
 
 	@Override
-	public void afterTrial() throws IOException {
-//		writer.write(solver.getPopulation().toText(isMaximize));
-//		writer.write("\n");
+	public void afterTrial() throws IOException, NameNotFoundException, NamingException {
+		Writer w = ((StreamProvider) solver.setting.get(ParameterNames.STREAM_PROVIDER)).getWriter(getOutputFinName());
+		writer = new BufferedWriter(w);
+		writer.write(solver.getPopulation().objectiveToStr());
+		writer.write("\n");
+		writer.flush();
 	}
 
+	@Override
+	public void afterInitialization() throws IOException, NameNotFoundException, NamingException {
+		Writer w = ((StreamProvider) solver.setting.get(ParameterNames.STREAM_PROVIDER)).getWriter(getOutputIniName());
+		writer = new BufferedWriter(w);
+		writer.write(solver.getPopulation().objectiveToStr());
+		writer.write("\n");
+		writer.flush();
+		nOfTrial++;
+	}
+	
 	@Override
 	public void save() throws IOException {
 		writer.flush();
@@ -67,10 +85,18 @@ public class PopulationResult extends GAResult {
 		writer.close();
 	}
 
+	protected String getOutputFinName() throws NamingException {
+		return "FinalFUN"+"/" + "FinalFUN"+ (offSet + nOfTrial)+".dat";
+	}
+
+	protected String getOutputIniName() throws NamingException {
+		return "InitialFUN"+"/" + "InitialFUN"+ (offSet + nOfTrial)+".dat";
+	}
+
+	@Override
 	protected String getOutputName(CommandSetting s) throws NamingException {
 		return null;
 	}
 
 
-	
 }

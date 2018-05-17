@@ -43,4 +43,5 @@ public abstract class Operator implements Serializable ,Buildable {
 	public final String getName() {
 		return this.getClass().getName();
 	}
+	
 }

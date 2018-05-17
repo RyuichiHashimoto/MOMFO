@@ -1,86 +1,94 @@
 package momfo.result;
 
-import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Serializable;
-import java.util.List;
 
+import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
-import Network.RunSetting;
-import Network.Solver;
 import Network.GridComputing.StreamProvider;
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.CannotConvertException;
 import lib.experiments.Exception.CommandSetting.notFoundException;
-import lib.util.ArrayUtility;
+import lib.lang.Generics;
 import momfo.operators.evaluator.Evaluator;
 import momfo.util.JMException;
 
 public class IndicatorResult extends GAResult {
+
+	public static final String Default_pckg = "momfo.operators.evaluator";
+
 	protected int recGenIdx_;
 	protected int[] recordGens_;
-	protected Evaluator[] evaluator;
+	protected Evaluator[] finEvaluator;
+	protected Evaluator[] evoEvaluator;
+
 	private double[][] values;
+	StreamProvider streamProvider;
+	int nOfTrial;
+	int offSet;
 
 	@Override
-	public void build(CommandSetting s) throws NamingException, ReflectiveOperationException, IOException, notFoundException, IllegalArgumentException, CannotConvertException, JMException {
+	public void build(CommandSetting s) throws NamingException, ReflectiveOperationException, IOException,
+			notFoundException, IllegalArgumentException, CannotConvertException, JMException {
 		super.build(s);
 		
-		String[] evoevalus = s.getAsSArray(ParameterNames.EVO_EVALUATOR);
-		String[] finevalus = s.getAsSArray(ParameterNames.FIN_EVALUATOR);
-		
-		String[] evol = new String[evoevalus.length + finevalus.length]; 
-		
-		for(int i = 0 ; i < evoevalus.length;i++) {
-			evol[i] = evoevalus[i];
-		}
-		
-		for(int i = 0 ; i < finevalus.length;i++) {
-			evol[i+evoevalus.length] = finevalus[i];
-		}
-		
+		streamProvider = (StreamProvider) s.get(ParameterNames.STREAM_PROVIDER);
 
-		evaluator =  new Evaluator[evol.length];
-		
-		for (int i = 0; i < evoevalus.length; i++) {
-			evaluator[i] = (Evaluator) Class.forName(evoevalus[i]).newInstance(); // TODO: pass setting
-			Solver.buildObject(evaluator[i], s);
+		nOfTrial = 0;
+		if (s.containsKey(ParameterNames.SEED_OFFSET)) {
+			offSet = s.getAsInt(ParameterNames.SEED_OFFSET);
+		} else {
+			offSet = 0;
 		}
-		for (int i = 0; i < finevalus.length; i++) {
-			evaluator[evoevalus.length +i] = (Evaluator) Class.forName(finevalus[i]).newInstance(); // TODO: pass setting
-			Solver.buildObject(evaluator[evoevalus.length+i], s);
-		}		
-//		 fill values with 0
-//		values_[] = new double[indicators_.length][recordGens_.length];
 
-//		if (s.getAsBool("normalize", false)) norm = new double[indicators_.length];
+		String[] evo = s.getAsSArray(ParameterNames.EVO_EVALUATOR);
+		Object[] tempSolEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.FIN_EVALUATOR));
+
+		finEvaluator = new Evaluator[tempSolEval.length];
+		for(int i = 0; i < finEvaluator.length;i++){
+			finEvaluator[i] = Generics.cast(tempSolEval[i]);
+			finEvaluator[i].build(s);
+		}
+		s.putForce(ParameterNames.FIN_EVALUATOR, finEvaluator);
 		
+				
+//		System.out.println( s.getAsInstance(ParameterNames.FIN_EVALUATOR));
 		
+		tempSolEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.EVO_EVALUATOR));
+		evoEvaluator = new Evaluator[tempSolEval.length];
+
+		for(int i = 0; i < finEvaluator.length;i++){
+			evoEvaluator[i] = Generics.cast(tempSolEval[i]);
+			evoEvaluator[i].build((s));
+		}
+		s.putForce(ParameterNames.EVO_EVALUATOR,evoEvaluator);
+
 	}
 
 	public IndicatorResult() {
+
+	}
+
+	@Override
+	public void afterTrial() throws IOException, NameNotFoundException, NamingException {
+//		nOfTrial++;
+//		Object[] d = finEvaluator[0].getValue();
+//		ArrayList<Double> a = Generics.cast(d[0]);
+//		System.out.println(a.get(a.size()-1));
+	}
+
+	@Override
+	public void afterInitialization() throws IOException, NameNotFoundException, NamingException {
 		
-	}
-	
-	@Override
-	public void afterInitialization() {
-		recGenIdx_ = 0;
-		afterGeneration();
-	}
-
-	@Override
-	public void afterGeneration() {
-
+		
 	}
 
 	@Override
 	public void save() throws IOException {
-		
-
+		writer.flush();
 	}
-
 
 	@Override
 	public void close() throws IOException {
@@ -93,19 +101,13 @@ public class IndicatorResult extends GAResult {
 	}
 
 	@Override
-	public void save(CommandSetting s, Object... results) throws IOException, NamingException {
-		assert false;
-		for(int i = 0;i < evaluator.length;i++) {
-			writer = ((StreamProvider) s.get(ParameterNames.STREAM_PROVIDER)).getWriter(getOutputName(s));
-			writer = new BufferedWriter(writer);
-			values = ArrayUtility.listToDArray( (List<Double[]>) evaluator.getValue()).clone();
-		}
-		save();
+	protected String getOutputName(CommandSetting s) throws NamingException {
+		return "Null";
 	}
 
 	@Override
-	protected String getOutputName(CommandSetting s) throws NamingException {
-		return s.getAsStr(RunSetting.NAME_SPACE, "") + "indicators.csv";
+	public void save(CommandSetting s, Object... results) throws IOException, NamingException {
+
 	}
 
 }

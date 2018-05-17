@@ -12,7 +12,6 @@ import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.CannotConvertException;
 import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.lang.NotImplementYet;
-import momfo.core.ProblemSet;
 import momfo.util.JMException;
 
 public class RunSetting {
@@ -36,8 +35,7 @@ public class RunSetting {
 
 	private RunSetting() {}
 
-	/**
-	 *
+	/**	 
 	 * @param args
 	 *  [0] : The setting file to read. <br>
 	 *  rest : Specifies setting in the form of "-<i>settingKey settingValue</i>".
@@ -45,6 +43,7 @@ public class RunSetting {
 	 *         the already associated value is overridden.
 	 * @throws Throwable
 	 */
+	
 	public static void main(String[] args) throws Throwable {
 		CommandSetting s = new CommandSetting(args);
 		Solver solver = buildSolver(s);
@@ -61,7 +60,9 @@ public class RunSetting {
 		if (s.containsKey(OUTPUT_DIR)) {
 			sp = new FileStreamProvider(s.getAsStr(OUTPUT_DIR));
 		} else {
-			sp = new FileStreamProvider(makeOutpuDir(s));
+			String dir = makeOutpuDir(s);
+			sp = new FileStreamProvider( dir);
+			s.put(OUTPUT_DIR,dir);
 		}
 		s.set(STREAM_PROVIDER, sp);
 		Solver solver = (Solver) s.getAsInstance(ParameterNames.SOLVER);
@@ -70,10 +71,6 @@ public class RunSetting {
 		solver.build(s);
 		return solver;
 	}
-
-	/*
-	 * This function returns the java code
-	 */
 
 	public static String getPackageLast(String str){
 		String[] out = str.split(".");
@@ -94,7 +91,7 @@ public class RunSetting {
 		} else  if (ga.equalsIgnoreCase("MOEAD")){
 			ret += ga + "/" + problemSet + "/" + st.getAsSArray(ParameterNames.SCALAR_FUNCTION, ",")[taskNumber] + "/"+"Task" + String.valueOf(taskNumber);
 		} else if (ga.equalsIgnoreCase("MultitaskMOEAD")){
-			ProblemSet p = st.getAsInstanceByName(ParameterNames.PROBLEM_SET, "momfo.problems.MOMFO.NTU");
+//			ProblemSet p = st.getAsInstanceByName(ParameterNames.PROBLEM_SET, "momfo.problems.MOMFO.NTU");
 			ret += ga + "/" + problemSet + "/" + st.getAsSArray(ParameterNames.SCALAR_FUNCTION, ",")[taskNumber] + "/"+"Task" + String.valueOf(taskNumber);
 		} else {
 			throw new NotImplementYet();

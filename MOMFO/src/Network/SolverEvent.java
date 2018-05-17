@@ -2,10 +2,12 @@ package Network;
 
 import java.io.IOException;
 
-public interface SolverEvent {
-	void notifyEvent(SolverResult<?> result) throws IOException;
-}
+import javax.naming.NameNotFoundException;
+import javax.naming.NamingException;
 
+public interface SolverEvent {
+	void notifyEvent(SolverResult<?> result) throws IOException, NameNotFoundException, NamingException;	
+}
 
 enum CommonSolverEvent implements SolverEvent {
 	BEFORE_RUN {
@@ -19,7 +21,6 @@ enum CommonSolverEvent implements SolverEvent {
 		public void notifyEvent(SolverResult<?> result) throws IOException {
 			result.afterRun();
 		}
-
 	},
 	EXCEPTION_RISE {
 		@Override

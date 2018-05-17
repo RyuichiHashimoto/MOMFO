@@ -17,7 +17,7 @@ public class ParameterNames {
 	public static final String N_OF_PARENTS = "N_OF_PARENTS";
 	public static final String DIRECTORY_NAME = "DirectoryNames";
 	public static final String SOLVER = "Solver";
-	public static final String STREAM_PROVIDER = "STREAM_PROVIDER";
+	public static final String STREAM_PROVIDER = "__STREAM_PROVIDER__";
 	public static final String ENVIRONMENTALSELECTION = "EnveirmentalSelection";
 	public static final String IS_MULTITASK = "isMultitask";
 	public static final String  ENVIROMN_SELECT = "Enviromnental";

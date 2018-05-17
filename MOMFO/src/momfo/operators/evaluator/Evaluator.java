@@ -1,20 +1,23 @@
 package momfo.operators.evaluator;
 
 import java.io.IOException;
+import java.io.Writer;
+import java.util.regex.Pattern;
 
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.notFoundException;
 import momfo.core.Operator;
 import momfo.util.JMException;
 
 public abstract class Evaluator extends Operator{
 
-	protected Object evaluation;
+	protected Object[] evaluation;
 
-	protected Object evaluatee;
+	protected Object evaluatee[];
 
 	protected boolean flag;
 	
@@ -27,12 +30,19 @@ public abstract class Evaluator extends Operator{
 	}
 
 	String filePath;
-
+	boolean isMultitask;
+	
 	@Override
 	public void build(CommandSetting s) throws NameNotFoundException, JMException, NamingException,
 			ReflectiveOperationException, IOException, notFoundException {
-//		evaluatee = s.get(ParameterNames.EVALUATEE);
+		isMultitask = s.getAsBool(ParameterNames.IS_MULTITASK);
+		flag = false;
 	}
+	
+	
+	abstract public void initialize();
+		
+	
 
 	public <T>T getValue(){
 		return (T) evaluation;
@@ -47,5 +57,13 @@ public abstract class Evaluator extends Operator{
 		evaluate(evaluatee);
 	}
 
+	abstract public void save(Writer writer) throws IOException; 
+	
+	public String getClassName(){
+		String name = this.getClass().getName();
+		String[] d = name.split(Pattern.quote("."));
+		return d[d.length-1];
+	}
+	
 	public abstract void evaluate(Object d);
 }
