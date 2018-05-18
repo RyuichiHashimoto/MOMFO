@@ -17,7 +17,7 @@ public class PBIForMin extends ScalarzingFunction {
 		if(setting.getAsStr(ParameterNames.PBI_PARAMETER).contains(ParameterNames.SETTING_FILE_DEMILITER))
 			theta = setting.getAsDArray(ParameterNames.PBI_PARAMETER)[setting.getAsInt(ParameterNames.TEMP_TASK_NUMBER)];
 		else
-			theta = setting.get(ParameterNames.PBI_PARAMETER);
+			theta = setting.getAsDouble(ParameterNames.PBI_PARAMETER);
 	}
 
 	public double execute(double[] ind ,double[] weigh,double[] referencePoint) throws JMException{

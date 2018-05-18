@@ -18,8 +18,8 @@ public abstract class Comparator implements Serializable, Buildable {
 	protected boolean isMAX_;
 
 	protected BuildInRandom random;
-	
-	
+
+
 	public Comparator(){
 
 	}

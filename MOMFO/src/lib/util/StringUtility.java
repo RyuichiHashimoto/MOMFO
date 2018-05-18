@@ -2,6 +2,7 @@ package lib.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import lib.io.FileConstants;
 
@@ -189,6 +190,20 @@ public class StringUtility {
 
 	public static String toStringWithIndex(Double[] array,int coeffcient){
 		return toStringWithIndex(array,StringDelimieter,coeffcient);
+	}
+	
+	public static String getClassName(Object s){
+		return getClassName(s.getClass());
+	}
+
+	public static String getClassName(Class<?> s) {
+		String[] d = s.getName().split(Pattern.quote("."));		
+		return d[d.length-1];
+	}
+	
+	public static void main(String[] args) {
+		int d = 0;
+		System.out.println(getClassName(d));
 	}
 
 }

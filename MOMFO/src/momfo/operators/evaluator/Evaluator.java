@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
+import Network.GridComputing.StreamProvider;
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.notFoundException;
@@ -29,7 +30,8 @@ public abstract class Evaluator extends Operator{
 		
 	}
 
-	String filePath;
+	
+	String outputFilePath = "mumin.dat";
 	boolean isMultitask;
 	
 	@Override
@@ -57,7 +59,14 @@ public abstract class Evaluator extends Operator{
 		evaluate(evaluatee);
 	}
 
-	abstract public void save(Writer writer) throws IOException; 
+	abstract public void save(StreamProvider streamProvider) throws IOException; 
+
+	abstract public void save(Writer streamProvider) throws IOException; 
+
+	
+	public void setOutputFileName(String d) {
+		outputFilePath = d;
+	}
 	
 	public String getClassName(){
 		String name = this.getClass().getName();

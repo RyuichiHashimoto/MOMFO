@@ -11,8 +11,10 @@ import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.CannotConvertException;
 import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.io.FileConstants;
 import lib.lang.Generics;
 import momfo.operators.evaluator.Evaluator;
+import momfo.operators.evaluator.NullEvaluator;
 import momfo.util.JMException;
 
 public class IndicatorResult extends GAResult {
@@ -23,8 +25,6 @@ public class IndicatorResult extends GAResult {
 	protected int[] recordGens_;
 	protected Evaluator[] finEvaluator;
 	protected Evaluator[] evoEvaluator;
-
-	private double[][] values;
 	StreamProvider streamProvider;
 	int nOfTrial;
 	int offSet;
@@ -33,7 +33,6 @@ public class IndicatorResult extends GAResult {
 	public void build(CommandSetting s) throws NamingException, ReflectiveOperationException, IOException,
 			notFoundException, IllegalArgumentException, CannotConvertException, JMException {
 		super.build(s);
-		
 		streamProvider = (StreamProvider) s.get(ParameterNames.STREAM_PROVIDER);
 
 		nOfTrial = 0;
@@ -43,47 +42,80 @@ public class IndicatorResult extends GAResult {
 			offSet = 0;
 		}
 
-		String[] evo = s.getAsSArray(ParameterNames.EVO_EVALUATOR);
-		Object[] tempSolEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.FIN_EVALUATOR));
-
-		finEvaluator = new Evaluator[tempSolEval.length];
-		for(int i = 0; i < finEvaluator.length;i++){
-			finEvaluator[i] = Generics.cast(tempSolEval[i]);
-			finEvaluator[i].build(s);
+		if(s.containsKey(ParameterNames.FIN_EVALUATOR)) {
+			Object[] tempSolEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.FIN_EVALUATOR));
+			finEvaluator = new Evaluator[tempSolEval.length];
+			for(int i = 0; i < finEvaluator.length;i++){
+				finEvaluator[i] = Generics.cast(tempSolEval[i]);
+				finEvaluator[i].build(s);
+			}
+		} else {
+			finEvaluator = new Evaluator[1];
+			finEvaluator[0] = new  NullEvaluator();
+			finEvaluator[0].build(s);
 		}
 		s.putForce(ParameterNames.FIN_EVALUATOR, finEvaluator);
 		
-				
-//		System.out.println( s.getAsInstance(ParameterNames.FIN_EVALUATOR));
-		
-		tempSolEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.EVO_EVALUATOR));
-		evoEvaluator = new Evaluator[tempSolEval.length];
+		if(s.containsKey(ParameterNames.EVO_EVALUATOR)) {
+			Object[] tempSolEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.EVO_EVALUATOR));
+			evoEvaluator = new Evaluator[tempSolEval.length];
 
-		for(int i = 0; i < finEvaluator.length;i++){
-			evoEvaluator[i] = Generics.cast(tempSolEval[i]);
-			evoEvaluator[i].build((s));
+			for(int i = 0; i < evoEvaluator.length;i++){
+				evoEvaluator[i] = Generics.cast(tempSolEval[i]);
+				evoEvaluator[i].build((s));
+			}
+		}else {
+			evoEvaluator = new Evaluator[1];
+			evoEvaluator[0] = new  NullEvaluator();
+			evoEvaluator[0].build(s);
 		}
-		s.putForce(ParameterNames.EVO_EVALUATOR,evoEvaluator);
+		
+		s.putForce(ParameterNames.EVO_EVALUATOR,evoEvaluator);			
 
 	}
 
-	public IndicatorResult() {
+	@Override
+	public void afterInitialization() {
 
+		for(int i = 0; i < finEvaluator.length;i++){
+			finEvaluator[i].initialize();;
+		}
+		for(int i = 0; i < evoEvaluator.length;i++){
+			evoEvaluator[i].initialize();;
+		}
+
+
+		for(int i = 0; i < evoEvaluator.length;i++){
+			evoEvaluator[i].evaluate(solver.getPopulation());
+		}
+	}
+
+	@Override
+	public void afterGeneration() {
+		for(int i = 0; i < evoEvaluator.length;i++){
+			evoEvaluator[i].evaluate(solver.getPopulation());
+		}
 	}
 
 	@Override
 	public void afterTrial() throws IOException, NameNotFoundException, NamingException {
-//		nOfTrial++;
-//		Object[] d = finEvaluator[0].getValue();
-//		ArrayList<Double> a = Generics.cast(d[0]);
-//		System.out.println(a.get(a.size()-1));
+		nOfTrial++;
+		for(int i = 0;i < finEvaluator.length;i++) {
+			finEvaluator[i].evaluate(solver.getPopulation());
+		}
+		for(int i = 0; i < evoEvaluator.length;i++){
+			if(!evoEvaluator[i].getClassName().contains("Null")) {
+				evoEvaluator[i].setOutputFileName(evoEvaluator[i].getClassName() + FileConstants.FILEPATH_DEMILITER+evoEvaluator[i].getClassName()+nOfTrial + ".dat");
+				evoEvaluator[i].save(streamProvider);;
+			} else {
+
+				
+			}
+		}
+		
+		
 	}
 
-	@Override
-	public void afterInitialization() throws IOException, NameNotFoundException, NamingException {
-		
-		
-	}
 
 	@Override
 	public void save() throws IOException {
@@ -94,10 +126,11 @@ public class IndicatorResult extends GAResult {
 	public void close() throws IOException {
 		writer.close();
 	}
-
+	public double[][] value;
+	
 	@Override
 	public Serializable getMemento() {
-		return values;
+		return value;
 	}
 
 	@Override

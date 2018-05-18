@@ -26,7 +26,7 @@ public enum GAEvent implements SolverEvent {
 		@Override
 		public void notifyEvent(SolverResult<?> result) throws IOException {
 			if (result instanceof GAResult) ((GAResult) result).afterGeneration();
-		}		
+		}
 	},
 	AFTER_TRIAL {
 		@Override

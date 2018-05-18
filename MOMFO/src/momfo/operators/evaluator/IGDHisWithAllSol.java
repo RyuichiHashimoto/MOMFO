@@ -1,5 +1,6 @@
 package momfo.operators.evaluator;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
@@ -8,9 +9,11 @@ import java.util.List;
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
+import Network.GridComputing.StreamProvider;
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.io.FileConstants;
 import lib.util.StringUtility;
 import momfo.Indicator.IGDCalclator;
 import momfo.Indicator.IGDRef;
@@ -82,12 +85,12 @@ public class IGDHisWithAllSol extends Evaluator {
 		
 	@Override
 	public void evaluate(Object d) {		
-		if(isMultitask){
+		if(!isMultitask){
 			flag = true;		
 			Population pop = (Population)d;
 			double[][] obj = pop.getAllObjectives();
 			((List<Double>)((evaluation)[0])).add(IGDCalclator[0].calcNormalizeIGD(obj,IGDReference[0]));
-		} else if (isMultitask){
+		} else if (isMultitask){			
 			Population[] pops = (Population[])d;
 			for(int i = 0;i < pops.length;i++) {
 				flag = true;		
@@ -126,6 +129,27 @@ public class IGDHisWithAllSol extends Evaluator {
 		for(int i = 0;i < evaluation.length;i++) {
 			evaluation[i] = new ArrayList<Double>();
 		}		  
+	}
+
+	@Override
+	public void save(StreamProvider streamProvider) throws IOException {
+		
+		if(isMultitask){
+			throw new IOException("not implement yet");			
+		} else {
+			Writer writer = streamProvider.getWriter(outputFilePath);
+			Writer d = writer = new BufferedWriter(writer);			
+			List<Double> result = (List<Double>)evaluation[0];
+			int size =  result.size();				
+			for(int i = 0;i < size-1;i++) {
+				writer.write((i+1)+FileConstants.FILE_DEMILITER+result.get(i) + FileConstants.NEWLINE_DEMILITER);				
+			}
+			writer.write((size)+FileConstants.FILE_DEMILITER+result.get(size-1));					
+			writer.close();
+		}
+		
+		
+		
 	}
 	
 	

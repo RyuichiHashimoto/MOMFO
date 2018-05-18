@@ -58,7 +58,7 @@ public class NSGA2 extends GeneticAlgorithm {
 //			SolutionEvaluator
 			problem_.repair(newSolution, null);
 			evaluations_++;
-//			solEvaluator[taskNumber].evaluate(newSolution);
+			solEvaluator[taskNumber].evaluate(newSolution);
 			population_.add(newSolution);
 		}
 	}
@@ -81,6 +81,9 @@ public class NSGA2 extends GeneticAlgorithm {
 		NSGAIIComparator_ = Generics.cast(setting.getAsInstanceByName(ParameterNames.NSGAIIComparator, ""));;
 		setting.putForce(ParameterNames.NSGAIIComparator, NSGAIIComparator_);
 		NSGAIIComparator_.build(setting);
+
+		selection = new LabSpecifiedNSGAIISelection();
+		selection.build(setting);
 	}
 
 	public void initialize(int seed) throws ClassNotFoundException, JMException{
@@ -131,7 +134,6 @@ public class NSGA2 extends GeneticAlgorithm {
 				return;
 			}
 		}
-		return;
 	}
 	 EnvironmentalSelection selection;
 	@Override
@@ -141,8 +143,6 @@ public class NSGA2 extends GeneticAlgorithm {
 		merge_.merge(population_);
 		merge_.merge(offSpring_);
 
-		selection = new LabSpecifiedNSGAIISelection();
-		selection.build(setting);
 		population_ = selection.getNextPopulation(merge_);
 
 		NDSRanking ranki_ = new NDSRanking(false, random);
@@ -152,7 +152,7 @@ public class NSGA2 extends GeneticAlgorithm {
 	}
 
 	@Override
-	public boolean terminate() {
+	public boolean terminate(){
 		return evaluations_ == maxEvaluations_;
 	}
 

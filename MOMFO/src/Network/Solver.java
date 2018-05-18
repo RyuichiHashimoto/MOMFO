@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
+import java.util.regex.Pattern;
 
 import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
@@ -89,21 +90,24 @@ public abstract class Solver implements Runnable, Buildable {
 	public CommandSetting setting;
 	private Throwable thrown_;
 	public ArrayList<SolverResult<?>> results = new ArrayList<>();
-
+	public static final String Result_PACK = "momfo.result.";
+	public static final String DotDelimter = Pattern.quote(".");
+	
+	
 	@Override
 	public void build(CommandSetting s) throws NamingException, IOException, ReflectiveOperationException,
 			notFoundException, IllegalArgumentException, CannotConvertException, JMException {
 		setting = s;
 
 		buildImpl();
-		
+
 		// instantiate Results
 		String[] resultName = s.getAsSArray(RESULT, RESULT_DELIMITER, new String[0]);
 		for (int i = 0; i < resultName.length; i++) {
-			SolverResult<?> rst = Generics.cast(Class.forName(resultName[i]).newInstance());			
+			if(!resultName[i].contains(".") ) { resultName[i] = Result_PACK + resultName[i];}			
+			SolverResult<?> rst = Generics.cast(Class.forName(resultName[i]).newInstance());
 			Solver.buildObject(rst, s);
-			
-			results.add(rst);			
+			results.add(rst);
 		}
 	}
 

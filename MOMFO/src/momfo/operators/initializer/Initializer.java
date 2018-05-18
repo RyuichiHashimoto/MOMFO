@@ -9,7 +9,6 @@ import lib.experiments.NeedParameters;
 import lib.experiments.ParameterNames;
 import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.lang.NeedOverriden;
-import lib.lang.NotImplementYet;
 import lib.lang.NotVerifiedYet;
 import lib.math.BuildInRandom;
 import momfo.core.Operator;
@@ -40,11 +39,11 @@ abstract public class Initializer extends Operator {
 		isMultitask = s.getAsBool(ParameterNames.IS_MULTITASK);
 		if(isMultitask){
 			problemSet = s.get(ParameterNames.PROBLEM_SET);
-			taskNumber = s.get(ParameterNames.TASK_NUMBER);
+			taskNumber = s.getAsInt(ParameterNames.TASK_NUMBER);
 			problem = problemSet.get(taskNumber);
 		} else {
 			if(s.containsKey(ParameterNames.PROBLEM_SET)) {
-				taskNumber = s.get(ParameterNames.TASK_NUMBER);					
+				taskNumber = s.getAsInt(ParameterNames.TASK_NUMBER);					
 				problem = ((ProblemSet) s.get(ParameterNames.PROBLEM_SET)).get(taskNumber);
 			} else if (s.containsKey(ParameterNames.PROBLEM)) {
 //				System.out.println("clear");						

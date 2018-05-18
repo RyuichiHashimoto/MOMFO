@@ -5,13 +5,13 @@ import momfo.core.Solution;
 import momfo.util.JMException;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;
 
-public class NomalMOEADComapator extends MOEADComparator {
+public class NormalMOEADComapator extends MOEADComparator {
 
-	public NomalMOEADComapator() {
+	public NormalMOEADComapator() {
 		super();
 	}
 
-	public NomalMOEADComapator(boolean ismax, BuildInRandom random, ScalarzingFunction d) throws JMException {
+	public NormalMOEADComapator(boolean ismax, BuildInRandom random, ScalarzingFunction d) throws JMException {
 		super(ismax, random, d);
 	}
 

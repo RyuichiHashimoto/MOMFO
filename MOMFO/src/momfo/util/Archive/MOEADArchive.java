@@ -7,7 +7,7 @@ import momfo.core.Population;
 import momfo.core.Solution;
 import momfo.util.JMException;
 import momfo.util.WeightedVector;
-import momfo.util.Comparator.MOEADComparator.NomalMOEADComapator;
+import momfo.util.Comparator.MOEADComparator.NormalMOEADComapator;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;
 import momfo.util.ScalarzingFunction.TchebycheffForMin;
 
@@ -47,8 +47,8 @@ public class MOEADArchive extends SolutionArchive {
 
 		Population ret = new Population(populationSize);
 		ScalarzingFunction ScalarzingFunction_ = new TchebycheffForMin();
-//		NomalMOEADComapator comparator = new NomalMOEADComapator(null, ScalarzingFunction_);
-		NomalMOEADComapator comparator = null;
+//		NormalMOEADComapator comparator = new NormalMOEADComapator(null, ScalarzingFunction_);
+		NormalMOEADComapator comparator = null;
 		
 		comparator.setRefernecePoint(referencePoint);
 

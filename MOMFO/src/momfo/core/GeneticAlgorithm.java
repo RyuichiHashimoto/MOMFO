@@ -143,21 +143,34 @@ public abstract class GeneticAlgorithm implements Serializable {
 		s.put(ParameterNames.CROSSOVER, crossover);
 		mutation = Generics.cast(s.getAsInstanceByName(ParameterNames.MUTATION, genotypePack));
 		s.put(ParameterNames.MUTATION, mutation);
-		parentsSelection = Generics.cast(s.getAsInstanceByName(ParameterNames.ParentsSelection, genotypePack));
+		parentsSelection = Generics.cast(s.getAsInstanceByName(ParameterNames.ParentsSelection, genotypePack + ".selection.ParentsSelection"));
 		s.put(ParameterNames.ParentsSelection, parentsSelection);
 		initialization = Generics.cast(s.getAsInstanceByName(ParameterNames.INITIALIZATION, genotypePack));
 		s.put(ParameterNames.INITIALIZATION, initialization);
 
-		Object[] tempSolEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.SOL_EVALUATOR));
-		solEvaluator = new SolutionEvaluator[tempSolEval.length];
-			
-		for (int i = 0; i < tempSolEval.length; i++) {
-			s.putForce(ParameterNames.TEMP_TASK_NUMBER, i);
-			solEvaluator[i] = Generics.cast(tempSolEval[i]);
-			solEvaluator[i].build(s);
+
+
+
+		if(isMultitask) {
+			Object[] tempSolEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.SOL_EVALUATOR));
+			solEvaluator = new SolutionEvaluator[tempSolEval.length];
+			for (int i = 0; i < tempSolEval.length; i++) {
+				s.putForce(ParameterNames.TEMP_TASK_NUMBER, i);
+				solEvaluator[i] = Generics.cast(tempSolEval[i]);
+				solEvaluator[i].build(s);
+			}
+		} else {
+			solEvaluator = new SolutionEvaluator[1];
+			Object d = Generics.cast(s.getAsInstanceByName(ParameterNames.SOL_EVALUATOR,"momfo.operators.solutionevaluator"));
+			int taskNumber =s.getAsInt(ParameterNames.TASK_NUMBER);;
+			s.putForce(ParameterNames.TEMP_TASK_NUMBER, taskNumber );
+			solEvaluator[0] = Generics.cast(d);
+			solEvaluator[0].build(s);
 		}
-		
-		//		evoEvaluator = Generics.cast(s.getAsInstanceByName(ParameterNames.EVO_EVALUATOR, genotypePack));;
+		s.putForce(ParameterNames.TEMP_TASK_NUMBER, ParameterNames.Default_TEMPTASKNUMBER);
+		s.put(ParameterNames.SOL_EVALUATOR, solEvaluator);
+
+
 		buildImpl(s);
 		initialization.build(s);
 		crossover.build(s);
@@ -176,11 +189,6 @@ public abstract class GeneticAlgorithm implements Serializable {
 
 	abstract public void nextGeneration() throws JMException, NameNotFoundException, notFoundException;
 
-	public void finEvaluation() {
-//		for (int t = 0; t < finEvaluator.length; t++) {
-//			finEvaluator[t].evaluate();
-//		}
-	}
 
 	abstract public boolean terminate();
 
@@ -194,8 +202,9 @@ public abstract class GeneticAlgorithm implements Serializable {
 			throws ReflectiveOperationException, NamingException, IOException, notFoundException, JMException;
 
 	public Population[] getPopulationSet() {
-		// TODO 自動生成されたメソッド・スタブ
-		return null;
+		return populationArray;
 	}
+
+
 
 }

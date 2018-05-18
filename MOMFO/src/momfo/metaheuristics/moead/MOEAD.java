@@ -133,23 +133,26 @@ public class MOEAD extends GeneticAlgorithm{
 		WeightedVector_       = a.getWeight();
 	}
 	public void initPopulation() throws JMException, ClassNotFoundException {
- 		for (int i = 0; i < populationSize_; i++) {
+		
+
+		for (int i = 0; i < populationSize_; i++) {
 			Solution newSolution = new Solution(problem_,random);
 			try {
 				newSolution = new Solution(problem_, random);
 				initialization.initialize(newSolution);
-			} catch(NotVerifiedYet e){				
+			} catch(NotVerifiedYet e){
 				throw new JMException(e.getClass().getName() + "   "+e.getMessage());
 			}
-			
+
 			problem_.repair(newSolution,null);
 			problem_.evaluate(newSolution);
-			
-			
-			solEvaluator[taskNumber].evaluate(newSolution);
+
+
+			solEvaluator[0].evaluate(newSolution);
 
 			evaluations_++;
 			population_.add((newSolution));
+			
 		}
 	}
 
@@ -246,15 +249,18 @@ public class MOEAD extends GeneticAlgorithm{
 	public void initialize(int seed) throws ClassNotFoundException, JMException {
 		super.initialize(seed);
 
+		population_ = new Population(populationSize_);
+		indArray_ = new Solution[problem_.getNumberOfObjectives()];
+		ReferencePoint_ = new double[problem_.getNumberOfObjectives()];
+		evaluations_ = 0;
+
+		
 		setNeighborhood();
 
 
 		initPopulation();
 
 		initReferencePoint();
-
-		population_.printVariablesToFile("initialVAR" + time + ".dat");
-		population_.printObjectivesToFile("InitialFUN" + time + ".dat");
 
 		permutation = new int[populationSize_];
 		Permutation.randomPermutation(permutation,populationSize_,random);
@@ -289,8 +295,8 @@ public class MOEAD extends GeneticAlgorithm{
 
 //			problem_.repair(offSpring[0],null);
 //			problem_.evaluate(offSpring[0]);
-			solEvaluator[taskNumber].evaluate(offSpring[0]);
-			
+			solEvaluator[0].evaluate(offSpring[0]);
+
 			evaluations_++;
 
 			updateReference(offSpring[0]);
@@ -336,56 +342,58 @@ public class MOEAD extends GeneticAlgorithm{
 	protected void buildImpl(CommandSetting s) throws JMException, notFoundException, NamingException, ReflectiveOperationException, IOException {
 
 		problem_ = ((ProblemSet) (setting.get(ParameterNames.PROBLEM_SET)))
-				.get(setting.get(ParameterNames.TASK_NUMBER));
+				.get(setting.getAsInt(ParameterNames.TASK_NUMBER));
 
-		ScalarzingFunctionName = s.get(ParameterNames.SCALAR_FUNCTION);
-		maxEvaluations = s.get(ParameterNames.N_OF_EVALUATIONS);
-		taskNumber = setting.get(ParameterNames.TASK_NUMBER);
+		isMax    = s.getAsBool(ParameterNames.IS_MAX);
 
-		numberOfParents_ = s.get(ParameterNames.N_OF_PARENTS);
-
-		numberOfDivision_    = s.get(ParameterNames.OUTER_DIVISION_SIZE);
-		numberofObjectives_    = problem_.getNumberOfObjectives();
-
-		isMax    = s.get(ParameterNames.IS_MAX);
-
-
-		finEvaluator[taskNumber].build(setting);
-		evoEvaluator[taskNumber].build(setting);
-		ScalarzingFunction_ = Generics.cast(s.getAsInstanceByName(ParameterNames.SCALAR_FUNCTION, ""));;
-		s.putForce(ParameterNames.SCALAR_FUNCTION, ScalarzingFunction_);
+		numberOfParents_ = 2;
 		
-		System.out.println(s.getAsStr(ParameterNames.MOEAD_COMPARATOR));
-		Object[] temp = Generics.cast(s.getAsInstanceArray(ParameterNames.MOEAD_COMPARATOR,ParameterNames.SETTING_FILE_DEMILITER));
-		comparator =  ( Generics.cast(temp[taskNumber]) );
-
-
-		ScalarzingFunction_.build(s);
-		comparator.build(s);
-
-
-		evaluations_ = 0;
-		alpha = s.get(ParameterNames.MOEAD_ALPHA);
-		sizeOfNeiborhoodRepleaced_ = s.get(ParameterNames.SIZE_OF_NEIBORHOOD_At_UPDATE);
-		sizeOfMatingNeiborhood_    = s.get(ParameterNames.SIZE_OF_NEIBORHOOD_At_MATING);
-		InnerWeightVectorDivision_ = s.get(ParameterNames.INNER_DIVISION_SIZE);
-		isInnerWeightVector_ = ((InnerWeightVectorDivision_ > 0));
-
-		populationSize_ = Calculator.conbination(numberofObjectives_-1 + numberOfDivision_ ,numberofObjectives_-1);
-
-		taskNumber =  s.get(ParameterNames.TASK_NUMBER);
-
-		if(isInnerWeightVector_){
-			populationSize_ += Calculator.conbination(numberofObjectives_-1 + InnerWeightVectorDivision_ ,numberofObjectives_-1);
+		ScalarzingFunctionName = s.getAsStr(ParameterNames.SCALAR_FUNCTION);
+		if( (!isMax)&& !ScalarzingFunctionName.endsWith("ForMin")){
+			ScalarzingFunctionName = ScalarzingFunctionName + "ForMin";
+			s.putForce(ParameterNames.SCALAR_FUNCTION, ScalarzingFunctionName);
 		}
 
-		isNorm = s.getAsBool(ParameterNames.IS_NORM);
+		maxEvaluations = s.getAsInt(ParameterNames.N_OF_EVALUATIONS);
+		taskNumber = setting.getAsInt(ParameterNames.TASK_NUMBER);
+
+
+		numberOfDivision_    = s.getAsInt(ParameterNames.OUTER_DIVISION_SIZE);
+		numberofObjectives_    = problem_.getNumberOfObjectives();
+
+		ScalarzingFunction_ = Generics.cast(s.getAsInstanceByName(ParameterNames.SCALAR_FUNCTION, "momfo.util.ScalarzingFunction"));;
+		s.putForce(ParameterNames.SCALAR_FUNCTION, ScalarzingFunction_);
+
+		comparator = Generics.cast(s.getAsInstanceByName(ParameterNames.MOEAD_COMPARATOR,"momfo.util.Comparator.MOEADComparator"));
+		ScalarzingFunction_.build(s);
+		comparator.build(s);
+		evaluations_ = 0;
+		alpha = s.getAsDouble(ParameterNames.MOEAD_ALPHA);
+		sizeOfNeiborhoodRepleaced_ = s.getAsInt(ParameterNames.SIZE_OF_NEIBORHOOD_At_UPDATE);
+		sizeOfMatingNeiborhood_    = s.getAsInt(ParameterNames.SIZE_OF_NEIBORHOOD_At_MATING);
+		
+		if(s.containsKey(ParameterNames.INNER_DIVISION_SIZE)) {
+			InnerWeightVectorDivision_ = s.getAsInt(ParameterNames.INNER_DIVISION_SIZE);
+			isInnerWeightVector_ = ((InnerWeightVectorDivision_ > 0));		
+		} else {
+			InnerWeightVectorDivision_ = 0;
+			isInnerWeightVector_ = false;
+		}
+
+		populationSize_ = Calculator.conbination(numberofObjectives_-1 + numberOfDivision_ ,numberofObjectives_-1);		
+		taskNumber =  s.getAsInt(ParameterNames.TASK_NUMBER);
+
+		if(isInnerWeightVector_){
+			populationSize_ += Calculator.conbination(numberofObjectives_-1 + InnerWeightVectorDivision_ ,numberofObjectives_-1);			
+		}
+		if(!s.containsKey(ParameterNames.IS_NORM)) {
+			isNorm = false;			
+		} else {
+			isNorm = s.getAsBool(ParameterNames.IS_NORM);		
+		}
+		
 		comparator.set(isMax);
 
-		population_ = new Population(populationSize_);
-		indArray_ = new Solution[problem_.getNumberOfObjectives()];
-		ReferencePoint_ = new double[problem_.getNumberOfObjectives()];
-		evaluations_ = 0;
 	}
 
 

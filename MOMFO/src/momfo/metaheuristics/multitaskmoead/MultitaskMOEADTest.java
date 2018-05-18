@@ -55,7 +55,7 @@ class MultitaskMOEADTest {
 		.put(ParameterNames.OUTER_DIVISION_SIZE, (problemNumber== 8 ||problemNumber== 7)  ? "13,99" :"99,99")
 		.put(ParameterNames.MOEAD_ALPHA,"1.0,1.0")
 		.put(ParameterNames.SCALAR_FUNCTION,"momfo.util.ScalarzingFunction.TchebycheffForMin,momfo.util.ScalarzingFunction.TchebycheffForMin")
-		.put(ParameterNames.MOEAD_COMPARATOR,"momfo.util.Comparator.MOEADComparator.NomalMOEADComapator,momfo.util.Comparator.MOEADComparator.NomalMOEADComapator")
+		.put(ParameterNames.MOEAD_COMPARATOR,"momfo.util.Comparator.MOEADComparator.NormalMOEADComapator,momfo.util.Comparator.MOEADComparator.NormalMOEADComapator")
 		.put(ParameterNames.SIZE_OF_NEIBORHOOD_At_UPDATE,"20,20")
 		.put(ParameterNames.IS_NORM,"false,false")
 		.put(ParameterNames.SIZE_OF_NEIBORHOOD_At_MATING,"20,20")

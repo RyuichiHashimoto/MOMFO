@@ -20,7 +20,9 @@ public class UnifiedSpaceEvaluator extends SolutionEvaluator{
 	ProblemSet problemset;
 
 	Decoder decoder;
-
+	private static final String Def_PACK = "momfo.operators.decoder.";
+	
+	
 	@Override
 	@NeedParameters({ParameterNames.PROBLEM_SET})
 	public void build(CommandSetting s) throws notFoundException, ReflectiveOperationException, JMException, NamingException, IOException {
@@ -28,12 +30,12 @@ public class UnifiedSpaceEvaluator extends SolutionEvaluator{
 
 		if(isMultitask) {
 			problemset = s.get(ParameterNames.PROBLEM_SET);
-			decoder = (Decoder) s.getAsInstanceArrayByName(ParameterNames.SOL_DECODER)[taskNumber];
+			decoder = (Decoder) s.getAsInstanceArrayByName(ParameterNames.SOL_DECODER, Def_PACK,ParameterNames.SETTING_FILE_DEMILITER)[taskNumber];
 			decoder.build(s);
 		} else {
 			if(s.containsKey(ParameterNames.PROBLEM_SET)) {
 				problemset = s.get(ParameterNames.PROBLEM_SET);
-				decoder = (Decoder) s.getAsInstanceArrayByName(ParameterNames.SOL_DECODER)[taskNumber];
+				decoder = (Decoder) s.getAsInstanceByName(ParameterNames.SOL_DECODER,Def_PACK);
 				decoder.build(s);
 			}
 		}
@@ -42,7 +44,6 @@ public class UnifiedSpaceEvaluator extends SolutionEvaluator{
 	@Override
 	public void evaluate(Solution sol) throws JMException {
 		double[] value = decoder.decoder(sol);
-
 		double[] obj = problem.evaluate(value);
 //		System.out.println(taskNumber);
 		

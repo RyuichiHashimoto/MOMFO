@@ -54,8 +54,8 @@ public class ParameterNames {
 
 	public static final String  SIZE_OF_NEIBORHOOD_At_UPDATE = "sizeOfNeiborhoodRepleaced";
 	public static final String  SIZE_OF_NEIBORHOOD_At_MATING = "sizeOfNeiborhoodMating";
-	public static final String  OUTER_DIVISION_SIZE = "OUTER_DIVISION_SIZE";
-	public static final String  INNER_DIVISION_SIZE = "INNER_DIVISION_SIZE";
+	public static final String  OUTER_DIVISION_SIZE = "DivisionSize";
+	public static final String  INNER_DIVISION_SIZE = "InnerDivisionSize";
 	public static final String  MOEAD_ALPHA = "MOEAD_ALPHA";
 	public static final String  MOEAD_COMPARATOR = "MOEAD_Comparator";
 	public static final String SCALAR_FUNCTION ="ScalarFunction";

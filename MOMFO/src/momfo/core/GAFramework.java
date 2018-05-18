@@ -75,16 +75,13 @@ public class GAFramework extends Solver{
 		// TODO: record seed value
 		int seed = seeder_.nextSeed();
 		ga_.initialize(seed);
-//		System.out.println(StringUtility.toString(ga_.getPopulation().getAllObjectives()));
 		notifyEvent(AFTER_INTITIALIZATION);
 		while (!ga_.terminate()) {
 			ga_.recombination();
 			ga_.nextGeneration();
 			notifyEvent(AFTER_GENERATION);
 		}
-		ga_.finEvaluation();
 		notifyEvent(AFTER_TRIAL);
-
 	}
 
 	@Command

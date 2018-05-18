@@ -38,7 +38,7 @@ public class SettingResult extends SolverResult<GAFramework> {
 		s.remove("finishedAt");
 		FormatDate fd = FormatDate.getDate();
 		writer.write("runAt: "+ fd);
-		writer.write("\n");
+		writer.write(FileConstants.NEWLINE_DEMILITER);
 		writer.write(solver.setting.toString());
 		writer.flush();
 		s.set("runAt", fd);
@@ -53,8 +53,9 @@ public class SettingResult extends SolverResult<GAFramework> {
 		s.set("finishedAt", finish);
 
 		writer.write("time: "+ FormatDate.readbleTime(time));
-		writer.write("\nfinishedAt: " + finish.toString());
-		writer.write("\n");
+		writer.write(FileConstants.NEWLINE_DEMILITER);
+		writer.write("finishedAt: " + finish.toString());
+		writer.write(FileConstants.NEWLINE_DEMILITER);
 	}
 
 	@Override
@@ -89,13 +90,13 @@ public class SettingResult extends SolverResult<GAFramework> {
 		StreamProvider sp = s.get(RunSetting.STREAM_PROVIDER);
 		try (Writer w = sp.getWriter(getOutputName(s))) {
 			w.write("runAt: "+ earliest);
-			w.write("\n");
+			w.write(FileConstants.NEWLINE_DEMILITER);
 			w.write(s.toString());
-			w.write("\n");
+			w.write(FileConstants.NEWLINE_DEMILITER);
 			w.write("time: "+ FormatDate.readbleTime(comptTime));
-			w.write("\n");
+			w.write(FileConstants.NEWLINE_DEMILITER);
 			w.write("finishedAt: "+ FormatDate.getDate());
-			w.write("\n");
+			w.write(FileConstants.NEWLINE_DEMILITER);
 		}
 	}
 

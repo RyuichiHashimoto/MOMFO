@@ -56,7 +56,7 @@ class MOEADTest {
 		.put(ParameterNames.IGD_CALCLATOR, "momfo.Indicator.IGDHisWithAllSol")
 		.put(ParameterNames.FIN_EVALUATOR, "momfo.operators.evaluator.NullEvaluator,momfo.operators.evaluator.NullEvaluator")
 		.put(ParameterNames.EVO_EVALUATOR, "momfo.operators.evaluator.IGDHisWithAllSol,momfo.operators.evaluator.IGDHisWithAllSol")
-		.put(ParameterNames.MOEAD_COMPARATOR, "momfo.util.Comparator.MOEADComparator.NomalMOEADComapator,momfo.util.Comparator.MOEADComparator.NomalMOEADComapator")
+		.put(ParameterNames.MOEAD_COMPARATOR, "momfo.util.Comparator.MOEADComparator.NormalMOEADComapator,momfo.util.Comparator.MOEADComparator.NormalMOEADComapator")
 		.put(ParameterNames.SIZE_OF_NEIBORHOOD_At_UPDATE,20)
 		.put(ParameterNames.IS_NORM,false)
 		.put(ParameterNames.SIZE_OF_NEIBORHOOD_At_MATING,20)

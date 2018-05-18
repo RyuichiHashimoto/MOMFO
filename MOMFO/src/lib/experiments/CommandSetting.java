@@ -465,6 +465,18 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 	}
 
 
+	public Object[] getAsInstanceArrayByName(String key,String defaultPkg, String delimiter) throws NameNotFoundException, ReflectiveOperationException, notFoundException {
+		String[] classNames = getAsSArray(key, delimiter);
+		Object[] retval = new Object[classNames.length];
+
+		for (int i = 0; i < retval.length; i++) {
+			if(!defaultPkg.endsWith(".")) defaultPkg = defaultPkg+".";
+			if(!classNames[i].contains(".")) classNames[i] =  defaultPkg + classNames[i]; 
+			retval[i] = Class.forName(classNames[i]).newInstance();
+		}
+		return retval;
+	}
+
 	public Object[] getAsInstanceArrayByName(String key, String delimiter) throws NameNotFoundException, ReflectiveOperationException, notFoundException {
 		String[] classNames = getAsSArray(key, delimiter);
 		Object[] retval = new Object[classNames.length];
@@ -472,10 +484,10 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 		for (int i = 0; i < retval.length; i++) {
 			retval[i] = Class.forName(classNames[i]).newInstance();
 		}
-
 		return retval;
 	}
-
+	
+	
 	public Object[] getAsInstanceArrayByName(String key) throws NameNotFoundException, ReflectiveOperationException, notFoundException {
 		return getAsInstanceArrayByName(key,ParameterNames.SETTING_FILE_DEMILITER);
 	}

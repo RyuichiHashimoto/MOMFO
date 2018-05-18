@@ -336,13 +336,13 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 	public void recombination() throws JMException {
 		Solution offspring;
 		// STEP 2. Update
-		
+
 		int count = 0;
 		for (int t = 0; t < problemSet_.countProblem(); t++) {
 			updataTime[t] = 0;
 			updateOptunityTime[t] = 0;
 		}
-		
+
 		for (int t = 0; t < problemSet_.countProblem(); t++) {
 			for (int i = 0; i < populationSize_[t]; i++) {
 				int n = permutation[count++];
@@ -353,9 +353,9 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 				// or int n = i;
 				int tasks = temp[0];
 				n = temp[1];
-								
+
 				// STEP 2.1. Mating selection
-				if (cont[tasks]) {					
+				if (cont[tasks]) {
 					continue;
 				}
 
@@ -373,9 +373,9 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 				}
 
 				parentsNumber = null;
-				
+
 				TaskNumber_List = null;
-		
+
 				// Apply crossover
 				offspring = crossover.crossover(parents)[0];
 
@@ -467,19 +467,34 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		problemSet_ = s.get(ParameterNames.PROBLEM_SET);
 		numberOfTasks = problemSet_.countProblem();
 		isMax = s.getAsBArray(ParameterNames.IS_MAX);
-		isNorm = s.getAsBArray(ParameterNames.IS_NORM);
+
+		if( s.containsKey(ParameterNames.IS_NORM)) {
+			isNorm = s.getAsBArray(ParameterNames.IS_NORM);
+		} else {
+			isNorm = new boolean[numberOfTasks];
+			for(int i = 0;i < numberOfTasks;i++) isNorm[i] = false;
+		}
 		InnerWeightVectorDivision_ = s.getAsNArray(ParameterNames.INNER_DIVISION_SIZE);
 		numberOfParents_ = s.getAsNArray(ParameterNames.N_OF_PARENTS);
 		numberOfDivision_ = s.getAsNArray(ParameterNames.OUTER_DIVISION_SIZE);
-		numberofObjectives_ = problemSet_.getNumberOfObjectives();
+		numberofObjectives_ = new int[numberOfTasks];
 		alpha = s.getAsDArray(ParameterNames.MOEAD_ALPHA);
 		sizeOfNeiborhoodRepleaced_ = s.getAsNArray(ParameterNames.SIZE_OF_NEIBORHOOD_At_UPDATE);
 		sizeOfMatingNeiborhood_ = s.getAsNArray(ParameterNames.SIZE_OF_NEIBORHOOD_At_MATING);
 		maxEvaluations = s.getAsNArray(ParameterNames.N_OF_EVALUATIONS);
 
-		rmp = s.get(ParameterNames.RMP);
-		Object[] sss = s.getAsInstanceArray(ParameterNames.SCALAR_FUNCTION);
-		Object[] ccc = s.getAsInstanceArray(ParameterNames.MOEAD_COMPARATOR);
+		rmp = s.getAsDouble(ParameterNames.RMP);
+		String[] sss = s.getAsSArray(ParameterNames.SCALAR_FUNCTION);
+
+		for(int i = 0;i < sss.length;i++) {
+			if((!isMax[i]) && !sss[i].contains(".") ) sss[i] = "momfo.util.ScalarzingFunction." + sss[i];
+		}
+
+		String[] ccc = s.getAsSArray(ParameterNames.MOEAD_COMPARATOR);
+		for(int i = 0;i < ccc.length;i++) {
+			if((!isMax[i]) && !ccc[i].contains(".") ) ccc[i] = "momfo.util.Comparator.MOEADComparator." + ccc[i];
+		}
+
 		ScalarzingFunction_ = new ScalarzingFunction[numberOfTasks];
 		comparator = new MOEADComparator[numberOfTasks];
 
@@ -488,11 +503,10 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 			task = s.get(ParameterNames.TASK_NUMBER);
 
 		for (int i = 0; i < sss.length; i++) {
-			ScalarzingFunction_[i] = (ScalarzingFunction) sss[i];
-			comparator[i] = (MOEADComparator) ccc[i];
+			ScalarzingFunction_[i] = (ScalarzingFunction) Class.forName(sss[i]).newInstance();
+			comparator[i] = (MOEADComparator)  Class.forName(ccc[i]).newInstance();;
+			numberofObjectives_[i] = problemSet_.get(i).getNumberOfObjectives(); 
 			s.putForce(ParameterNames.TASK_NUMBER, i);
-			finEvaluator[i].build(s);
-			evoEvaluator[i].build(s);
 		}
 		s.putForce(ParameterNames.TASK_NUMBER, task);
 
