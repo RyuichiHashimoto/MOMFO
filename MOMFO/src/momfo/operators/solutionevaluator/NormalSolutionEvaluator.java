@@ -5,13 +5,12 @@ import java.io.IOException;
 import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.experiments.NeedParameters;
 import lib.experiments.ParameterNames;
-import lib.experiments.Exception.CommandSetting.notFoundException;
 import momfo.core.ProblemSet;
 import momfo.core.Solution;
 import momfo.operators.decoder.Decoder;
-import momfo.util.JMException;
 
 public class NormalSolutionEvaluator extends SolutionEvaluator{
 private static final long serialVersionUID = 1L;
@@ -22,7 +21,7 @@ private static final long serialVersionUID = 1L;
 	
 	@Override
 	@NeedParameters({ParameterNames.PROBLEM_SET})
-	public void build(CommandSetting s) throws notFoundException, ReflectiveOperationException, JMException, NamingException, IOException {
+	public void build(CommandSetting s) throws ReflectiveOperationException, JMException, NamingException, IOException {
 		this.build(s);
 		
 		if(isMultitask) {

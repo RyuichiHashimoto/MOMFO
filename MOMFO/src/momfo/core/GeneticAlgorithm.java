@@ -9,8 +9,8 @@ import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.experiments.ParameterNames;
-import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.lang.Generics;
 import lib.lang.NeedOverriden;
 import lib.math.BuildInRandom;
@@ -20,7 +20,6 @@ import momfo.operators.initializer.Initializer;
 import momfo.operators.mutation.Mutation;
 import momfo.operators.selection.ParentsSelection.ParentsSelection;
 import momfo.operators.solutionevaluator.SolutionEvaluator;
-import momfo.util.JMException;
 
 public abstract class GeneticAlgorithm implements Serializable {
 
@@ -89,7 +88,7 @@ public abstract class GeneticAlgorithm implements Serializable {
 		return inputParameters_;
 	}
 
-	public abstract Population execute() throws momfo.util.JMException, ClassNotFoundException;
+	public abstract Population execute() throws lib.experiments.JMException, ClassNotFoundException;
 
 	public void addOperator(String name, Operator operator) {
 		if (operators_ == null) {
@@ -133,7 +132,7 @@ public abstract class GeneticAlgorithm implements Serializable {
 	}
 
 	final public void build(CommandSetting s)
-			throws ReflectiveOperationException, NamingException, IOException, JMException, notFoundException {
+			throws ReflectiveOperationException, NamingException, IOException, JMException{
 		setting = s;
 		random = (BuildInRandom) s.get(ParameterNames.RANDOM_GENERATOR);
 
@@ -187,7 +186,7 @@ public abstract class GeneticAlgorithm implements Serializable {
 
 	abstract public void recombination() throws JMException;
 
-	abstract public void nextGeneration() throws JMException, NameNotFoundException, notFoundException;
+	abstract public void nextGeneration() throws JMException, NameNotFoundException;
 
 
 	abstract public boolean terminate();
@@ -199,7 +198,7 @@ public abstract class GeneticAlgorithm implements Serializable {
 	abstract public Population getPopulation();
 
 	abstract protected void buildImpl(CommandSetting s)
-			throws ReflectiveOperationException, NamingException, IOException, notFoundException, JMException;
+			throws ReflectiveOperationException, NamingException, IOException, JMException;
 
 	public Population[] getPopulationSet() {
 		return populationArray;

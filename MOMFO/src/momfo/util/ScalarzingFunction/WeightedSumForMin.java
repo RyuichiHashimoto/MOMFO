@@ -1,6 +1,6 @@
 package momfo.util.ScalarzingFunction;
 
-import momfo.util.JMException;
+import lib.experiments.JMException;
 
 public class WeightedSumForMin extends ScalarzingFunction{
 

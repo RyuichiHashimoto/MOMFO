@@ -3,12 +3,12 @@ package momfo.problems.MOMFOP.NTU;
 import java.io.IOException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.io.output.fileSubscription;
 import momfo.core.ProblemSet;
 import momfo.core.Solution;
 import momfo.problems.MOMFOP.NTU.base.IO;
 import momfo.problems.MOMFOP.NTU.base.MMZDT;
-import momfo.util.JMException;
 
 public class PIHS extends ProblemSet{
 

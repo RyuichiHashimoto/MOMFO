@@ -3,6 +3,7 @@ package momfo.core;
 
 import static lib.experiments.ParameterNames.*;
 import static momfo.util.GAEvent.*;
+//import static momfo.util.GAEvent.*;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -13,12 +14,10 @@ import Network.Solver;
 import Network.GridComputing.asg.cliche.Command;
 import lib.experiments.CommandSetting;
 import lib.experiments.FormatDate;
+import lib.experiments.JMException;
 import lib.experiments.ParameterNames;
 import lib.experiments.Seeder;
-import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.math.BuildInRandom;
-import momfo.util.JMException;
-
 public class GAFramework extends Solver{
 
 	public int nTrials;
@@ -35,15 +34,19 @@ public class GAFramework extends Solver{
 	@Override
 //	@NeedParameters({NTRIALS, RESULT, SEEDER, SEEDER_SEED, INITIALIZATION,
 //		EVALUATION, RECOMBINATION, MUTATION})
-	protected void buildImpl() throws NamingException, IOException, ReflectiveOperationException, JMException, notFoundException {
+	protected void buildImpl() throws NamingException, IOException, ReflectiveOperationException, JMException {
 		if (!(setting.get(PROBLEM_SET) instanceof ProblemSet)) {
-			setting.putForce(PROBLEM_SET, setting.getToClass(PROBLEM_SET, "momfo.problems.MOMFOP.NTU").getDeclaredConstructor(CommandSetting.class).newInstance(setting));
+			ProblemSet p = (ProblemSet) setting.getToClass(PROBLEM_SET, "momfo.problems.MOMFOP.NTU").getDeclaredConstructor(CommandSetting.class).newInstance(setting);
+			setting.putForce(PROBLEM_SET, p);
 		}
+
+
 		// configurations for GA
 		nTrials = setting.getAsInt(NTRIALS);
+
+
 		seeder_ = (Seeder) setting.getAsInstance(SEEDER);
 		seeder_.setSeed(setting.getAsInt(SEEDER_SEED));
-		
 		try {
 			seeder_.skip(setting.getAsInt(SEED_OFFSET));
 		} catch (NamingException e) {
@@ -51,28 +54,29 @@ public class GAFramework extends Solver{
 		}
 		setting.put(RANDOM_GENERATOR, new BuildInRandom(ParameterNames.DEFAULT_SEED));
 		String ga = setting.getAsStr(GA);
-		
+
 		if (!ga.contains(".")) setting.putForce(GA, DEF_GA_PACKAGE + ga.toLowerCase() +"."+ ga);
 		setting.set(GA, ga_ = setting.getAsInstance(GA));
-		
+
 		ga_.build(setting);
-		
+
 	}
 
 
 	@Override
-	public void solve() throws IOException, ClassNotFoundException, JMException, notFoundException, NamingException {
+	public void solve() throws IOException, ClassNotFoundException, JMException, NamingException {
 		startTime_ = System.currentTimeMillis();
 		System.gc();  // clear heap before running
 
 		for (run_ = 0; run_ < nTrials; run_++) {
 			System.out.println((run_ + 1) + " run has started");
-			runOnce();			
+			runOnce();
 		}
 	}
 
-	public void runOnce() throws IOException, ClassNotFoundException, JMException, notFoundException, NamingException {
+	public void runOnce() throws IOException, ClassNotFoundException, JMException, NamingException {
 		// TODO: record seed value
+
 		int seed = seeder_.nextSeed();
 		ga_.initialize(seed);
 		notifyEvent(AFTER_INTITIALIZATION);
@@ -122,7 +126,7 @@ public class GAFramework extends Solver{
 		return ga_.getPopulationSet();
 	}
 
-	
+
 	public String getGAName() {
 		return ga_.getClass().getSimpleName();
 	}

@@ -1,7 +1,7 @@
 package momfo.metaheuristics.nsga2;
 
+import lib.experiments.JMException;
 import momfo.core.Solution;
-import momfo.util.JMException;
 import momfo.util.Comparator.Comparator;
 
 public class NSGAIIObjectiveComparator_error extends Comparator{

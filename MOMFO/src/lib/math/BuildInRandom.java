@@ -1,6 +1,8 @@
 package lib.math;
 
-public class BuildInRandom {
+import java.io.Serializable;
+
+public class BuildInRandom implements Serializable {
 	private MersenneTwisterFast random = new MersenneTwisterFast(1995);
 
 	int seed = 0;

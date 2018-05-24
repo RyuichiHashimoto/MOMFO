@@ -8,8 +8,8 @@ import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.experiments.ParameterNames;
-import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.lang.Generics;
 import lib.lang.NotVerifiedYet;
 import momfo.core.GeneticAlgorithm;
@@ -19,7 +19,6 @@ import momfo.core.ProblemSet;
 import momfo.core.Solution;
 import momfo.operators.selection.environmentalselection.EnvironmentalSelection;
 import momfo.operators.selection.environmentalselection.LabSpecifiedNSGAIISelection;
-import momfo.util.JMException;
 import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparator;
 import momfo.util.Ranking.NDSRanking;
 
@@ -65,7 +64,7 @@ public class NSGA2 extends GeneticAlgorithm {
 
 	@Override
 	protected void buildImpl(CommandSetting setting)
-			throws ReflectiveOperationException, NamingException, IOException, notFoundException, JMException {
+			throws ReflectiveOperationException, NamingException, IOException, JMException {
 		evaluations_ = 0;
 		maxEvaluations_ = setting.getAsInt(ParameterNames.N_OF_EVALUATIONS);
 		isMAX_ = setting.getAsBool(ParameterNames.IS_MAX);
@@ -137,7 +136,7 @@ public class NSGA2 extends GeneticAlgorithm {
 	}
 	 EnvironmentalSelection selection;
 	@Override
-	public void nextGeneration() throws JMException, NameNotFoundException, notFoundException {
+	public void nextGeneration() throws JMException, NameNotFoundException{
 
 		merge_.clear();
 		merge_.merge(population_);

@@ -1,10 +1,11 @@
 package momfo.core;
 
+import java.io.Serializable;
 import java.util.Map;
 
-import momfo.util.JMException;
+import lib.experiments.JMException;
 
-public abstract class Problem {
+public abstract class Problem implements Serializable{
 
 
 //	public abstract void evaluate(Solution a) throws JMException;

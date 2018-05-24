@@ -6,14 +6,13 @@ import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.experiments.ParameterNames;
-import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.io.FileConstants;
 import momfo.core.Operator;
 import momfo.core.Problem;
 import momfo.core.ProblemSet;
 import momfo.core.Solution;
-import momfo.util.JMException;
 
 @SuppressWarnings("serial")
 abstract public class SolutionEvaluator extends Operator {
@@ -24,7 +23,7 @@ abstract public class SolutionEvaluator extends Operator {
 	
 	int taskNumber;
 	@Override	
-	public void build(CommandSetting s) throws NameNotFoundException, notFoundException, ReflectiveOperationException, JMException, NamingException, IOException {
+	public void build(CommandSetting s) throws NameNotFoundException, ReflectiveOperationException, JMException, NamingException, IOException {
 		isMultitask = s.getAsBool(ParameterNames.IS_MULTITASK);
 		
 		if(isMultitask) {
@@ -37,7 +36,7 @@ abstract public class SolutionEvaluator extends Operator {
 			} else if (s.containsKey(ParameterNames.PROBLEM)) { 
 				problem = (s.get(ParameterNames.PROBLEM));
 			} else {
-				throw new notFoundException (this.getClass().getName()+": sorry we cannot found "+ ParameterNames.PROBLEM+ "/"+ ParameterNames.PROBLEM_SET+" key. please config the setting"+FileConstants.NEWLINE_DEMILITER+FileConstants.NEWLINE_DEMILITER +s.toString());
+				throw new NameNotFoundException(this.getClass().getName()+": sorry we cannot found "+ ParameterNames.PROBLEM+ "/"+ ParameterNames.PROBLEM_SET+" key. please config the setting"+FileConstants.NEWLINE_DEMILITER+FileConstants.NEWLINE_DEMILITER +s.toString());
 			}
 		}
 		

@@ -1,8 +1,8 @@
 package momfo.operators.selection.ParentsSelection;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import momfo.core.Population;
-import momfo.util.JMException;
 
 public class NullSelection extends ParentsSelection {
 

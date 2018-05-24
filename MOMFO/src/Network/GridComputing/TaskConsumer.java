@@ -19,16 +19,17 @@ public class TaskConsumer extends Thread{
 	}
 
 	public void run(){
-		try (ServerSocket ss = new ServerSocket(NetworkConstants.PORT_NUMBER)){
+
+		try (ServerSocket ss = new ServerSocket(NetworkConstants.REQUEST_PORT_NUMBER)){
 			while(master.isAlive()){
 				try {
 					acceptRequest(ss);
 				} catch (IOException ioe) {
-					System.err.println("Failed to close stream.");
 					ioe.printStackTrace();
 				}
 			}
 		} catch (IOException e) {
+			System.out.println("通信エラー発生");
 		}
 	}
 
@@ -37,6 +38,7 @@ public class TaskConsumer extends Thread{
 			if (!master.isAlive()) return;
 
 			try (ObjectInputStream ois = new ObjectInputStream(s.getInputStream())) {
+
 				Task[] tasks = (Task[]) ois.readObject();
 				master.addTasks(tasks);
 			} catch (ClassNotFoundException cnfe) {

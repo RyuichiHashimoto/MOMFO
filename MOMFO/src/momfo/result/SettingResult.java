@@ -14,18 +14,19 @@ import Network.SolverResult;
 import Network.GridComputing.StreamProvider;
 import lib.experiments.CommandSetting;
 import lib.experiments.FormatDate;
-import lib.experiments.Exception.CommandSetting.CannotConvertException;
-import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.experiments.JMException;
+import lib.experiments.ParameterNames;
 import lib.io.FileConstants;
 import momfo.core.GAFramework;
-import momfo.util.JMException;
+
 
 // TODO: sort
 public class SettingResult extends SolverResult<GAFramework> {
 	@Override
-	public void build(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException, notFoundException, IllegalArgumentException, CannotConvertException, JMException {		
+	public void build(CommandSetting s) throws ReflectiveOperationException, NamingException, IOException, IllegalArgumentException, JMException {
 		super.build(s);
 	}
+
 
 	@Override
 	public void beforeRun() throws IOException {
@@ -53,8 +54,7 @@ public class SettingResult extends SolverResult<GAFramework> {
 		s.set("finishedAt", finish);
 
 		writer.write("time: "+ FormatDate.readbleTime(time));
-		writer.write(FileConstants.NEWLINE_DEMILITER);
-		writer.write("finishedAt: " + finish.toString());
+		writer.write(FileConstants.NEWLINE_DEMILITER+"finishedAt: " + finish.toString());
 		writer.write(FileConstants.NEWLINE_DEMILITER);
 	}
 
@@ -90,9 +90,9 @@ public class SettingResult extends SolverResult<GAFramework> {
 		StreamProvider sp = s.get(RunSetting.STREAM_PROVIDER);
 		try (Writer w = sp.getWriter(getOutputName(s))) {
 			w.write("runAt: "+ earliest);
-			w.write(FileConstants.NEWLINE_DEMILITER);
+			w.write("\n");
 			w.write(s.toString());
-			w.write(FileConstants.NEWLINE_DEMILITER);
+			w.write("\n");
 			w.write("time: "+ FormatDate.readbleTime(comptTime));
 			w.write(FileConstants.NEWLINE_DEMILITER);
 			w.write("finishedAt: "+ FormatDate.getDate());
@@ -110,22 +110,22 @@ public class SettingResult extends SolverResult<GAFramework> {
 		writer.close();
 	}
 
+
 	@Override
 	public Serializable getMemento() {
 		CommandSetting s = solver.setting;
+		s.remove(ParameterNames.SOLVER);
 		for (Map.Entry<String, Object> e: s.entrySet()) {
 			if (!(e.getValue() instanceof Serializable)) {
-				e.setValue(e.getValue().toString());
+				s.putForce(e.getKey(), e.getValue().toString());
 			}
 		}
+
 		return s;
 	}
-
 	@Override
 	protected String getOutputName(CommandSetting s) throws NamingException {
-		return s.getAsStr(RunSetting.NAME_SPACE, "") + "Setting" + FileConstants.FILEPATH_DEMILITER+"info.ini";
+		return s.getAsStr(RunSetting.NAME_SPACE, "") + "/Setting/Setting.st";
 	}
-
-
 
 }

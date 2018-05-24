@@ -3,6 +3,7 @@ package momfo.util;
 import java.util.ArrayList;
 import java.util.List;
 
+import lib.experiments.JMException;
 import lib.math.BuildInRandom;
 import lib.math.Permutation;
 import momfo.core.Population;

@@ -2,8 +2,8 @@ package momfo.util.Comparator.MultiIslandMOEADComparator;
 
 import java.util.HashMap;
 
+import lib.experiments.JMException;
 import lib.math.BuildInRandom;
-import momfo.util.JMException;
 import momfo.util.ReferencePoint;
 import momfo.util.WeightedVector;
 import momfo.util.Comparator.Comparator;

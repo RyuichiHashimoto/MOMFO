@@ -3,8 +3,9 @@ package momfo.problems.SOP;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.Serializable;
 
-public abstract class Function {
+public abstract class Function implements Serializable{
 
 	double[][] rotationMatrix_;
 

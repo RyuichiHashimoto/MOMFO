@@ -1,9 +1,9 @@
 package momfo.util.Archive;
 
+import lib.experiments.JMException;
 import lib.math.Distance;
 import momfo.core.Population;
 import momfo.core.Solution;
-import momfo.util.JMException;
 
 /*
  *

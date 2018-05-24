@@ -3,9 +3,8 @@ package momfo.operators.selection.ParentsSelection;
 import javax.naming.NameNotFoundException;
 
 import lib.experiments.CommandSetting;
-import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.experiments.JMException;
 import momfo.core.Population;
-import momfo.util.JMException;
 
 public class RandomSelectionWithReplacement extends ParentsSelection{
 
@@ -17,7 +16,7 @@ public class RandomSelectionWithReplacement extends ParentsSelection{
 		return perm;
 	}
 	
-	public void build(CommandSetting st) throws NameNotFoundException, JMException, notFoundException {
+	public void build(CommandSetting st) throws NameNotFoundException, JMException{
 		super.build(st);
 	}
 	

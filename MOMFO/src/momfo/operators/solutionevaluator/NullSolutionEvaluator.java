@@ -1,7 +1,7 @@
 package momfo.operators.solutionevaluator;
 
+import lib.experiments.JMException;
 import momfo.core.Solution;
-import momfo.util.JMException;
 
 public class NullSolutionEvaluator extends SolutionEvaluator{
 

@@ -5,13 +5,12 @@ import java.io.IOException;
 import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.experiments.NeedParameters;
 import lib.experiments.ParameterNames;
-import lib.experiments.Exception.CommandSetting.notFoundException;
 import momfo.core.ProblemSet;
 import momfo.core.Solution;
 import momfo.operators.decoder.Decoder;
-import momfo.util.JMException;
 
 public class UnifiedSpaceEvaluator extends SolutionEvaluator{
 
@@ -21,11 +20,11 @@ public class UnifiedSpaceEvaluator extends SolutionEvaluator{
 
 	Decoder decoder;
 	private static final String Def_PACK = "momfo.operators.decoder.";
-	
-	
+
+
 	@Override
 	@NeedParameters({ParameterNames.PROBLEM_SET})
-	public void build(CommandSetting s) throws notFoundException, ReflectiveOperationException, JMException, NamingException, IOException {
+	public void build(CommandSetting s) throws ReflectiveOperationException, JMException, NamingException, IOException {
 		super.build(s);
 
 		if(isMultitask) {
@@ -46,7 +45,7 @@ public class UnifiedSpaceEvaluator extends SolutionEvaluator{
 		double[] value = decoder.decoder(sol);
 		double[] obj = problem.evaluate(value);
 //		System.out.println(taskNumber);
-		
+
 		if(obj.length != sol.getNumberOfObjectives()) {
 //			System.out.println(StringUtility.toString(obj));
 			sol.rescaleObjectives(obj.length);

@@ -26,9 +26,9 @@ import static lib.experiments.ParameterNames.*;
 import javax.naming.NameNotFoundException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.experiments.NeedParameters;
 import momfo.core.Solution;
-import momfo.util.JMException;
 
 /**
  * This class allows to apply a SBX crossover operator using two parent

@@ -8,14 +8,10 @@ import javax.naming.NamingException;
 
 import Network.GridComputing.StreamProvider;
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.experiments.ParameterNames;
-import lib.experiments.Exception.CommandSetting.CannotConvertException;
-import lib.experiments.Exception.CommandSetting.notFoundException;
-import lib.io.FileConstants;
 import lib.lang.Generics;
 import momfo.operators.evaluator.Evaluator;
-import momfo.operators.evaluator.NullEvaluator;
-import momfo.util.JMException;
 
 public class IndicatorResult extends GAResult {
 
@@ -23,18 +19,18 @@ public class IndicatorResult extends GAResult {
 
 	protected int recGenIdx_;
 	protected int[] recordGens_;
-	protected Evaluator[] finEvaluator;
 	protected Evaluator[] evoEvaluator;
 	StreamProvider streamProvider;
 	int nOfTrial;
 	int offSet;
+	boolean isMultitask;
 
 	@Override
 	public void build(CommandSetting s) throws NamingException, ReflectiveOperationException, IOException,
-			notFoundException, IllegalArgumentException, CannotConvertException, JMException {
+			 IllegalArgumentException, JMException {
 		super.build(s);
 		streamProvider = (StreamProvider) s.get(ParameterNames.STREAM_PROVIDER);
-
+		isMultitask = s.getAsBool(ParameterNames.IS_MULTITASK);
 		nOfTrial = 0;
 		if (s.containsKey(ParameterNames.SEED_OFFSET)) {
 			offSet = s.getAsInt(ParameterNames.SEED_OFFSET);
@@ -42,95 +38,76 @@ public class IndicatorResult extends GAResult {
 			offSet = 0;
 		}
 
-		if(s.containsKey(ParameterNames.FIN_EVALUATOR)) {
-			Object[] tempSolEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.FIN_EVALUATOR));
-			finEvaluator = new Evaluator[tempSolEval.length];
-			for(int i = 0; i < finEvaluator.length;i++){
-				finEvaluator[i] = Generics.cast(tempSolEval[i]);
-				finEvaluator[i].build(s);
-			}
-		} else {
-			finEvaluator = new Evaluator[1];
-			finEvaluator[0] = new  NullEvaluator();
-			finEvaluator[0].build(s);
-		}
-		s.putForce(ParameterNames.FIN_EVALUATOR, finEvaluator);
-		
-		if(s.containsKey(ParameterNames.EVO_EVALUATOR)) {
+		if (s.containsKey(ParameterNames.EVO_EVALUATOR)) {
 			Object[] tempSolEval = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.EVO_EVALUATOR));
 			evoEvaluator = new Evaluator[tempSolEval.length];
 
-			for(int i = 0; i < evoEvaluator.length;i++){
+			for (int i = 0; i < evoEvaluator.length; i++) {
 				evoEvaluator[i] = Generics.cast(tempSolEval[i]);
 				evoEvaluator[i].build((s));
 			}
-		}else {
-			evoEvaluator = new Evaluator[1];
-			evoEvaluator[0] = new  NullEvaluator();
-			evoEvaluator[0].build(s);
 		}
-		
-		s.putForce(ParameterNames.EVO_EVALUATOR,evoEvaluator);			
+
+		s.putForce(ParameterNames.EVO_EVALUATOR, evoEvaluator);
 
 	}
 
 	@Override
 	public void afterInitialization() {
 
-		for(int i = 0; i < finEvaluator.length;i++){
-			finEvaluator[i].initialize();;
-		}
-		for(int i = 0; i < evoEvaluator.length;i++){
-			evoEvaluator[i].initialize();;
+		for (int i = 0; i < evoEvaluator.length; i++) {
+			evoEvaluator[i].initialize();
 		}
 
-
-		for(int i = 0; i < evoEvaluator.length;i++){
-			evoEvaluator[i].evaluate(solver.getPopulation());
+		if(isMultitask) {
+			for (int i = 0; i < evoEvaluator.length; i++) {
+				evoEvaluator[i].evaluate(solver.getPopulationSet());
+			}
+		} else {
+			for (int i = 0; i < evoEvaluator.length; i++) {
+				evoEvaluator[i].evaluate(solver.getPopulation());
+			}
 		}
 	}
 
 	@Override
 	public void afterGeneration() {
-		for(int i = 0; i < evoEvaluator.length;i++){
-			evoEvaluator[i].evaluate(solver.getPopulation());
+
+		if(isMultitask) {
+			for (int i = 0; i < evoEvaluator.length; i++) {
+				evoEvaluator[i].evaluate(solver.getPopulationSet());
+			}
+		} else {
+			for (int i = 0; i < evoEvaluator.length; i++) {
+				evoEvaluator[i].evaluate(solver.getPopulation());
+			}
 		}
 	}
 
 	@Override
 	public void afterTrial() throws IOException, NameNotFoundException, NamingException {
 		nOfTrial++;
-		for(int i = 0;i < finEvaluator.length;i++) {
-			finEvaluator[i].evaluate(solver.getPopulation());
+		for(int i = 0;i < evoEvaluator.length;i++) {
+			evoEvaluator[i].addArchive();
 		}
-		for(int i = 0; i < evoEvaluator.length;i++){
-			if(!evoEvaluator[i].getClassName().contains("Null")) {
-				evoEvaluator[i].setOutputFileName(evoEvaluator[i].getClassName() + FileConstants.FILEPATH_DEMILITER+evoEvaluator[i].getClassName()+nOfTrial + ".dat");
-				evoEvaluator[i].save(streamProvider);;
-			} else {
-
-				
-			}
-		}
-		
-		
 	}
-
 
 	@Override
 	public void save() throws IOException {
-		writer.flush();
+		for(int i = 0;i < evoEvaluator.length;i++) {
+			evoEvaluator[i].save(streamProvider,"",offSet);
+		}
 	}
 
 	@Override
 	public void close() throws IOException {
 		writer.close();
 	}
-	public double[][] value;
-	
+
+
 	@Override
-	public Serializable getMemento() {
-		return value;
+	public Serializable getMemento(){
+		return evoEvaluator;
 	}
 
 	@Override
@@ -139,8 +116,15 @@ public class IndicatorResult extends GAResult {
 	}
 
 	@Override
-	public void save(CommandSetting s, Object... results) throws IOException, NamingException {
+	public void save(CommandSetting s, Object... results) throws IOException, NamingException{
+		StreamProvider sp = s.get(ParameterNames.STREAM_PROVIDER);
+		isMultitask = s.getAsBool(ParameterNames.IS_MULTITASK);
 
+		Evaluator[] evaluator = new Evaluator[((Object[])(results[0])).length];
+		for(int i = 0;i < evaluator.length;i++) {
+			evaluator[i] = Generics.cast(((Object[])(results[0]))[i]);
+			evaluator[i].save(sp,s.getAsStr(ParameterNames.NAME_SPACE),s.getAsInt(ParameterNames.SEED_OFFSET));
+		}
 	}
 
 }

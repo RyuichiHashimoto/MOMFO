@@ -1,7 +1,5 @@
 package Network.GridComputing;
 
-import static lib.experiments.ParameterNames.*;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -10,10 +8,13 @@ import java.net.Socket;
 import java.net.URL;
 import java.net.URLClassLoader;
 
+import javax.naming.NameNotFoundException;
+
 import Network.Solver;
 import Network.SolverResult;
 import Network.Constants.NetworkConstants;
 import lib.experiments.CommandSetting;
+import lib.experiments.ParameterNames;
 
 /*
  * This class manage the assigned tasks to be performed from a Master node.
@@ -32,13 +33,11 @@ public class Slave {
 
 	CommandSetting setting;
 
-	String masterHostName = "hughes.cs.osakafu-u.ac.jp";
-
+	public static final String masterHostName = "hughes.cs.osakafu-u.ac.jp";
 
 	public static void main(String[] args) throws Exception {
 		Slave slave = new Slave();
-		Socket socket = new Socket("hughes.cs.osakafu-u.ac.jp", NetworkConstants.PORT_NUMBER);
-//		Socket socket = new Socket(NetworkConstants.MASTER_HOST, NetworkConstants.PORT_NUMBER);
+		Socket socket = new Socket(masterHostName, NetworkConstants.SLAVE_PORT_NUMBER);
 		ObjectOutputStream oos;
 		SlaveDeadHook deadhook;
 		// notify the unexpected death of salve to the master
@@ -59,18 +58,21 @@ public class Slave {
 		socket.close();
 	}
 
-	/** Accepts a task and return the result. */
-	private void runClient(ObjectInputStream ois, ObjectOutputStream oos) throws IOException, ReflectiveOperationException {
+	/** Accepts a task and return the result.
+	 * @throws NameNotFoundException */
+	private void runClient(ObjectInputStream ois, ObjectOutputStream oos) throws IOException, ReflectiveOperationException, NameNotFoundException {
+		System.out.println("I'm waiting for the first setting...");
 		setting = (CommandSetting) ois.readObject();
-
 		// receive task
 		while (!setting.containsKey(NetworkConstants.TERMINATE_SIGNAL)) {
+
 			// run the solver
 			Throwable thrown = null;
 			try {
 				runSolver();
 			} catch (Throwable t) {
 				thrown = t;
+				System.out.println(t);
 			}
 
 			// send results
@@ -78,7 +80,6 @@ public class Slave {
 				// successfully finished
 				oos.writeObject(SlaveResponse.FINISH);
 				oos.writeInt(solver_.results.size());
-
 				for (SolverResult<?> r: solver_.results) {
 					oos.writeObject(r.getMemento());
 					r.close();
@@ -92,9 +93,8 @@ public class Slave {
 			}
 			oos.flush();
 			oos.reset();
-
-			// prepare for the next run
 			unload();
+			System.out.println("I'm waiting for next setting...");
 			setting = (CommandSetting) ois.readObject();  // accepts next setting
 		}
 	}
@@ -102,21 +102,22 @@ public class Slave {
 	private static final int TRIAL = 30;
 
 	private void unload() throws IOException {
-		//streamProvider_.clear();
-//		streamProvider_ = new ArrayStreamProvider();
+		streamProvider_.clear();
+		streamProvider_ = new ArrayStreamProvider();
 		setting.clear();
 		setting = null;
-
+		solver_ = null;
 		WeakReference<URLClassLoader> refCL = new WeakReference<URLClassLoader>(loader_);
 		loader_.close();
 		loader_ = null;
 		Thread.currentThread().setContextClassLoader(null);
+
 		for (int i = 0; i < TRIAL; i++) {
 			try {
 				Thread.sleep(100);
 			} catch (InterruptedException e) {}
 			System.gc();
-			if (refCL.get() == null) return;
+			if (refCL.get() == null) {return;}
 		}
 		throw new IOException("Unloading failed.");
 	}
@@ -127,12 +128,12 @@ public class Slave {
 
 	/** Runs optimizer. */
 	protected void runSolver() throws Throwable {
-		loader_ = new URLClassLoader(veco(new URL("jar:file:emoa/emoa.jar!/")));
-		Thread.currentThread().setContextClassLoader(loader_);
 
-		solver_ = (Solver) loader_.loadClass(setting.getAsStr(SOLVER)).newInstance();
-		setting.put(SOLVER, solver_);
-		setting.put(STREAM_PROVIDER, streamProvider_);
+		loader_ = new URLClassLoader(veco(new URL("jar:file:momfo/momfo.jar!/")));
+		Thread.currentThread().setContextClassLoader(loader_);
+		solver_ = (Solver) loader_.loadClass(setting.getAsStr(ParameterNames.SOLVER)).newInstance();
+		setting.putForce(ParameterNames.SOLVER, solver_);
+		setting.putForce(ParameterNames.STREAM_PROVIDER, streamProvider_);
 		solver_.build(setting);
 	    solver_.throwingRun();
 

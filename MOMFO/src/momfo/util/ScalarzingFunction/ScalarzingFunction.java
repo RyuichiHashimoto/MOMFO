@@ -1,14 +1,16 @@
 package momfo.util.ScalarzingFunction;
 
+import java.io.Serializable;
+
 import javax.naming.NameNotFoundException;
 
 import Network.Buildable;
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.lang.NeedOverriden;
 import momfo.core.Solution;
-import momfo.util.JMException;
 
-public abstract class ScalarzingFunction implements Buildable{
+public abstract class ScalarzingFunction implements Serializable,Buildable{
 
 	
 	@NeedOverriden

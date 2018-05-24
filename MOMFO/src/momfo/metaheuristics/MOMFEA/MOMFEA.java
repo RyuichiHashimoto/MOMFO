@@ -27,14 +27,13 @@ import java.util.HashMap;
 import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
-import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.experiments.JMException;
 import lib.math.Permutation;
 import momfo.core.GeneticAlgorithm;
 import momfo.core.Operator;
 import momfo.core.Population;
 import momfo.core.Solution;
 import momfo.operators.selection.ParentsSelection.ParentsSelection;
-import momfo.util.JMException;
 import momfo.util.Sort;
 import momfo.util.Comparator.Comparator;
 import momfo.util.Comparator.CrowdingDistanceComparator;
@@ -72,7 +71,7 @@ public class MOMFEA extends GeneticAlgorithm {
 
 	HashMap parameters;
 
-	
+
 	private ParentsSelection selection_ ;//= new BinaryTournament();
 	private Comparator comparator_binary;
 	private  NSGAIIComparator  comparator_Dominance;
@@ -232,7 +231,7 @@ public class MOMFEA extends GeneticAlgorithm {
 			if (evaluations_ == maxEvaluations_){
 				return true;
 			}
-			
+
 		} // for
 */
 		return false;
@@ -376,7 +375,7 @@ public class MOMFEA extends GeneticAlgorithm {
 				offSpring = (Solution[]) crossover.crossover(parents);
 				offSpring[0] = mutation.mutation(offSpring[0]);
 				offSpring[1] = mutation.mutation(offSpring[1]);
-				
+
 				int p0 = random.nextIntIE(0, problemSet_.countProblem());
 				int p1 = random.nextIntIE(0, problemSet_.countProblem());
 			//	int p1 = 1 - p0;
@@ -451,9 +450,9 @@ public class MOMFEA extends GeneticAlgorithm {
 
 	@Override
 	protected void buildImpl(CommandSetting s)
-			throws ReflectiveOperationException, NamingException, IOException, notFoundException, JMException {
+			throws ReflectiveOperationException, NamingException, IOException, JMException {
 		// TODO 自動生成されたメソッド・スタブ
-		
+
 	}
 
 

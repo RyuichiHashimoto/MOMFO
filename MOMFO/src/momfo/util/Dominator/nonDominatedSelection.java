@@ -1,8 +1,8 @@
 package momfo.util.Dominator;
 
+import lib.experiments.JMException;
 import lib.math.BuildInRandom;
 import momfo.core.Population;
-import momfo.util.JMException;
 
 public class nonDominatedSelection extends Dominance{
 

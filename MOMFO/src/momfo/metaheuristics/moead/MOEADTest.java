@@ -11,18 +11,15 @@ import javax.naming.NamingException;
 import org.junit.jupiter.api.Test;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.experiments.ParameterNames;
-import lib.experiments.Exception.CommandSetting.CannotConvertException;
-import lib.experiments.Exception.CommandSetting.notFoundException;
-import lib.lang.Generics;
 import momfo.core.GAFramework;
-import momfo.util.JMException;
 
 
 class MOEADTest {
 
 	@Test
-	public void test() throws JMException, notFoundException, IllegalArgumentException, CannotConvertException, NamingException, IOException, ReflectiveOperationException {
+	public void test() throws JMException,  IllegalArgumentException,  NamingException, IOException, ReflectiveOperationException {
 		for (int i = 0; i < 9; i++) {
 
 			eachTest(i);
@@ -32,7 +29,7 @@ class MOEADTest {
 	private final String[] ProblemName = { "CIHS", "CIMS", "CILS", "PIHS", "PIMS", "PILS", "NIHS", "NIMS", "NILS" };
 
 	public void eachTestTask(int problemNumber, int taskNumber)
-			throws JMException, notFoundException, IllegalArgumentException, CannotConvertException, NamingException, IOException, ReflectiveOperationException {
+			throws JMException, IllegalArgumentException,  NamingException, IOException, ReflectiveOperationException {
 		CommandSetting setting = new CommandSetting();
 
 
@@ -92,7 +89,7 @@ class MOEADTest {
 		}
 	}
 
-	public void eachTest(int problemNumber) throws JMException, notFoundException, IllegalArgumentException, CannotConvertException, NamingException, IOException, ReflectiveOperationException {
+	public void eachTest(int problemNumber) throws JMException, IllegalArgumentException, NamingException, IOException, ReflectiveOperationException {
 //		eachTestTask(problemNumber,0);
 		eachTestTask(problemNumber,1);
 	}

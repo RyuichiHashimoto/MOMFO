@@ -1,5 +1,7 @@
 package momfo.util;
 
+import java.io.Serializable;
+
 import lib.math.Calculator;
 
 /*
@@ -8,7 +10,7 @@ import lib.math.Calculator;
  * this cluss may be used for the MOMFEA (now 2017/5/17)
  *
  */
-public class WeightedVector {
+public class WeightedVector implements Serializable{
 
 	double[] weightedVector_;
 

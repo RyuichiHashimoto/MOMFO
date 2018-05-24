@@ -62,4 +62,38 @@ public class ArrayUtility {
 		return retval;
 	}
 
+	public static double[] doubleValue(String[] nums) {
+		return doubleValue(nums, nums.length);
+	}
+	public static int[] sequence(int len) {
+		return sequence(0, len);
+	}
+
+	public static int[] sequence(int from, int len) {
+		return sequence(from, len, 1);
+	}
+
+	public static int[] sequence(int from, int len, int step) {
+		int[] retval = new int[len];
+		retval[0] = from;
+		for (int i = 0; i < retval.length - 1; i++) {
+			retval[i + 1] = retval[i] + step;
+		}
+		return retval;
+	}
+	public static int[] toInt(double[] da) {
+		int[] retval = new int[da.length];
+		for (int i = 0; i < da.length; i++) {
+			retval[i] = (int) da[i];
+		}
+		return retval;
+	}
+	public static double[] doubleValue(String[] nums, int length) {
+		double[] retval = new double[length];
+		for (int i = 0; i < length; i++) {
+			retval[i] = Double.parseDouble(nums[i]);
+		}
+		return retval;
+	}
+
 }

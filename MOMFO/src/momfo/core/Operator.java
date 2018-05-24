@@ -29,19 +29,18 @@ import javax.naming.NamingException;
 
 import Network.Buildable;
 import lib.experiments.CommandSetting;
-import lib.experiments.Exception.CommandSetting.notFoundException;
-import momfo.util.JMException;
+import lib.experiments.JMException;
 
 /**
  * Class representing an operator
  */
 public abstract class Operator implements Serializable ,Buildable {
 
-	abstract public void build(CommandSetting s) throws NameNotFoundException, JMException, NamingException, ReflectiveOperationException, IOException, notFoundException;
+	abstract public void build(CommandSetting s) throws NameNotFoundException, JMException, NamingException, ReflectiveOperationException, IOException;
 
-	
+
 	public final String getName() {
 		return this.getClass().getName();
 	}
-	
+
 }

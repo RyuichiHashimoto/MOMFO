@@ -6,12 +6,11 @@ import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
-import lib.experiments.Exception.CommandSetting.notFoundException;
-import momfo.util.JMException;
+import lib.experiments.JMException;
 
 /*
- * A decoder function returns the not-decoded object; 
- * 
+ * A decoder function returns the not-decoded object;
+ *
  */
 
 public class NullDecoder extends Decoder{
@@ -23,9 +22,9 @@ public class NullDecoder extends Decoder{
 
 	@Override
 	public void build(CommandSetting s) throws NameNotFoundException, JMException, NamingException,
-			ReflectiveOperationException, IOException, notFoundException {
+			ReflectiveOperationException, IOException{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

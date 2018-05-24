@@ -1,11 +1,12 @@
 package momfo.core;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import momfo.util.JMException;
+import lib.experiments.JMException;
 
-public class ProblemSet {
+public class ProblemSet  implements Serializable{
 	protected final List<Problem> problemsList_;
 
 	protected List<Integer> accObjsList_;

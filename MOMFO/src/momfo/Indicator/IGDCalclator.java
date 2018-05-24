@@ -7,7 +7,6 @@ import javax.naming.NameNotFoundException;
 
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
-import lib.experiments.Exception.CommandSetting.notFoundException;
 
 
 
@@ -20,7 +19,7 @@ public abstract class IGDCalclator  extends Indicator{
 
 	public double POWER;
 
-	public void build(CommandSetting st) throws NameNotFoundException, notFoundException, ReflectiveOperationException {
+	public void build(CommandSetting st) throws NameNotFoundException, ReflectiveOperationException {
 		super.build(st);
 		try{
 			POWER = st.get(ParameterNames.IGD_POWER);

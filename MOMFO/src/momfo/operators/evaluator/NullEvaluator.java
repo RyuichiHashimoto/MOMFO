@@ -27,7 +27,7 @@ public class NullEvaluator extends Evaluator{
 	}
 
 	@Override
-	public void save(StreamProvider streamProvider) throws IOException {
+	public void save(StreamProvider streamProvider, String namesapce, int offset) throws IOException {
 		// TODO 自動生成されたメソッド・スタブ
 		
 	}

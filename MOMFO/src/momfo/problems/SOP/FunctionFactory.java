@@ -1,8 +1,8 @@
 package momfo.problems.SOP;
 
 
+import lib.experiments.JMException;
 import momfo.util.Configuration;
-import momfo.util.JMException;
 
 public class FunctionFactory {
 	/**

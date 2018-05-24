@@ -3,11 +3,10 @@ package momfo.util.Comparator;
 import javax.naming.NameNotFoundException;
 
 import lib.experiments.CommandSetting;
-import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.experiments.JMException;
 import lib.math.BuildInRandom;
 import momfo.core.Solution;
 import momfo.util.Front;
-import momfo.util.JMException;
 import momfo.util.POINT;
 
 public class DominationComparator extends Comparator{
@@ -16,7 +15,7 @@ public class DominationComparator extends Comparator{
 		super();
 	}
 	
-	public void build(CommandSetting st) throws NameNotFoundException, notFoundException {
+	public void build(CommandSetting st) throws NameNotFoundException,  ReflectiveOperationException {
 		super.build(st);
 	}
 	

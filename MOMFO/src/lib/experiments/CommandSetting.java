@@ -18,7 +18,6 @@ import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
 import lib.directory.DirectoryMaker;
-import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.io.FileConstants;
 import lib.io.input.CatReader;
 import lib.lang.Generics;
@@ -50,7 +49,7 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 		parameter = new HashMap<String, Object>(parameter_);
 	}
 
-	public String[] getAsSArray(String key, String delimiter) throws NameNotFoundException, notFoundException {
+	public String[] getAsSArray(String key, String delimiter) throws NameNotFoundException{
 		Object o = get(key);
 		if (o instanceof String) {
 			return ((String) o).split(delimiter);
@@ -213,7 +212,7 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 		return retval;
 	}
 
-	public String[] getAsSArray(String key, String delimiter, String[] def) throws notFoundException {
+	public String[] getAsSArray(String key, String delimiter, String[] def) {
 		if (containsKey(key)) {
 			try {
 				return getAsSArray(key, delimiter);
@@ -264,14 +263,14 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 		if (retval == null) throw new NameNotFoundException(key + " is not specified.");
 		return Generics.cast(retval);
 	}
-	public boolean getAsBool(String key) throws NameNotFoundException, notFoundException {
+	public boolean getAsBool(String key) throws NameNotFoundException{
 		return Boolean.parseBoolean(getAsStr(key));
 	}
-	public Object[] getAsInstanceArray(String key) throws NameNotFoundException, ReflectiveOperationException, notFoundException {
+	public Object[] getAsInstanceArray(String key) throws NameNotFoundException, ReflectiveOperationException{
 		return getAsInstanceArray(key, ArrayUtility.DEFAULT_DELIMITER);
 	}
 
-	public Object[] getAsInstanceArray(String key, String delimiter) throws NameNotFoundException, ReflectiveOperationException, notFoundException {
+	public Object[] getAsInstanceArray(String key, String delimiter) throws NameNotFoundException, ReflectiveOperationException{
 		String[] classNames = getAsSArray(key, delimiter);
 		Object[] retval = new Object[classNames.length];
 		for (int i = 0; i < retval.length; i++) {
@@ -465,19 +464,19 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 	}
 
 
-	public Object[] getAsInstanceArrayByName(String key,String defaultPkg, String delimiter) throws NameNotFoundException, ReflectiveOperationException, notFoundException {
+	public Object[] getAsInstanceArrayByName(String key,String defaultPkg, String delimiter) throws NameNotFoundException, ReflectiveOperationException {
 		String[] classNames = getAsSArray(key, delimiter);
 		Object[] retval = new Object[classNames.length];
 
 		for (int i = 0; i < retval.length; i++) {
 			if(!defaultPkg.endsWith(".")) defaultPkg = defaultPkg+".";
-			if(!classNames[i].contains(".")) classNames[i] =  defaultPkg + classNames[i]; 
+			if(!classNames[i].contains(".")) classNames[i] =  defaultPkg + classNames[i];
 			retval[i] = Class.forName(classNames[i]).newInstance();
 		}
 		return retval;
 	}
 
-	public Object[] getAsInstanceArrayByName(String key, String delimiter) throws NameNotFoundException, ReflectiveOperationException, notFoundException {
+	public Object[] getAsInstanceArrayByName(String key, String delimiter) throws NameNotFoundException, ReflectiveOperationException{
 		String[] classNames = getAsSArray(key, delimiter);
 		Object[] retval = new Object[classNames.length];
 
@@ -486,9 +485,9 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 		}
 		return retval;
 	}
-	
-	
-	public Object[] getAsInstanceArrayByName(String key) throws NameNotFoundException, ReflectiveOperationException, notFoundException {
+
+
+	public Object[] getAsInstanceArrayByName(String key) throws NameNotFoundException, ReflectiveOperationException{
 		return getAsInstanceArrayByName(key,ParameterNames.SETTING_FILE_DEMILITER);
 	}
 
@@ -517,7 +516,7 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 	}
 
 
-	public String[] getAsSArray(String key) throws NameNotFoundException, notFoundException {
+	public String[] getAsSArray(String key) throws NameNotFoundException{
 		return getAsSArray(key, ArrayUtility.DEFAULT_DELIMITER);
 	}
 
@@ -537,7 +536,7 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 		String className = get(key);
 		if (!defaultPackage.endsWith(".")) defaultPackage += ".";
 		if (!className.contains(".")) putForce(key, defaultPackage + className);
-				
+
 		return getAsInstance(key);
 	}
 
@@ -652,7 +651,7 @@ public class CommandSetting extends AbstractMap<String,Object> implements Serial
 	}
 
 
-	public static void main(String[] args) throws NumberFormatException, notFoundException, NameNotFoundException {
+	public static void main(String[] args) throws NumberFormatException,NameNotFoundException {
 		CommandSetting commandSetting = new CommandSetting();
 		commandSetting.put("A", "B");
 		commandSetting.put("B", "0.5");

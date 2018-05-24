@@ -3,10 +3,9 @@ package momfo.util.Comparator.NSGAIIComparator;
 import javax.naming.NameNotFoundException;
 
 import lib.experiments.CommandSetting;
-import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.experiments.JMException;
 import lib.math.BuildInRandom;
 import momfo.core.Solution;
-import momfo.util.JMException;
 
 @SuppressWarnings("serial")
 public class NSGAIIComparatorWithRandom extends NSGAIIComparator{
@@ -15,7 +14,7 @@ public class NSGAIIComparatorWithRandom extends NSGAIIComparator{
 		super();
 	}
 	
-	public void build(CommandSetting st) throws NameNotFoundException, notFoundException {
+	public void build(CommandSetting st) throws NameNotFoundException,  ReflectiveOperationException {
 		super.build(st);
 	}
 	

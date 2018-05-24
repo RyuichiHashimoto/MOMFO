@@ -2,6 +2,7 @@ package momfo.util;
 
 import java.util.Random;
 
+import lib.experiments.JMException;
 import lib.math.BuildInRandom;
 import lib.math.Permutation;
 import momfo.core.Population;

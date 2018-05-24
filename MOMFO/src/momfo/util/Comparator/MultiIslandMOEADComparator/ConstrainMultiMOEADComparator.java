@@ -2,9 +2,9 @@ package momfo.util.Comparator.MultiIslandMOEADComparator;
 
 import java.util.HashMap;
 
+import lib.experiments.JMException;
 import lib.math.BuildInRandom;
 import momfo.core.Solution;
-import momfo.util.JMException;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;
 
 public class  ConstrainMultiMOEADComparator extends  MultiIslandMOEADComparator{

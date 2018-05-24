@@ -6,13 +6,13 @@ import java.io.IOException;
 import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.lang.Generics;
 import lib.math.BuildInRandom;
 import momfo.core.ProblemSet;
 import momfo.core.Solution;
 import momfo.problems.ProposingPaper.tenRC_tenA;
 import momfo.problems.ProposingPaper.tenR_tenG;
-import momfo.util.JMException;
 
 
 public class ProblemSetFactory{

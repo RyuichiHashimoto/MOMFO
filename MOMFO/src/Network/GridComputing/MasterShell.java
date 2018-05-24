@@ -22,7 +22,7 @@ public class MasterShell extends WorkerObserver implements ShellManageable {
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {
-		Master master = new Master("d");
+		Master master = new Master();
 		MasterShell shell = new MasterShell(master);
 		master.addObserver(shell);
 		new Thread(master).start();
@@ -50,7 +50,8 @@ public class MasterShell extends WorkerObserver implements ShellManageable {
 	@Command(description="Shows the status of the current tasks")
 	public String task() {
 		return "Remaining: "+ master_.countTasks() +"\n"+
-				"Running: "+ master_.countExecuting();
+				"Running: "+ master_.countExecuting() + "\n";				
+			
 	}
 
 	@Command(description="Shows the number of the slaves")

@@ -1,7 +1,7 @@
 package momfo.Indicator.Hypervolume;
 
+import lib.experiments.JMException;
 import momfo.util.Front;
-import momfo.util.JMException;
 
 public class tester {
 

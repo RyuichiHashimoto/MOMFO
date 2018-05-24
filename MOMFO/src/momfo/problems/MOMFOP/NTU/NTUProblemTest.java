@@ -10,11 +10,11 @@ import javax.naming.NameNotFoundException;
 import org.junit.jupiter.api.Test;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.lang.Generics;
 import lib.math.BuildInRandom;
 import momfo.core.ProblemSet;
 import momfo.core.Solution;
-import momfo.util.JMException;
 
 class NTUProblemTest {
 

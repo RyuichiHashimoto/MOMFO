@@ -6,10 +6,11 @@ import java.io.File;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+import Network.RunSetting;
 import Network.Constants.NetworkConstants;
 import lib.Structure.ObjectStack;
 import lib.experiments.CommandSetting;
-import lib.lang.PathTreat; 
+import lib.lang.PathTreat;
 
 public class TaskProvider {
 	public static final String SUBSETTING = "@";
@@ -17,9 +18,10 @@ public class TaskProvider {
 	public static void main(String[] args) throws Exception {
 		Task[] jobs = parseSetting(args);
 
-		Socket ss = new Socket("localhost", NetworkConstants.PORT_NUMBER);
+		Socket ss = new Socket(NetworkConstants.MASTER_HOST, NetworkConstants.REQUEST_PORT_NUMBER);
 		try {
 			ObjectOutputStream oos = new ObjectOutputStream(ss.getOutputStream());
+
 			try {
 				oos.writeObject(jobs);
 				oos.flush();
@@ -52,20 +54,30 @@ public class TaskProvider {
 
 		CommandSetting setting = new CommandSetting(arguments.toArray());
 
+		RunSetting.makeOutpuDir(setting);
+		
+
 		// create job
 		Task[] retval;
 		if (split != 0) {
 			int total = setting.getAsInt(NUMBER_OF_RUNS);
 			every = (int) Math.ceil((double) total / split);
 		}
+		String dir = "";
+		if(setting.containsKey("dir")){
+			dir = setting.getAsStr("dir");
+		} else {
+			dir = "Result";
+		}
 
-		File current = new File(PathTreat.getCurrentDir(), setting.getAsStr("dir"));
-		setting.set("dir", current.toString());
+		File current = new File(PathTreat.getCurrentDir(), dir);
+		setting.putForce("dir", current.toString());
 		if (every != 0) {
 			retval = Project.newProject(setting, every);
 		} else {
 			retval = new Task[] {new Task(setting)};
 		}
+
 		return retval;
 	}
 }

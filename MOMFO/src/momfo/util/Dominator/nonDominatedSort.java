@@ -3,10 +3,10 @@ package momfo.util.Dominator;
 import java.util.ArrayList;
 import java.util.List;
 
+import lib.experiments.JMException;
 import lib.math.BuildInRandom;
 import momfo.core.Population;
 import momfo.core.Solution;
-import momfo.util.JMException;
 
 public class nonDominatedSort extends Dominance{
 

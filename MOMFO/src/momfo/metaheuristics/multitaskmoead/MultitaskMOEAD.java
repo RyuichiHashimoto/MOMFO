@@ -29,8 +29,8 @@ import java.util.Vector;
 import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.experiments.ParameterNames;
-import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.lang.NotVerifiedYet;
 import lib.math.Calculator;
 import lib.math.Permutation;
@@ -38,7 +38,6 @@ import momfo.core.GeneticAlgorithm;
 import momfo.core.Operator;
 import momfo.core.Population;
 import momfo.core.Solution;
-import momfo.util.JMException;
 import momfo.util.Neiborhood;
 import momfo.util.WeightedVector;
 import momfo.util.Comparator.MOEADComparator.MOEADComparator;
@@ -461,7 +460,7 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 
 	@Override
 	protected void buildImpl(CommandSetting s)
-			throws ReflectiveOperationException, NamingException, IOException, notFoundException, JMException {
+			throws ReflectiveOperationException, NamingException, IOException,  JMException {
 
 		s.putForce(ParameterNames.IS_MULTITASK, isMultitask);
 		problemSet_ = s.get(ParameterNames.PROBLEM_SET);
@@ -502,19 +501,19 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		if (s.containsKe(ParameterNames.TASK_NUMBER))
 			task = s.get(ParameterNames.TASK_NUMBER);
 
-		for (int i = 0; i < sss.length; i++) {
-			ScalarzingFunction_[i] = (ScalarzingFunction) Class.forName(sss[i]).newInstance();
-			comparator[i] = (MOEADComparator)  Class.forName(ccc[i]).newInstance();;
-			numberofObjectives_[i] = problemSet_.get(i).getNumberOfObjectives(); 
-			s.putForce(ParameterNames.TASK_NUMBER, i);
-		}
 		s.putForce(ParameterNames.TASK_NUMBER, task);
-
-		// ScalarzingFunction_ = (ScalarzingFunction[])
-		// s.getAsInstanceArray(ParameterNames.SCALAR_FUNCTION);
 		s.putForce(ParameterNames.SCALAR_FUNCTION, ScalarzingFunction_);
 		s.putForce(ParameterNames.MOEAD_COMPARATOR, comparator);
 		s.getAsNArray(ParameterNames.N_OF_EVALUATIONS);
+		
+		for (int i = 0; i < sss.length; i++) {
+			ScalarzingFunction_[i] = (ScalarzingFunction) Class.forName(sss[i]).newInstance();
+			comparator[i] = (MOEADComparator)  Class.forName(ccc[i]).newInstance();;
+			numberofObjectives_[i] = problemSet_.get(i).getNumberOfObjectives();
+			s.putForce(ParameterNames.TASK_NUMBER, i);
+			ScalarzingFunction_[i].build(s);
+			comparator[i].build(s);
+		}
 
 		neighborhood_ = new int[problemSet_.countProblem()][][];
 		WeightedVector_ = new double[problemSet_.countProblem()][][];
@@ -526,11 +525,8 @@ public class MultitaskMOEAD extends GeneticAlgorithm {
 		populationSize_ = new int[numberOfTasks];
 		isInnerWeightVector_ = new boolean[numberOfTasks];
 		for (int t = 0; t < numberOfTasks; t++) {
-			s.putForce(ParameterNames.SCALAR_FUNCTION, ScalarzingFunction_[t]);
-			s.putForce(ParameterNames.MOEAD_COMPARATOR, comparator[t]);
 			s.put(ParameterNames.TEMP_TASK_NUMBER, t);
 			ScalarzingFunction_[t].build(s);
-
 			comparator[t].build(s);
 
 			populationSize_[t] = Calculator.conbination(numberofObjectives_[t] - 1 + numberOfDivision_[t],

@@ -1,20 +1,21 @@
 package momfo.Indicator;
 
+import java.io.Serializable;
+
 import javax.naming.NameNotFoundException;
 
 import Network.Buildable;
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
-import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.math.BuildInRandom;
 
-public abstract class Indicator implements Buildable{
+public abstract class Indicator implements Buildable,Serializable{
 
 	protected BuildInRandom random;
 
 	protected boolean isMAXproblem_;
 
-	public void build(CommandSetting st) throws NameNotFoundException, notFoundException, ReflectiveOperationException {
+	public void build(CommandSetting st) throws NameNotFoundException, ReflectiveOperationException {
 		random = st.get(ParameterNames.RANDOM_GENERATOR);
 
 		if(st.containsKey(ParameterNames.IS_MULTITASK)) {

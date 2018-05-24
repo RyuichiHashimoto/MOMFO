@@ -9,9 +9,9 @@ import java.util.HashMap;
 
 import org.junit.jupiter.api.Test;
 
+import lib.experiments.JMException;
 import momfo.Indicator.Hypervolume.WFGHV;
 import momfo.util.Front;
-import momfo.util.JMException;
 import momfo.util.POINT;
 
 class IGDTest {

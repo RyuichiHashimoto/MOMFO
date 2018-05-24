@@ -5,9 +5,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 
+import lib.experiments.JMException;
 import lib.io.FileConstants;
 import lib.math.Permutation;
-import momfo.util.JMException;
 import momfo.util.Sort;
 import momfo.util.Comparator.ScalarFitnessComparator;
 

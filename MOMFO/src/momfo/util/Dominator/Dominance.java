@@ -1,8 +1,8 @@
 package momfo.util.Dominator;
 
+import lib.experiments.JMException;
 import lib.math.BuildInRandom;
 import momfo.core.Population;
-import momfo.util.JMException;
 import momfo.util.Comparator.Comparator;
 import momfo.util.Comparator.DominationComparator;
 

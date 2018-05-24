@@ -27,8 +27,8 @@ import java.util.Vector;
 import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.experiments.ParameterNames;
-import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.lang.Generics;
 import lib.lang.NotVerifiedYet;
 import lib.math.Calculator;
@@ -38,7 +38,6 @@ import momfo.core.Operator;
 import momfo.core.Population;
 import momfo.core.ProblemSet;
 import momfo.core.Solution;
-import momfo.util.JMException;
 import momfo.util.Neiborhood;
 import momfo.util.WeightedVector;
 import momfo.util.Comparator.MOEADComparator.MOEADComparator;
@@ -339,7 +338,7 @@ public class MOEAD extends GeneticAlgorithm{
 
 	protected int [] permutation;
 	@Override
-	protected void buildImpl(CommandSetting s) throws JMException, notFoundException, NamingException, ReflectiveOperationException, IOException {
+	protected void buildImpl(CommandSetting s) throws JMException,  NamingException, ReflectiveOperationException, IOException {
 
 		problem_ = ((ProblemSet) (setting.get(ParameterNames.PROBLEM_SET)))
 				.get(setting.getAsInt(ParameterNames.TASK_NUMBER));

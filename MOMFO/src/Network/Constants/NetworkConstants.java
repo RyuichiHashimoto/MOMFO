@@ -1,21 +1,12 @@
 package Network.Constants;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-
-import Network.Container.Container;
-
 public class NetworkConstants {
 
 	public static final int PORT_NUMBER = 21127;
+
+	public static final int REQUEST_PORT_NUMBER = 50021;
+	public static final int SLAVE_PORT_NUMBER = 21127;
+
 
 	public static final int BUFFER_SIZE = 512;
 
@@ -41,6 +32,7 @@ public class NetworkConstants {
 
 	public static final Long WaitTime = (long) 500;
 
+	/*
 	public static String recieveFile(File file) {
 		System.out.println("start");
 
@@ -182,4 +174,5 @@ public class NetworkConstants {
 		}
 		return ret;
 	}
+	*/
 }

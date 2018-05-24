@@ -5,9 +5,9 @@ import static lib.experiments.ParameterNames.*;
 import javax.naming.NameNotFoundException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.experiments.NeedParameters;
 import momfo.core.Solution;
-import momfo.util.JMException;
 
 public class PolynomialMutation extends Mutation {
 

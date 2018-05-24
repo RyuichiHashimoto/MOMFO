@@ -13,6 +13,7 @@ public class ParameterNames {
 	public static final String IS_MAX ="isMax";
 	public static final String IS_NORM ="isNorm";
 	public static final String TASK_NUMBER ="TASK_NUMBER";
+	public static final String N_OF_TASKS ="nOfTasks";
 	public static final String N_OF_EVALUATIONS ="nOfEvaluations";
 	public static final String N_OF_PARENTS = "N_OF_PARENTS";
 	public static final String DIRECTORY_NAME = "DirectoryNames";
@@ -27,7 +28,7 @@ public class ParameterNames {
 	public static final String SOL_DECODER = "solDecoder";
 	public static final String SOL_EVALUATOR = "solEvaluator";
 	public static final int    Default_TEMPTASKNUMBER = -1;
-
+	public static final String NAME_SPACE = "nameSpace";
 	public static final String EVALUATION = "evaluation";
 
 	public static final String CROSSOVER = "crossoverMethod";
@@ -59,6 +60,13 @@ public class ParameterNames {
 	public static final String  MOEAD_ALPHA = "MOEAD_ALPHA";
 	public static final String  MOEAD_COMPARATOR = "MOEAD_Comparator";
 	public static final String SCALAR_FUNCTION ="ScalarFunction";
+
+
+
+// Parameter set for Island model
+	public static final String EVERY = "EVERY";
+	public static final String AMOUNT = "AMOUNT";
+//	public static final String
 
 	/*
 	 *  This string variable indicates the index of the tasks that is drawing attention now

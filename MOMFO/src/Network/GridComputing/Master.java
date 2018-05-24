@@ -1,11 +1,10 @@
 package Network.GridComputing;
 
-import java.io.IOException; 
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArraySet;
@@ -13,19 +12,11 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import Network.Constants.NetworkConstants;
-import lib.io.input.FileReader;
 
-/*
- * This class provides the tasks to be solved to slave nodes.
- *
- * @Auther Ryuichi Hashimoto
- *
- */
 
 public class Master extends WorkerObserver implements Runnable{
 	public final MasterLoader loader;
-	private static final String JAR_PATH = "jar:file:master/emoa.jar!/";
-	private String[] PCName;
+	private static final String JAR_PATH = "jar:file:master/master.jar!/";
 	private ServerSocket slaveAcceptor;
 	private TaskConsumer consumer;
 	private BlockingQueue<Task> tasks;
@@ -33,81 +24,24 @@ public class Master extends WorkerObserver implements Runnable{
 	private final CopyOnWriteArraySet<WorkerThread> threads;
 	private final AtomicInteger nExecuting;
 	boolean isAlive;
-
 	public boolean isAlive(){
 		return isAlive;
 	}
 
 	public static void main(String[] args) throws IOException {
 		System.out.println("dir");
-		Master master = new Master(args[0]);
 
 		System.out.println("end");
 	}
 
-	public void SendFinishCommand(){
-		for(int i = 0; i < PCName.length;i++){
-			do{
-				String mas = NetworkConstants.sendObject(NetworkConstants.FINISH_STATUS, PCName[i]);
-				if(mas.equalsIgnoreCase(NetworkConstants.SUCCESS_STATUS)){
-					break;
-				}
-			} while(true);
-		}
-	}
-
-	private void Setting(){
-
-		for(int t = 0; t < PCName.length;t++){
-
-			Runtime r = Runtime.getRuntime();
-
-			try {
-				r.exec("sh  " + "MasterSetting.sh" + " " + PCName[t]+" " + "MOMFO.jar"+ " "+ "GUI.jar"+ " "+"SlaveExecuter.sh");
-			} catch (IOException e) {
-
-				System.exit(-1);
-
-			}
-		}
-	}
-
-	public List<String> ReadPCList(String filePath){
-		List<String> PCName_ = null;
-		try {
-			PCName_ = FileReader.FileReadingAsArray(filePath);
-
-		} catch (IOException e) {
-			System.exit(-1);
-		}
-		return PCName_;
-	}
-
-	public Master(String settingFilePath) throws IOException{
+	public Master() throws IOException{
 		loader = new MasterLoader(new URL(JAR_PATH));
 		nExecuting = new AtomicInteger();
 		threads = new CopyOnWriteArraySet<WorkerThread>();
 		tasks = new LinkedBlockingDeque<Task>();
 		observers = new ArrayList<WorkerObserver>();
 		observers.add(this);
-		slaveAcceptor = new ServerSocket(NetworkConstants.PORT_NUMBER);		
-//		ReadPCList(settingFilePath);
-//		Setting();
-	}
-
-
-//	########################################
-//	########################################
-//	########################################
-
-
-	public void addTask(Task  task){
-		tasks.add(task);
-	}
-	public void addTasks(Task[]  task){
-
-		for(int i = 0; i >task.length;i++)
-			tasks.add(task[i]);
+		slaveAcceptor = new ServerSocket(NetworkConstants.SLAVE_PORT_NUMBER);
 	}
 
 	public void addObserver(WorkerObserver obs){
@@ -117,6 +51,48 @@ public class Master extends WorkerObserver implements Runnable{
 		}
 			observers.add(obs);
 	}
+
+
+
+	@Override
+	public void run() {
+
+		isAlive = true;
+		consumer = new TaskConsumer(this);
+		consumer.start();
+
+		try {
+			while (isAlive()) {
+				try {
+
+					// accept a new slave and create a worker thread
+					WorkerThread wt = new WorkerThread(slaveAcceptor.accept(), this);
+					threads.add(wt);
+					wt.start();
+
+				} catch (IOException e) {
+					// failed to accept slave
+					// or the stream is closed in shutdown() to finish the thread
+				}
+			}
+		} finally {
+			try {
+				slaveAcceptor.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public void addTask(Task  task){
+		tasks.add(task);
+	}
+	public void addTasks(Task[]  task){
+		for(int i = 0; i < task.length;i++) {
+			tasks.add(task[i]);
+		}
+	}
+
 
 	public int countTasks(){
 		return tasks.size();
@@ -151,7 +127,7 @@ public class Master extends WorkerObserver implements Runnable{
 		// terminate task consumer
 		try {
 			// create a new socket to finish TaskConsumer
-			Socket s = new Socket("localhost", NetworkConstants.PORT_NUMBER);
+			Socket s = new Socket("localhost", NetworkConstants.REQUEST_PORT_NUMBER);
 			s.close();
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -178,7 +154,6 @@ public class Master extends WorkerObserver implements Runnable{
 			th.getThread().stop();
 		}
 	}
-	
 
 	public void taskStarted(WorkerThread thread) {
 		nExecuting.incrementAndGet();
@@ -214,36 +189,6 @@ public class Master extends WorkerObserver implements Runnable{
 		}
 	}
 
-	@Override
-	public void run() {
-
-		isAlive = true;
-		consumer = new TaskConsumer(this);
-		consumer.start();
-
-		try {
-			while (isAlive()) {
-				try {
-					
-					// accept a new slave and create a worker thread
-					WorkerThread wt = new WorkerThread(slaveAcceptor.accept(), this);
-					threads.add(wt);
-					wt.start();
-				} catch (IOException e) {
-					System.out.println("output");
-					// failed to accept slave
-					// or the stream is closed in shutdown() to finish the thread
-				}
-			}
-		} finally {
-			try {
-				slaveAcceptor.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
-		
-	}
 	/** This method is not need to be called if shutdown() is called. */
 	public void close() throws IOException {
 		synchronized (slaveAcceptor) {
@@ -251,6 +196,11 @@ public class Master extends WorkerObserver implements Runnable{
 			isAlive = false;
 			slaveAcceptor.close();
 		}
+	}
+
+	public String countFinishing() {
+
+		return null;
 	}
 
 }

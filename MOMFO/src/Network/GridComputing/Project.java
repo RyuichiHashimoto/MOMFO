@@ -3,11 +3,12 @@ package Network.GridComputing;
 import static Network.RunSetting.*;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
-import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.experiments.ParameterNames;
 import lib.misc.SerialVersion;
 import lib.misc.Variable;
 import lib.util.StringUtility;
@@ -20,24 +21,32 @@ import lib.util.StringUtility;
 public class Project extends Task {
 	private static final long serialVersionUID = SerialVersion.UID("Project", 0);
 
-	/** Splits a task into subtasks. 
+	/** Splits a task into subtasks.
 	 * @throws notFoundException */
-	public static Task[] newProject(@Variable CommandSetting s, int eachRuns) throws IOException, NamingException, ReflectiveOperationException, notFoundException {
+	public static Task[] newProject(@Variable CommandSetting s, int eachRuns) throws IOException, NamingException, ReflectiveOperationException{
 		int trials = s.getAsInt(NUMBER_OF_RUNS);
 		int totalJobs = (int) Math.ceil((double) trials / eachRuns);
 		Project project = new Project(s, totalJobs);
 
-		int seedOffset = s.getAsInt(SEED_OFFSET, 0);
+		int seedOffset = s.getAsInt(ParameterNames.SEED_OFFSET, 0);
 		// split into subtasks
-		s.set(NUMBER_OF_RUNS, Integer.toString(eachRuns));
+		s.putForce(NUMBER_OF_RUNS, Integer.toString(eachRuns));
 		SubTask[] retval = new SubTask[totalJobs];
 		for (int i = 0; i < retval.length; i++) {
 			// change SEED_OFFSET and # trials if necessary
-			s.set(SEED_OFFSET, Integer.toString(seedOffset + i * eachRuns));
+			s.putForce(ParameterNames.SEED_OFFSET, Integer.toString(seedOffset + i * eachRuns));
 			if (i == retval.length - 1 && trials % eachRuns != 0) {
-				s.set(NUMBER_OF_RUNS, Integer.toString(trials % eachRuns));
+				s.putForce(NUMBER_OF_RUNS, Integer.toString(trials % eachRuns));
 			}
 			retval[i] = new SubTask(s, project, i);
+		}
+
+		for(int i = 0;i < retval.length;i++) {
+			for (String key: retval[i].getSetting().keySet()) {
+				if( !(retval[i].getSetting().get(key) instanceof Serializable)) {
+					System.out.println(key + "	" + "key w");
+				}
+			}
 		}
 
 		return retval;
@@ -48,26 +57,26 @@ public class Project extends Task {
 	private int nRemainTasks_;
 	private final Object[][] results_;
 
-	private Project(CommandSetting s, int nSplit) throws NamingException, ReflectiveOperationException, notFoundException {
+	private Project(CommandSetting s, int nSplit) throws NamingException, ReflectiveOperationException{
 		super(s);
 		nRemainTasks_ = nSplit;
 		results_ = new Object[nSplit][];
 	}
 
-	private synchronized void finish(Master master, int subTaskID, Object[] mementos) throws IOException, NamingException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+	private synchronized void finish(Master master, int subTaskID, Object[] mementos) throws IOException, NamingException,  ReflectiveOperationException {
 		// save the result of a subtask
 		results_[subTaskID] = mementos;
 		if (--nRemainTasks_ == 0) {// all the subtasks finished
 			// make StreamProvider
 			StreamProvider sProvider;
-			if (CommandSetting_.containsKey("dir")) {
-				String dest = CommandSetting_.getAsStr("dir", null);
+			if (setting_.containsKey("dir")) {
+				String dest = setting_.getAsStr("dir", null);
 				sProvider = new FileStreamProvider(dest);
 			} else {
 				sProvider = new FileStreamProvider();
 			}
 			sProvider = new SpecialFileStreamProvider(sProvider);
-			CommandSetting_.set(STREAM_PROVIDER, sProvider);
+			setting_.set(STREAM_PROVIDER, sProvider);
 
 			// Write each Result
 			int nResults = mementos.length;
@@ -92,7 +101,7 @@ public class Project extends Task {
 		private final int id_;
 		private final Project project_;
 
-		private SubTask(CommandSetting s, Project p, int id) throws NamingException, notFoundException {
+		private SubTask(CommandSetting s, Project p, int id) throws NamingException {
 			super(s);
 			id_ = id;
 			project_ = p;
@@ -100,7 +109,8 @@ public class Project extends Task {
 
 		@Override
 		public void writeResult(Master master, Object[] result) throws IOException, NamingException, ReflectiveOperationException {
-			project_.finish(master, id_, result);
+//			project_.finish(master, id_, result);
+			super.writeResult(master, result);
 		}
 
 		@Override

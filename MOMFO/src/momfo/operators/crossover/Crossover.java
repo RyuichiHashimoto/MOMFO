@@ -3,11 +3,11 @@ package momfo.operators.crossover;
 import javax.naming.NameNotFoundException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.experiments.ParameterNames;
 import lib.math.BuildInRandom;
 import momfo.core.Operator;
 import momfo.core.Solution;
-import momfo.util.JMException;
 
 public abstract class Crossover extends Operator{
 

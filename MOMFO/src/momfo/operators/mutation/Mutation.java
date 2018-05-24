@@ -2,11 +2,11 @@ package momfo.operators.mutation;
 import javax.naming.NameNotFoundException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.experiments.ParameterNames;
 import lib.math.BuildInRandom;
 import momfo.core.Operator;
 import momfo.core.Solution;
-import momfo.util.JMException;
 
 public abstract class Mutation extends Operator {
 

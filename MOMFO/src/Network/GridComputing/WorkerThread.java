@@ -28,7 +28,7 @@ import lib.experiments.CommandSetting;
 public class WorkerThread extends Observable implements Runnable {
 	static final String TERMINATE_SIGNAL = "###terminate_signal###";
 	private static final CommandSetting TERMINATER = new CommandSetting().set(TERMINATE_SIGNAL, Boolean.TRUE);
-	
+
 	public final String HOST_NAME;
 	private final Socket slaveSocket_;
 	private final Master master_;
@@ -71,14 +71,14 @@ public class WorkerThread extends Observable implements Runnable {
 			throw new IllegalStateException(
 					"Call start() in this class not via Thread.");
 		}
-		
+
 		try {
 			runImpl();
 		} catch (Throwable t) {
 			// irregular termination
 			errorCause_ = t;
 			setChanged();
-			notifyObservers(SLAVE_DEAD);			
+			notifyObservers(SLAVE_DEAD);
 		}
 	}
 
@@ -86,9 +86,9 @@ public class WorkerThread extends Observable implements Runnable {
 		try (
 				ObjectInputStream ois = new ObjectInputStream(slaveSocket_.getInputStream());
 				ObjectOutputStream oos = new ObjectOutputStream(slaveSocket_.getOutputStream());){
-			
+
 			communicate(ois, oos);
-			
+
 			// kill this thread
 			oos.writeObject(TERMINATER);
 			oos.flush();
@@ -108,37 +108,40 @@ public class WorkerThread extends Observable implements Runnable {
 				task_ = master_.getTask();
 				setChanged();
 				notifyObservers(TASK_START);
+
 			} catch (InterruptedException e) {
 				// master#shutdown() is invoked
 				continue;
 			}
-			oos.writeObject(task_.getCommandSetting());
+			oos.writeObject(task_.getSetting());
 			oos.flush();
 			receiveResult(ois);
 			oos.reset();
 		}
 	}
 
-	private void receiveResult(ObjectInputStream ois) throws IOException, NamingException, ReflectiveOperationException {
-		switch ((SlaveResponse) ois.readObject()) {
+	private void receiveResult(ObjectInputStream ois) throws IOException, NamingException, ReflectiveOperationException{
+
+		switch ((SlaveResponse) ois.readObject()){
 		case FINISH:
 			// read results
 			int nResults = ois.readInt();
 			Object[] results = new Object[nResults];
-			for (int i = 0; i < nResults; i++) {
+			for(int i = 0; i < nResults; i++) {
 				results[i] = ois.readObject();
 			}
-		//	task_.writeResult(master_, results);
+			task_.writeResult(master_, results);
 			setChanged();
 			notifyObservers(TASK_DONE);
 			break;
 		case EXCEPTION:
-		//	task_.errorHappened();
+			task_.errorHappened();
 			errorCause_ = (Throwable) ois.readObject();
 			setChanged();
 			notifyObservers(TASK_THROW_EXCPTION);
 			break;
 		case DEAD:
+//			notifyObservers(SLAVE_DEAD);
 			throw new SocketException("Slave Dead.");
 		}
 		task_ = null;

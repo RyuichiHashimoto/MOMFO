@@ -4,6 +4,7 @@ import static Network.CommonSolverEvent.*;
 import static Network.RunSetting.*;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.NoSuchElementException;
@@ -15,22 +16,20 @@ import javax.sound.midi.Sequence;
 
 import Network.GridComputing.asg.cliche.Command;
 import lib.experiments.CommandSetting;
-import lib.experiments.Exception.CommandSetting.CannotConvertException;
-import lib.experiments.Exception.CommandSetting.notFoundException;
+import lib.experiments.JMException;
 import lib.lang.Generics;
 import lib.lang.NeedOverriden;
-import momfo.util.JMException;
 
-public abstract class Solver implements Runnable, Buildable {
+public abstract class Solver implements Runnable, Buildable,Serializable{
 
 	public static void buildObject(Buildable b, CommandSetting s) throws ReflectiveOperationException, NamingException,
-			IOException, IllegalArgumentException, notFoundException, CannotConvertException, JMException {
+			IOException, IllegalArgumentException,  JMException {
 		setParameters(b, s);
 		b.build(s);
 	}
 
 	public static void setParameters(Object obj, CommandSetting s) throws ReflectiveOperationException, NamingException,
-			IllegalArgumentException, notFoundException, CannotConvertException {
+			IllegalArgumentException{
 		if (obj == null)
 			return;
 		Class<?> cls = obj.getClass();
@@ -65,7 +64,7 @@ public abstract class Solver implements Runnable, Buildable {
 	}
 
 	protected static void setParam(Object o, Field f, CommandSetting s, String key) throws ReflectiveOperationException,
-			NameNotFoundException, IllegalArgumentException, notFoundException, CannotConvertException {
+			NameNotFoundException, IllegalArgumentException{
 		// Field class is not immutable. And it is not cached.
 		// Modification of field applies only the given field, f.
 		// Therefore, f.setAccessible(false) at the end of this method means
@@ -92,11 +91,10 @@ public abstract class Solver implements Runnable, Buildable {
 	public ArrayList<SolverResult<?>> results = new ArrayList<>();
 	public static final String Result_PACK = "momfo.result.";
 	public static final String DotDelimter = Pattern.quote(".");
-	
-	
+
 	@Override
 	public void build(CommandSetting s) throws NamingException, IOException, ReflectiveOperationException,
-			notFoundException, IllegalArgumentException, CannotConvertException, JMException {
+			IllegalArgumentException,  JMException {
 		setting = s;
 
 		buildImpl();
@@ -104,21 +102,21 @@ public abstract class Solver implements Runnable, Buildable {
 		// instantiate Results
 		String[] resultName = s.getAsSArray(RESULT, RESULT_DELIMITER, new String[0]);
 		for (int i = 0; i < resultName.length; i++) {
-			if(!resultName[i].contains(".") ) { resultName[i] = Result_PACK + resultName[i];}			
+			if(!resultName[i].contains(".") ) { resultName[i] = Result_PACK + resultName[i];}
 			SolverResult<?> rst = Generics.cast(Class.forName(resultName[i]).newInstance());
 			Solver.buildObject(rst, s);
 			results.add(rst);
 		}
 	}
 
-	abstract protected void buildImpl() throws NamingException, IOException, ReflectiveOperationException, JMException, notFoundException;
+	abstract protected void buildImpl() throws NamingException, IOException, ReflectiveOperationException, JMException;
 
 	@NeedOverriden
 	public void reset() {
 		thrown_ = null;
 	}
 
-	abstract protected void solve() throws IOException, ClassNotFoundException, JMException, NameNotFoundException, notFoundException, NamingException;
+	abstract protected void solve() throws IOException, ClassNotFoundException, JMException, NameNotFoundException,  NamingException;
 
 	/**
 	 * The same as {@link #run()} except for this method can throw exceptions.
@@ -133,6 +131,7 @@ public abstract class Solver implements Runnable, Buildable {
 	@Override
 	public final void run() {
 		try {
+			
 			notifyEvent(BEFORE_RUN);
 			solve();
 			notifyEvent(AFTER_RUN);
@@ -152,7 +151,7 @@ public abstract class Solver implements Runnable, Buildable {
 		for (int i = 0; i < results.size(); i++) {
 			try {
 				results.get(i).save();
-			} catch (IOException e) {
+			} catch (IOException | NamingException e) {
 				e.printStackTrace();
 			} finally {
 				try {
@@ -186,7 +185,7 @@ public abstract class Solver implements Runnable, Buildable {
 	}
 
 	@Command
-	public Object getCommandSetting(String key) throws NamingException, notFoundException {
+	public Object getCommandSetting(String key) throws NamingException {
 		return setting.get(key);
 	}
 

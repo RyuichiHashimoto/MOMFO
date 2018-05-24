@@ -1,4 +1,4 @@
-package momfo.util;
+package lib.experiments;
 
 
 public class JMException extends Exception {

@@ -3,11 +3,11 @@ package momfo.Indicator.contribution;
 import java.util.ArrayList;
 import java.util.List;
 
+import lib.experiments.JMException;
 import momfo.Indicator.Indicator;
 import momfo.Indicator.Hypervolume.WFGHV;
 import momfo.core.Solution;
 import momfo.util.Front;
-import momfo.util.JMException;
 import momfo.util.POINT;
 import momfo.util.Comparator.Comparator;
 import momfo.util.Comparator.DominationComparator;

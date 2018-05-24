@@ -3,7 +3,6 @@ package momfo.util.Comparator.NSGAIIComparator;
 import javax.naming.NameNotFoundException;
 
 import lib.experiments.CommandSetting;
-import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.math.BuildInRandom;
 import momfo.core.Solution;
 import momfo.util.Comparator.DominationComparator;
@@ -13,7 +12,7 @@ public abstract class NSGAIIComparator extends DominationComparator {
 	public NSGAIIComparator(){
 		super();
 	}
-	public void build(CommandSetting st) throws NameNotFoundException, notFoundException {
+	public void build(CommandSetting st) throws NameNotFoundException,  ReflectiveOperationException {
 		super.build(st);
 	}
 	

@@ -6,7 +6,6 @@ import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
 import lib.experiments.ParameterNames;
-import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.lang.NotVerifiedYet;
 import momfo.core.Solution;
 
@@ -16,7 +15,7 @@ public class UnifiedRealArray extends Initializer {
 	double[] lowerlimit;
 
 	@Override
-	public void build(CommandSetting st) throws notFoundException, NamingException, ReflectiveOperationException, IOException {
+	public void build(CommandSetting st) throws NamingException, ReflectiveOperationException, IOException {
 		super.build(st);
 		int dim = -1;
 		if(isMultitask) {

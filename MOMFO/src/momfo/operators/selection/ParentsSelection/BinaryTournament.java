@@ -4,11 +4,10 @@ import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.experiments.NeedParameters;
 import lib.experiments.ParameterNames;
-import lib.experiments.Exception.CommandSetting.notFoundException;
 import momfo.core.Population;
-import momfo.util.JMException;
 import momfo.util.Comparator.Comparator;
 import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorWithRandom;
 
@@ -17,7 +16,7 @@ public class BinaryTournament extends ParentsSelection {
 	protected Comparator comparator;
 
 	@NeedParameters({ ParameterNames.BinaryTounamentComparator })
-	public void build(CommandSetting s) throws NameNotFoundException, JMException, notFoundException {
+	public void build(CommandSetting s) throws NameNotFoundException, JMException{
 		super.build(s);
 
 		try {

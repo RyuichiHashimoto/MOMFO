@@ -3,12 +3,11 @@ package momfo.operators.selection.environmentalselection;
 import javax.naming.NameNotFoundException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.experiments.ParameterNames;
-import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.math.Permutation;
 import momfo.core.Population;
 import momfo.metaheuristics.nsga2.CrowdingDistance;
-import momfo.util.JMException;
 import momfo.util.Comparator.NSGAIIComparator.NSGAIIComparatorWithRandom;
 import momfo.util.Ranking.NDSRanking;
 
@@ -22,7 +21,7 @@ public class LabSpecifiedNSGAIISelection extends EnvironmentalSelection{
 		super();
 	}
 
-	public void build(CommandSetting st) throws NameNotFoundException, notFoundException {
+	public void build(CommandSetting st) throws NameNotFoundException{
 		super.build(st);
 		populationSize = st.getAsInt(ParameterNames.POPULATION_SIZE);
 		comparatorBinary = st.get(ParameterNames.NSGAIIComparator);

@@ -1,10 +1,10 @@
  package momfo.Indicator.Hypervolume;
 
+import lib.experiments.JMException;
 import lib.math.BuildInRandom;
 import momfo.core.Population;
 import momfo.core.Solution;
 import momfo.util.Front;
-import momfo.util.JMException;
 import momfo.util.POINT;
 import momfo.util.ReferencePoint;
 import momfo.util.Sort;

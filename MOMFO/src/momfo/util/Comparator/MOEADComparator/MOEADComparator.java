@@ -3,11 +3,10 @@ package momfo.util.Comparator.MOEADComparator;
 import javax.naming.NameNotFoundException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.experiments.ParameterNames;
-import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.lang.NeedOverriden;
 import lib.math.BuildInRandom;
-import momfo.util.JMException;
 import momfo.util.ReferencePoint;
 import momfo.util.WeightedVector;
 import momfo.util.Comparator.Comparator;
@@ -23,11 +22,20 @@ public abstract class MOEADComparator extends Comparator {
 		super();
 	}
 	@NeedOverriden
-	public void build(CommandSetting st) throws NameNotFoundException, notFoundException {
+	public void build(CommandSetting st) throws NameNotFoundException, ReflectiveOperationException {
 		super.build(st);
-		ScalaringFunction_ = st.get(ParameterNames.SCALAR_FUNCTION);
-	}
+		isMultitask = st.getAsBool(ParameterNames.IS_MULTITASK);
 
+		if(isMultitask) {
+			int taskNumber = st.get(ParameterNames.TASK_NUMBER);
+//			System.out.println(st.get(ParameterNames.SCALAR_FUNCTION).getClass().getName());
+			ScalarzingFunction[] d = st.get(ParameterNames.SCALAR_FUNCTION);			
+			ScalaringFunction_ = d[taskNumber];
+		} else {
+			ScalaringFunction_ = st.get(ParameterNames.SCALAR_FUNCTION);
+		}
+	}
+	protected boolean isMultitask;
 	protected ScalarzingFunction ScalaringFunction_;
 
 	protected ReferencePoint referencePoint;

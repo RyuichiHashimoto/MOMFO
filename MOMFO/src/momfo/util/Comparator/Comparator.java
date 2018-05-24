@@ -6,11 +6,10 @@ import javax.naming.NameNotFoundException;
 
 import Network.Buildable;
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.experiments.ParameterNames;
-import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.lang.NeedOverriden;
 import lib.math.BuildInRandom;
-import momfo.util.JMException;
 
 //isMAX is true if problem is max problem　
 public abstract class Comparator implements Serializable, Buildable {
@@ -25,7 +24,7 @@ public abstract class Comparator implements Serializable, Buildable {
 	}
 
 	@NeedOverriden
-	public void build(CommandSetting st) throws NameNotFoundException, notFoundException {
+	public void build(CommandSetting st) throws NameNotFoundException, ReflectiveOperationException {
 		random = st.get(ParameterNames.RANDOM_GENERATOR);
 		isMAX_ = st.getAsBool(ParameterNames.IS_MAX);
 	}

@@ -1,9 +1,9 @@
 package momfo.util.Comparator.MOEADComparator;
 
 
+import lib.experiments.JMException;
 import lib.math.BuildInRandom;
 import momfo.core.Solution;
-import momfo.util.JMException;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;
 public class NormalizeMOEADComparator extends MOEADComparator {
 

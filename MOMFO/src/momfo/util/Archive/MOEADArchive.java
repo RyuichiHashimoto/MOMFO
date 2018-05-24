@@ -3,9 +3,9 @@ package momfo.util.Archive;
 import java.util.ArrayList;
 import java.util.List;
 
+import lib.experiments.JMException;
 import momfo.core.Population;
 import momfo.core.Solution;
-import momfo.util.JMException;
 import momfo.util.WeightedVector;
 import momfo.util.Comparator.MOEADComparator.NormalMOEADComapator;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;

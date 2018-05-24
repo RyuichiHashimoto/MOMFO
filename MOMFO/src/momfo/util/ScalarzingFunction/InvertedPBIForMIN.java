@@ -3,8 +3,8 @@ package momfo.util.ScalarzingFunction;
 import javax.naming.NameNotFoundException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.experiments.ParameterNames;
-import momfo.util.JMException;
 
 public class InvertedPBIForMIN extends ScalarzingFunction {
 

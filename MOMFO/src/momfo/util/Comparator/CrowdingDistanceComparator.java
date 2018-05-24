@@ -1,8 +1,8 @@
 package momfo.util.Comparator;
 
+import lib.experiments.JMException;
 import lib.math.BuildInRandom;
 import momfo.core.Solution;
-import momfo.util.JMException;
 
 public class CrowdingDistanceComparator extends Comparator{
 

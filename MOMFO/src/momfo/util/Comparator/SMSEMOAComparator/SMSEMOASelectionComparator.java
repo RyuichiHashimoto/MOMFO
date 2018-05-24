@@ -2,9 +2,9 @@ package momfo.util.Comparator.SMSEMOAComparator;
 
 import java.util.HashMap;
 
+import lib.experiments.JMException;
 import lib.math.BuildInRandom;
 import momfo.core.Solution;
-import momfo.util.JMException;
 
 public class SMSEMOASelectionComparator extends SMSEMOAComparator {
 

@@ -2,9 +2,9 @@ package momfo.util.Comparator;
 
 import java.util.HashMap;
 
+import lib.experiments.JMException;
 import lib.math.BuildInRandom;
 import momfo.core.Solution;
-import momfo.util.JMException;
 
 public class ScalarFitnessComparator extends Comparator{
 

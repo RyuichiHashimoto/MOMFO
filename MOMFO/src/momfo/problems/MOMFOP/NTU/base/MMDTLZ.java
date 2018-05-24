@@ -2,11 +2,11 @@ package momfo.problems.MOMFOP.NTU.base;
 
 import java.util.Map;
 
+import lib.experiments.JMException;
 import momfo.core.Problem;
 import momfo.core.Solution;
 import momfo.problems.SOP.Function;
 import momfo.problems.SOP.FunctionFactory;
-import momfo.util.JMException;
 
 public class MMDTLZ extends Problem {
 	Integer alpha_;

@@ -1,7 +1,7 @@
 package momfo.util.Comparator;
 
+import lib.experiments.JMException;
 import lib.math.BuildInRandom;
-import momfo.util.JMException;
 
 public class NormalComparator extends Comparator{
 

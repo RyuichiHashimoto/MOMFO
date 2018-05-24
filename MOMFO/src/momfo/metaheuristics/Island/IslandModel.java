@@ -6,14 +6,13 @@ import javax.naming.NameNotFoundException;
 import javax.naming.NamingException;
 
 import lib.experiments.CommandSetting;
+import lib.experiments.JMException;
 import lib.experiments.ParameterNames;
-import lib.experiments.Exception.CommandSetting.notFoundException;
 import lib.lang.Generics;
 import momfo.core.GeneticAlgorithm;
 import momfo.core.Population;
 import momfo.core.Solution;
 import momfo.operators.selection.environmentalselection.EnvironmentalSelection;
-import momfo.util.JMException;
 
 public class IslandModel extends GeneticAlgorithm {
 
@@ -34,7 +33,7 @@ public class IslandModel extends GeneticAlgorithm {
 
 	int[] maxEvaluations;
 
-	int totalPopulatiolnSize;
+	int totalPopulationSize;
 
 	private boolean[] isMax;
 
@@ -157,12 +156,12 @@ public class IslandModel extends GeneticAlgorithm {
 
 	@Override
 	public int getGeneration() {
-		return getEvaluations() / totalPopulatiolnSize;
+		return getEvaluations() / totalPopulationSize;
 	}
 
 	@Override
 	public Population getPopulation() {
-		Population ret =new Population(totalPopulatiolnSize);
+		Population ret =new Population(totalPopulationSize);
 		for(int i =0;i<problemSet_.countProblem();i++) {
 			ret.merge(populationArray[i]);
 		}
@@ -171,23 +170,22 @@ public class IslandModel extends GeneticAlgorithm {
 
 	@Override
 	protected void buildImpl(CommandSetting s)
-			throws ReflectiveOperationException, NamingException, IOException, notFoundException, JMException {
-
-		totalPopulatiolnSize = 200;
+			throws ReflectiveOperationException, NamingException, IOException, JMException {
+		totalPopulationSize = 0;
 
 		populationSize = s.getAsNArray(ParameterNames.POPULATION_SIZE);;
+		for(int i=0;i<populationSize.length;i++) {
+			totalPopulationSize = populationSize[i];
+		}
+		
 		maxEvaluations = s.getAsNArray(ParameterNames.N_OF_EVALUATIONS);;
 		evaluations = new int[problemSet_.countProblem()];
-//		time = ((Integer) this.getInputParameter("times")).intValue();
 		isMax = s.getAsBArray(ParameterNames.IS_MAX);;
+		
+		
 		rmp =  s.getAsDouble(ParameterNames.RMP);
-
-		 environmentalSelection = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.ENVIROMN_SELECT));
-
-
-//		directoryName = ((String) this.getInputParameter("DirectoryName"));
-
-//		s.put(ParameterNames.TASK_NUMBER, );
+		environmentalSelection = Generics.cast(s.getAsInstanceArrayByName(ParameterNames.ENVIROMN_SELECT));
+		
 		for (int t = 0; t < problemSet_.countProblem(); t++) {
 			environmentalSelection[t].build(s);
 			evaluations[t] = 0;

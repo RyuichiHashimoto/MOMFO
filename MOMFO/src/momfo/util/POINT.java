@@ -1,8 +1,10 @@
 package momfo.util;
 
+import java.io.Serializable;
+
 import momfo.core.Solution;
 
-public class POINT {
+public class POINT implements Serializable {
 	double[] POINT_;
 
 	int dimension_;

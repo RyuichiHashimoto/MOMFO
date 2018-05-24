@@ -1,8 +1,8 @@
 package momfo.util.Comparator.MOEADComparator;
 
+import lib.experiments.JMException;
 import lib.math.BuildInRandom;
 import momfo.core.Solution;
-import momfo.util.JMException;
 import momfo.util.ScalarzingFunction.ScalarzingFunction;
 
 public class NormalMOEADComapator extends MOEADComparator {
@@ -14,6 +14,8 @@ public class NormalMOEADComapator extends MOEADComparator {
 	public NormalMOEADComapator(boolean ismax, BuildInRandom random, ScalarzingFunction d) throws JMException {
 		super(ismax, random, d);
 	}
+	
+	
 
 	@Override
 	public int execute(Object one, Object two) throws JMException {
